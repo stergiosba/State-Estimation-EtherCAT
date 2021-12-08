@@ -1,57 +1,12 @@
-//#############################################################################
-//
-// FILE:   f2838x_cm_echoback.c
-//
-// TITLE:  EtherCAT Echoback Reference Solution for F2838x CM
-//
-// This reference solution demonstrates usage of the EtherCAT stack using
-// CAN-over-EtherCAT (CoE) mailbox protocol to perform a basic loopback of
-// data received from the EtherCAT master and then transmitted back to the
-// master.
-//
-// This file initializes the device and EtherCAT hardware before starting
-// the EtherCAT state machine handled by the slave stack code files. The
-// slave stack code will call these "APPL" functions during state transitions
-// as well as while running its main loop to copy data from the EtherCAT
-// RAM to device RAM and from device RAM to EtherCAT RAM.
-//
-// Important: Before running this example, refer to the EtherCAT Slave
-//            Controller User Guide in C2000Ware for the proper
-//            setup/execution procedure of this example
-//
-// Note
-//  Slave Stack Code (SSC) tool must be used to generate the stack files
-//  required by this solution.
-//
-// External Connections
-//  - The controlCARD RJ45 port 0 is connected to PC running TwinCAT master
-//  - If distributed clocks enabled, connect and observe SYNC0/1 signals on
-//    GPIO127 and GPIO128
-//
-// Watch Variables
-//  - Switches0x6000 - 8-Bit switches data to send from slave to master
-//  - LEDS0x7000 - 8-Bit LEDs data received from master
-//  - DataToMaster0x6010 - 32-Bit general data to send from slave to master
-//  - DatafromMaster0x7010 - 32-Bit general data received from master
-//  - TargetModeResponse0x6012 - 16-Bit mode data to send from slave to master
-//  - TargetMode0x7012 - 16-Bit mode data received from master
-//  - TargetSpeedPosFeedback0x6014 - 32-Bit speed/position data to send from
-//                                   slave to master
-//  - TargetSpeedPosReq0x7014 - 32-Bit speed/position data received from master
-//
-//#############################################################################
-// $TI Release: F2838x EtherCAT Software v2.01.00.00 $
-// $Release Date: August 31 2020 $
-// $Copyright: Copyright (C) 2020 Texas Instruments Incorporated -
-//             http://www.ti.com/ ALL RIGHTS RESERVED $
-//#############################################################################
-
 //
 // Included Files
 //
 #include <stdint.h>
 #include "ecat_def.h"
 #include "applInterface.h"
+#include "cm.h"
+#include "ipc.h"
+
 
 #define _F2838X_ECHOBACK_ 1
 #include "f2838x_cm_echoback.h"
@@ -419,6 +374,7 @@ void APPL_OutputMapping(UINT16 *pData)
 //
 void APPL_Application(void)
 {
+
     Switches0x6000.Switch1 = LEDS0x7000.LED1;
     Switches0x6000.Switch2 = LEDS0x7000.LED2;
     Switches0x6000.Switch3 = LEDS0x7000.LED3;
@@ -433,8 +389,12 @@ void APPL_Application(void)
 
     TargetModeResponse0x6012.ModeResponse = TargetMode0x7012.Mode;
 
-    TargetSpeedPosFeedback0x6014.SpeedPosFbk =
-     TargetSpeedPosReq0x7014.SpeedPosReq;
+    TargetSpeedPosFeedback0x6014.SpeedPosFbk = TargetSpeedPosReq0x7014.SpeedPosReq;
+
+
+
+
+
 }
 
 #if EXPLICIT_DEVICE_ID
