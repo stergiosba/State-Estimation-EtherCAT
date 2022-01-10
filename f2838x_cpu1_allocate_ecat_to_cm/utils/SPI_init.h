@@ -11,6 +11,7 @@
 #include "inc/hw_memmap.h"
 #include "sysctl.h"
 #include "gpio.h"
+#include "spi.h"
 #include "pin_map.h"
 #include "device.h"
 

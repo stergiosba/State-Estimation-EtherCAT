@@ -29,18 +29,18 @@
 
 typedef struct
 {
-    uint16_t sw1;
-    uint16_t sw2;
-    uint16_t sw3;
-    uint16_t sw4;
+    float sw1;
+    float sw2;
+    float sw3;
+    float sw4;
 }ECAT_CtrlNode_t;
 
 typedef struct
 {
-    uint16_t led1;
-    uint16_t led2;
-    uint16_t led3;
-    uint16_t led4;
+    float led1;
+    float led2;
+    float led3;
+    float led4;
 }ECAT_StatusNode_t;
 
 //
@@ -65,7 +65,7 @@ extern ECAT_IPC_GetDataBuffer ipcCPUToCMDataBuffer;
 */
 
 
-void configureECAT(void);
+void ECAT_init(void);
 void setupESCGPIOs(void);
 
 #endif /* ECAT_INIT_H_ */

@@ -1,8 +1,8 @@
 /*
- * init_Sci.h
+ * SCI_init.h
  *
- *  Created on: 2 ??? 2021
- *      Author: Lupus
+ *  Created on: 8 December 2021
+ *      Author: Stergios Bachoumas
  */
 
 #ifndef HAL_SCI_INIT_H_
@@ -12,6 +12,8 @@
 #include "device.h"
 #include "math.h"
 #include "stdlib.h"
+
+#define SCI_BITRATE 9600
 
 typedef struct{
     char* narray;

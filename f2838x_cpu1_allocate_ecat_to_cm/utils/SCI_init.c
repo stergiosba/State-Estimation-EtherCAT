@@ -28,7 +28,7 @@ void SCI_init(){
 
     SCI_performSoftwareReset(SCIA_BASE);
 
-    SCI_setConfig(SCIA_BASE, DEVICE_LSPCLK_FREQ, 9600, (SCI_CONFIG_WLEN_8 |
+    SCI_setConfig(SCIA_BASE, DEVICE_LSPCLK_FREQ, SCI_BITRATE, (SCI_CONFIG_WLEN_8 |
                                                         SCI_CONFIG_STOP_ONE |
                                                         SCI_CONFIG_PAR_NONE));
     SCI_resetChannels(SCIA_BASE);

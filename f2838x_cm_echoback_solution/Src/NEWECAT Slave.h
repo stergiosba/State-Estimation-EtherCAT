@@ -49,18 +49,18 @@
 
 typedef struct
 {
-    uint16_t sw1;
-    uint16_t sw2;
-    uint16_t sw3;
-    uint16_t sw4;
+    REAL64 sw1;
+    REAL64 sw2;
+    REAL64 sw3;
+    REAL64 sw4;
 }ECAT_CtrlNode_t;
 
 typedef struct
 {
-    uint16_t led1;
-    uint16_t led2;
-    uint16_t led3;
-    uint16_t led4;
+    REAL64 led1;
+    REAL64 led2;
+    REAL64 led3;
+    REAL64 led4;
 }ECAT_StatusNode_t;
 
 //

@@ -301,22 +301,12 @@ void APPL_InputMapping(uint16_t* pData)
     */
 
     memcpy(pTmpData, &Vars_0x6000.Switch1,SIZEOF(Vars_0x6000.Switch1));
-    pTmpData += 1U;
+    pTmpData += 2U;
     memcpy(pTmpData, &Vars_0x6000.Switch2,SIZEOF(Vars_0x6000.Switch2));
-    pTmpData += 1U;
+    pTmpData += 2U;
     memcpy(pTmpData, &Vars_0x6000.Switch3,SIZEOF(Vars_0x6000.Switch3));
-    pTmpData += 1U;
+    pTmpData += 2U;
     memcpy(pTmpData, &Vars_0x6000.Switch4,SIZEOF(Vars_0x6000.Switch4));
-    pTmpData += 1U;
-    /*
-    *(volatile uint16_t *) pTmpData = Vars_0x6000.Switch1;
-    pTmpData += 1U;
-    *(volatile uint16_t *) pTmpData = Vars_0x6000.Switch2;
-    pTmpData += 1U;
-    *(volatile uint16_t *) pTmpData = Vars_0x6000.Switch3;
-    pTmpData += 1U;
-    *(volatile uint16_t *) pTmpData = Vars_0x6000.Switch4;*/
-
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -328,37 +318,15 @@ void APPL_InputMapping(uint16_t* pData)
 *////////////////////////////////////////////////////////////////////////////////////////
 void APPL_OutputMapping(uint16_t* pData)
 {
-    uint16_t *pTmpData = pData;
+    uint16_t *pTmpData = (uint16_t *)pData;
 
-    /*
-    UINT8 data = 0;
-    data = (*(volatile UINT8 *)pTmpData);
-
-    Vars_0x7000.LED1 = data & BIT_MASK;
-    data = data >> 1U;
-    Vars_0x7000.LED2 = data & BIT_MASK;
-    data = data >> 1U;
-    Vars_0x7000.LED3 = data & BIT_MASK;
-    data = data >> 1U;
-    Vars_0x7000.LED4 = data & BIT_MASK;
-    data = data >> 1U;
-    Vars_0x7000.LED5 = data & BIT_MASK;
-    data = data >> 1U;
-    Vars_0x7000.LED6 = data & BIT_MASK;
-    data = data >> 1U;
-    Vars_0x7000.LED7 = data & BIT_MASK;
-    data = data >> 1U;
-    Vars_0x7000.LED8 = data & BIT_MASK;
-    */
-
-    Vars_0x7000.LED1 = *(volatile uint16_t *)pTmpData;
-    pTmpData += 1U;
-    Vars_0x7000.LED2 = *(volatile uint16_t *)pTmpData;
-    pTmpData += 1U;
-    Vars_0x7000.LED3 = *(volatile uint16_t *)pTmpData;
-    pTmpData += 1U;
-    Vars_0x7000.LED4 = *(volatile uint16_t *)pTmpData;
-
+    memcpy(pTmpData, &Vars_0x7000.LED1,SIZEOF(Vars_0x7000.LED1));
+    pTmpData += 2U;
+    memcpy(pTmpData, &Vars_0x7000.LED2,SIZEOF(Vars_0x7000.LED2));
+    pTmpData += 2U;
+    memcpy(pTmpData, &Vars_0x7000.LED3,SIZEOF(Vars_0x7000.LED3));
+    pTmpData += 2U;
+    memcpy(pTmpData, &Vars_0x7000.LED3,SIZEOF(Vars_0x7000.LED4));
 
 }
 

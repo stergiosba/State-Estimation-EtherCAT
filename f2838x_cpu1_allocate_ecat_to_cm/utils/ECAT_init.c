@@ -7,7 +7,7 @@
 
 #include "ECAT_init.h"
 
-void configureECAT(void)
+void ECAT_init(void)
 {
     //
     // Setup GPIOs for EtherCAT
