@@ -9,7 +9,7 @@ CMD_SRCS += \
 ../2838x_FLASH_lnk_ecat_cm.cmd 
 
 LIB_SRCS += \
-G:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib_cm/ccs/Debug/driverlib_cm.lib 
+C:/ti/c2000/C2000Ware_3_04_00_00/driverlib/f2838x/driverlib_cm/ccs/Debug/driverlib_cm.lib 
 
 C_SRCS += \
 ../ethercat_slave_cm_hal.c \

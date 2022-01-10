@@ -9,7 +9,7 @@ CMD_SRCS += \
 ../2838x_FLASH_lnk_ecat_cpu1.cmd 
 
 LIB_SRCS += \
-G:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/ccs/Debug/driverlib.lib 
+C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/ccs/Debug/driverlib.lib 
 
 ASM_SRCS += \
 ../f2838x_codestartbranch.asm 

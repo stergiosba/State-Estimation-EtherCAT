@@ -27,7 +27,7 @@
     <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_PROJECT.TMS320F28388D.ccxml.Texas Instruments XDS100v2 USB Debug Probe_0/C28xx_CPU1" value="f2838x_cpu1_allocate_ecat_to_cm"/>
     <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_TARGET_CONFIG" value="${target_config_active_default:f2838x_cpu1_allocate_ecat_to_cm}"/>
     <stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.TMS320F28388D.ccxml.Texas Instruments XDS100v2 USB Debug Probe_0/C28xx_CPU1" value="${build_artifact:f2838x_cpu1_allocate_ecat_to_cm}"/>
-    <stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.TMS320F28388D.ccxml.Texas Instruments XDS100v2 USB Debug Probe_0/Cortex_M4_0" value="C:\Users\Stergios\Desktop\Codeground\NEW_ECAT\Pegasus\f2838x_cm_echoback_solution\RAM\f2838x_cm_echoback_solution.out"/>
+    <stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.TMS320F28388D.ccxml.Texas Instruments XDS100v2 USB Debug Probe_0/Cortex_M4_0" value="C:\Users\Lupus\Desktop\NEW_ECAT\Pegasus\f2838x_cm_echoback_solution\RAM\f2838x_cm_echoback_solution.out"/>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
         <listEntry value="/f2838x_cpu1_allocate_ecat_to_cm"/>
     </listAttribute>

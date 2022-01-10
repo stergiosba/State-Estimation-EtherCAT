@@ -447,4 +447,3 @@ void main(void)
 }
 #endif //#if USE_DEFAULT_MAIN
 /** @} */
-

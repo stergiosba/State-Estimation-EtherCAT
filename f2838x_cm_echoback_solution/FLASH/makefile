@@ -4,7 +4,7 @@
 
 SHELL = cmd.exe
 
-CG_TOOL_ROOT := G:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS
+CG_TOOL_ROOT := C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS
 
 GEN_OPTS__FLAG := 
 GEN_CMDS__FLAG := 
@@ -24,7 +24,7 @@ ORDERED_OBJS += \
 "./Src/sdoserv.obj" \
 "./device/cm.obj" \
 "../2838x_FLASH_lnk_ecat_cm.cmd" \
-"G:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib_cm/ccs/Debug/driverlib_cm.lib" \
+"C:/ti/c2000/C2000Ware_3_04_00_00/driverlib/f2838x/driverlib_cm/ccs/Debug/driverlib_cm.lib" \
 $(GEN_CMDS__FLAG) \
 -llibc.a \
 
@@ -157,14 +157,14 @@ all: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 f2838x_cm_echoback_solution.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: Arm Linker'
-	"G:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/bin/armcl" -mv7M4 --float_support=none -me -O2 --define=ETHERCAT_STACK --define=_FLASH --diag_suppress=10063 --diag_warning=225 --diag_wrap=off --display_error_number --verbose_diagnostics --gen_func_subsections=on --embedded_constants=off -z -m"f2838x_cm_echoback_solution.map" --heap_size=0x200 --stack_size=0x200 -i"G:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/lib" -i"G:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include" --reread_libs --define=_FLASH --diag_wrap=off --display_error_number --warn_sections --xml_link_info="f2838x_cm_echoback_solution_linkInfo.xml" --rom_model -o "f2838x_cm_echoback_solution.out" $(ORDERED_OBJS)
+	"C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/bin/armcl" -mv7M4 --float_support=none -me -O2 --define=ETHERCAT_STACK --define=_FLASH --diag_suppress=10063 --diag_warning=225 --diag_wrap=off --display_error_number --verbose_diagnostics --gen_func_subsections=on --embedded_constants=off -z -m"f2838x_cm_echoback_solution.map" --heap_size=0x200 --stack_size=0x200 -i"C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/lib" -i"C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include" --reread_libs --define=_FLASH --diag_wrap=off --display_error_number --warn_sections --xml_link_info="f2838x_cm_echoback_solution_linkInfo.xml" --rom_model -o "f2838x_cm_echoback_solution.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 
 f2838x_cm_echoback_solution.hex: $(EXE_OUTPUTS)
 	@echo 'Building secondary target: "$@"'
 	@echo 'Invoking: Arm Hex Utility'
-	"G:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/bin/armhex" --diag_wrap=off -o "f2838x_cm_echoback_solution.hex" $(EXE_OUTPUTS__QUOTED)
+	"C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/bin/armhex" --diag_wrap=off -o "f2838x_cm_echoback_solution.hex" $(EXE_OUTPUTS__QUOTED)
 	@echo 'Finished building secondary target: "$@"'
 	@echo ' '
 

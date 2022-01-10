@@ -26,11 +26,6 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>TMS320F28388D.ccxml</name>
-			<type>1</type>
-			<location>C:/Users/Stergios/ti/CCSTargetConfigurations/TMS320F28388D.ccxml</location>
-		</link>
-		<link>
 			<name>driverlib_cm.lib</name>
 			<type>1</type>
 			<locationURI>COM_TI_C2000WARE_SOFTWARE_PACKAGE_INSTALL_DIR/driverlib/f2838x/driverlib_cm/ccs/Debug/driverlib_cm.lib</locationURI>

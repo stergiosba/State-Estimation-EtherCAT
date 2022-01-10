@@ -102,4 +102,3 @@ PROTO void APPL_OutputMapping(UINT16* pData);
 
 #undef PROTO
 /** @}*/
-

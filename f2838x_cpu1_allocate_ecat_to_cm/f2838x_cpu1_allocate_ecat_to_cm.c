@@ -4,8 +4,9 @@
 #include "SCI_init.h"
 #include "ECAT_init.h"
 #include <math.h>
+#include "SPI_init.h"
 
-#define DEBUG_MODE 1
+#define DEBUG_MODE 2
 
 //
 // Function Prototypes
@@ -17,7 +18,7 @@ ECAT_IPC_GetDataBuffer ipcCMToCPUDataBuffer;
 #pragma DATA_SECTION(ipcCPUToCMDataBuffer, "MSGRAM_CPU_TO_CM_ECAT")
 ECAT_IPC_PutDataBuffer ipcCPUToCMDataBuffer;
 
-#if DEBUG_MODE == 1
+#if DEBUG_MODE
         char* msg;
 #endif
 
@@ -82,6 +83,9 @@ void main(void)
     //
     // Setup GPIOs for EtherCAT
     //
+    EALLOW;
+    SPI_init();
+    EDIS;
     setupESCGPIOs();
     SCI_init();
     configureECAT();
@@ -91,7 +95,7 @@ void main(void)
     GPIO_setPadConfig(CCARD_LED_2_GPIO, GPIO_PIN_TYPE_STD);
     GPIO_setDirectionMode(CCARD_LED_2_GPIO, GPIO_DIR_MODE_OUT);
 
-#if DEBUG_MODE == 1
+#if DEBUG_MODE
     msg = "\r\nInitialization Successful!\0";
     SCI_writeCharArray(SCIA_BASE, (uint16_t*)msg, 29);
 #endif
@@ -109,7 +113,7 @@ void main(void)
 #endif
 
         ECAT_exchangeDataCPUandCM(i);
-#if DEBUG_MODE == 1
+#if DEBUG_MODE
         GPIO_writePin(CCARD_LED_1_GPIO, !ipcCPUToCMDataBuffer.statusNode.led1);
         GPIO_writePin(CCARD_LED_2_GPIO, !ipcCMToCPUDataBuffer.ctrlNode.sw2);
         //DEVICE_DELAY_US(5000);
