@@ -51,8 +51,11 @@ MEMORY
    CPU1TOCPU2RAM    : origin = 0x03A000, length = 0x000800
    CPU2TOCPU1RAM    : origin = 0x03B000, length = 0x000800
 
-   CPUTOCMRAM       : origin = 0x039000, length = 0x000800
-   CMTOCPURAM       : origin = 0x038000, length = 0x000800
+   CPUTOCMRAM       : origin = 0x039000, length = 0x000200
+   CMTOCPURAM       : origin = 0x038000, length = 0x000200
+
+   CPUTOCMRAM_ECAT  : origin = 0x039200, length = 0x000200
+   CMTOCPURAM_ECAT  : origin = 0x038200, length = 0x000200
 
    CANA_MSG_RAM     : origin = 0x049000, length = 0x000800
    CANB_MSG_RAM     : origin = 0x04B000, length = 0x000800
@@ -88,8 +91,12 @@ SECTIONS
 
    MSGRAM_CPU1_TO_CPU2 > CPU1TOCPU2RAM, type=NOINIT
    MSGRAM_CPU2_TO_CPU1 > CPU2TOCPU1RAM, type=NOINIT
+
    MSGRAM_CPU_TO_CM   > CPUTOCMRAM, type=NOINIT
    MSGRAM_CM_TO_CPU   > CMTOCPURAM, type=NOINIT
+
+   MSGRAM_CPU_TO_CM_ECAT > CPUTOCMRAM_ECAT, type=NOINIT
+   MSGRAM_CM_TO_CPU_ECAT > CMTOCPURAM_ECAT, type=NOINIT
 
    /* The following section definition are for SDFM examples */
    Filter_RegsFile  : > RAMGS0

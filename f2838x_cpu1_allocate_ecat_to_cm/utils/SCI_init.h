@@ -13,14 +13,16 @@
 #include "math.h"
 #include "stdlib.h"
 
-struct litoa_return{
+typedef struct{
     char* narray;
     int size;
-};
-
-typedef struct litoa_return Struct;
-
-Struct litoa(int value, char* buffer, int base);
+}int_st;
+/*
+ * type_flag:"
+ * 0: int,
+ * 1: uint16_t
+ */
+int_st litoa(int value, int base);
 void SCI_init(void);
 
 

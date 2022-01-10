@@ -1,4 +1,11 @@
-#include <SCI_init.h>
+/*
+ * SCI_init.c
+ *
+ *  Created on: 8 December 2021
+ *      Author: Stergios Bachoumas
+ */
+
+#include "SCI_init.h"
 
 void SCI_init(){
     GPIO_setMasterCore(DEVICE_GPIO_PIN_SCIRXDA, GPIO_CORE_CPU1);
@@ -33,19 +40,6 @@ void SCI_init(){
     SCI_performSoftwareReset(SCIA_BASE);
 }
 
-/*Struct litoa(int number)
-{
-    Struct returnsct;
-    returnsct.size = log10(number) + 1;
-    int i;
-    char *numberArray = calloc(returnsct.size, sizeof(char));
-    for (i = returnsct.size-1; i >= 0; --i, number /= 10)
-    {
-        numberArray[i] = (number % 10) + '0';
-    }
-    returnsct.narray = numberArray;
-    return returnsct;
-}*/
 
 void swap(char *x, char *y) {
     char t = *x; *x = *y; *y = t;
@@ -62,13 +56,13 @@ char* reverse(char *buffer, int i, int j)
 }
 
 // Iterative function to implement `itoa()` function in C
-Struct litoa(int value, char* buffer, int base)
+int_st litoa(int value, int base)
 {
-    Struct returnsct;
+    char* buffer;
+    int_st returnsct;
 
     // consider the absolute value of the number
     int n = abs(value);
-
     int i = 0;
     while (n)
     {

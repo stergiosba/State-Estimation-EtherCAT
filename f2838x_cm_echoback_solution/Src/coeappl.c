@@ -122,7 +122,7 @@ V4.00 ECAT 1: The handling of the Sync Manager Parameter was included according 
 
 
 /*Add Application specific Objects*/
-#include "f2838x_cm_echoback.h"
+#include "NEWECAT Slave.h"
 
 
 #undef _OBJD_

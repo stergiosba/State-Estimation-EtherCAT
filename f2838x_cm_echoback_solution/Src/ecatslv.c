@@ -204,7 +204,7 @@ V4.00 ECAT 7: The return values for the AL-StatusCode were changed to UINT16
 
 
 
-#include "f2838x_cm_echoback.h"
+#include "NEWECAT Slave.h"
 
 /*--------------------------------------------------------------------------------------
 ------

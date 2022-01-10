@@ -28,7 +28,7 @@
 		<link>
 			<name>TMS320F28388D.ccxml</name>
 			<type>1</type>
-			<location>C:/Users/Lupus/ti/CCSTargetConfigurations/TMS320F28388D.ccxml</location>
+			<location>C:/Users/Stergios/ti/CCSTargetConfigurations/TMS320F28388D.ccxml</location>
 		</link>
 		<link>
 			<name>driverlib_cm.lib</name>

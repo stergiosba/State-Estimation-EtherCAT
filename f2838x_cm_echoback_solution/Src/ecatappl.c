@@ -138,7 +138,7 @@ V4.00 APPL 6: The main function was split in MainInit and MainLoop
 #include "applInterface.h"
 #undef _APPL_INTERFACE_
 
-#include "f2838x_cm_echoback.h"
+#include "NEWECAT Slave.h"
 
 
 
