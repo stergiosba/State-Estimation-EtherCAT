@@ -1,1 +1,0 @@
-"./f2838x_codestartbranch.obj" "./f2838x_cpu1_allocate_ecat_to_cm.obj" "./device/device.obj" "./utils/ECAT_init.obj" "./utils/SCI_init.obj" "../2838x_FLASH_lnk_ecat_cpu1.cmd" "C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/ccs/Debug/driverlib.lib" -llibc.a 
