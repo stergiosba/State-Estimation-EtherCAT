@@ -42,7 +42,6 @@
 #ifndef DRIVERLIB_H
 #define DRIVERLIB_H
 
-#include <SPI_init.h>
 #include "inc/hw_memmap.h"
 
 #include "adc.h"
@@ -78,6 +77,7 @@
 #include "pin_map.h"
 #include "sci.h"
 #include "sdfm.h"
+#include "spi.h"
 #include "sysctl.h"
 #include "usb.h"
 #include "xbar.h"

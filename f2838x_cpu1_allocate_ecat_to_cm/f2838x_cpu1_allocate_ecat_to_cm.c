@@ -1,3 +1,5 @@
+//TODO RENAME FILE AND PROJECT
+
 // Included Files
 //
 #include "device.h"
@@ -5,13 +7,15 @@
 #include "ECAT_init.h"
 #include <math.h>
 #include "SPI_init.h"
+#include <stdio.h>
 
 #define DEBUG_MODE 1
 
 //
 // Function Prototypes
 //
-void ECAT_exchangeDataCPUandCM(float);
+//TODO Make a IPC header file
+void ECAT_exchangeDataCPUandCM(void);
 #pragma DATA_SECTION(ipcCMToCPUDataBuffer, "MSGRAM_CM_TO_CPU_ECAT")
 ECAT_IPC_GetDataBuffer ipcCMToCPUDataBuffer;
 
@@ -83,9 +87,7 @@ void main(void)
     //
     // Setup GPIOs for SPI/EtherCAT
     //
-    EALLOW;
     SPI_init();
-    EDIS;
     ECAT_init();
 #if DEBUG_MODE
     SCI_init();
@@ -104,12 +106,11 @@ void main(void)
     while(1)
     {
 #if DEBUG_MODE == 2
-        ltoa(ipcCPUToCMDataBuffer.statusNode.led2,buffer,10);
+        sprintf(buffer,"%.4f\r\n",ipcCPUToCMDataBuffer.statusNode.led2);
         SCI_writeCharArray(SCIA_BASE, (uint16_t*)buffer, 50);
-        SCI_writeCharArray(SCIA_BASE, (uint16_t*)"\n", 1);
 #endif
 
-        ECAT_exchangeDataCPUandCM(i);
+        ECAT_exchangeDataCPUandCM();
 #if DEBUG_MODE
         GPIO_writePin(CCARD_LED_1_GPIO, !ipcCPUToCMDataBuffer.statusNode.led1);
         GPIO_writePin(CCARD_LED_2_GPIO, !ipcCMToCPUDataBuffer.ctrlNode.sw2);
@@ -119,14 +120,14 @@ void main(void)
     }
 }
 
-void ECAT_exchangeDataCPUandCM(float time_step)
+void ECAT_exchangeDataCPUandCM()
 {
-
+    //TODO check why TwinCat3 does not show floats properly
     // CPU to CM data
     ipcCPUToCMDataBuffer.statusNode.led1 = ipcCMToCPUDataBuffer.ctrlNode.sw1;
     ipcCPUToCMDataBuffer.statusNode.led2 = ipcCMToCPUDataBuffer.ctrlNode.sw2;
     ipcCPUToCMDataBuffer.statusNode.led3 = ipcCMToCPUDataBuffer.ctrlNode.sw3;
-    ipcCPUToCMDataBuffer.statusNode.led4 = ipcCMToCPUDataBuffer.ctrlNode.sw4*time_step;
+    ipcCPUToCMDataBuffer.statusNode.led4 = ipcCMToCPUDataBuffer.ctrlNode.sw4;
 }
 
 //
