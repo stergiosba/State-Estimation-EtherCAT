@@ -5,7 +5,7 @@
  *      Author: Stergios
  */
 
-#include "device.h"
+#include "SPI_init.h"
 
 #ifndef SPI_ADIS_16354_H_
 #define SPI_ADIS_16354_H_
@@ -44,7 +44,7 @@
 #define STATUS 0x3C
 #define COMMAND 0x3E
 
-void RegisterRead(uint16_t);
+uint16_t RegisterRead(uint16_t);
 uint16_t TwosComplement(float32_t);
 
 #endif /* SPI_ADIS_16354_H_ */

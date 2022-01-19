@@ -33,8 +33,8 @@
 // SPI Modes (SPI_Mode enumeration in spi.h)
 #define SUS_SPI_MODE_OPT                  SPI_MODE_MASTER
 // SPI Emulation mode option (SPI_EmulationMode enumeration in spi.h)
-//#define SPI_EMULATION_OPT               SPI_EMULATION_FREE_RUN
-#define SUS_SPI_EMULATION_OPT             SPI_EMULATION_STOP_AFTER_TRANSMIT
+#define SPI_EMULATION_OPT               SPI_EMULATION_FREE_RUN
+//#define SUS_SPI_EMULATION_OPT             SPI_EMULATION_STOP_AFTER_TRANSMIT
 // SPI Interrupt mode (OFF=0/ON=1)
 #define SUS_SPI_INTERRUPTS_OPT            1
 

@@ -7,8 +7,16 @@
 
 #include "ADIS_16354.h"
 
-void RegisterRead(uint16_t reg)
+uint16_t RegisterRead(uint16_t reg)
 {
+    uint16_t reg_data=0x0;
+    SPI_writeDataNonBlocking(SUS_SPI_BASE, reg);
+    DEVICE_DELAY_US(9);
+    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0);
+    DEVICE_DELAY_US(9);
+    reg_data = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
+
+    return reg_data;
     /*
   uint8_t CMD[2]{};
   CMD[0] = ((static_cast<uint16_t>(reg)) & 0x00FF);
@@ -27,8 +35,7 @@ void RegisterRead(uint16_t reg)
   delayMicroseconds(9);
   digitalWrite(SS, HIGH);
 
-  int16_t reg_data = combine(CMD[0], CMD[1]);
-  return reg_data;*/
+  int16_t reg_data = combine(CMD[0], CMD[1]);*/
 }
 
 
