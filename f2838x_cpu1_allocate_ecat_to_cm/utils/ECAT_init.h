@@ -26,22 +26,38 @@
 #define CCARD_ECAT_RUN_LED_GPIO  146U
 #define CCARD_ECAT_ERR_LED_GPIO  145U
 
+typedef struct
+{
+    bool XGyro_on;
+    bool YGyro_on;
+    bool ZGyro_on;
+    bool XAcc_on;
+    bool YAcc_on;
+    bool ZAcc_on;
+    bool XAngle_on;
+    bool YAngle_on;
+    bool ZAngle_on;
+    bool XLinVel_on;
+    bool YLinVel_on;
+    bool ZLinVel_on;
+    bool Temp_on;
+}IMU_ECAT_CtrlNode_t;
 
 typedef struct
 {
-    float sw1;
-    float sw2;
-    float sw3;
-    float sw4;
-}ECAT_CtrlNode_t;
-
-typedef struct
-{
-    float led1;
-    float led2;
-    float led3;
-    float led4;
-}ECAT_StatusNode_t;
+    float XGyro_sence;
+    float YGyro_sence;
+    float ZGyro_sence;
+    float XAcc_sence;
+    float YAcc_sence;
+    float ZAcc_sence;
+    float XAngle_calc;
+    float YAngle_calc;
+    float ZAngle_calc;
+    float XLinVel_calc;
+    float YLinVel_calc;
+    float ZLinVel_calc;
+}IMU_ECAT_StatusNode_t;
 
 //
 // IPC Struct
@@ -50,15 +66,15 @@ typedef struct
 {
     uint16_t        exchangeDataFlag;
     uint16_t        exchangeDataNum;
-    ECAT_CtrlNode_t ctrlNode;
-}ECAT_IPC_GetDataBuffer;
+    IMU_ECAT_CtrlNode_t ctrlNode;
+}IMU_ECAT_IPC_GetDataBuffer;
 
 typedef struct
 {
     uint16_t          exchangeDataFlag;
     uint16_t          exchangeDataNum;
-    ECAT_StatusNode_t statusNode;
-}ECAT_IPC_PutDataBuffer;
+    IMU_ECAT_StatusNode_t statusNode;
+}IMU_ECAT_IPC_PutDataBuffer;
 
 /*extern ECAT_IPC_PutDataBuffer ipcCMToCPUDataBuffer;
 extern ECAT_IPC_GetDataBuffer ipcCPUToCMDataBuffer;

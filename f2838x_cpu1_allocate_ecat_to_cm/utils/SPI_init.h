@@ -21,11 +21,11 @@
 
 // SPI Interfaces (A/B/C/D)
 #define SUS_SPI_BASE                      SPIA_BASE
-#define SUS_SPI_BITRATE                   2000000
-#define SUS_SPI_DATAWIDTH                 16
+#define SUS_SPI_BITRATE                   12000000UL
+#define SUS_SPI_DATAWIDTH                 16U
 
 // SPI Transfer Protocol Option (SPI_TransferProtocol enumeration in spi.h)
-#define SUS_SPI_TRANSFER_PROTOCOL_OPT     SPI_PROT_POL1PHA1
+#define SUS_SPI_TRANSFER_PROTOCOL_OPT     SPI_PROT_POL1PHA0
 // SPI Loopback option (OFF=0/ON=1)
 #define SUS_SPI_LOOPBACK_OPT              0
 // SPI FIFO option (OFF=0/ON=1)
@@ -33,10 +33,10 @@
 // SPI Modes (SPI_Mode enumeration in spi.h)
 #define SUS_SPI_MODE_OPT                  SPI_MODE_MASTER
 // SPI Emulation mode option (SPI_EmulationMode enumeration in spi.h)
-//#define SPI_EMULATION_OPT               SPI_EMULATION_FREE_RUN
-#define SUS_SPI_EMULATION_OPT             SPI_EMULATION_STOP_AFTER_TRANSMIT
+#define SUS_SPI_EMULATION_OPT             SPI_EMULATION_FREE_RUN
+//#define SUS_SPI_EMULATION_OPT           SPI_EMULATION_STOP_AFTER_TRANSMIT
 // SPI Interrupt mode (OFF=0/ON=1)
-#define SUS_SPI_INTERRUPTS_OPT            1
+#define SUS_SPI_INTERRUPTS_OPT            0
 
 /* SPI Pin definitions */
 

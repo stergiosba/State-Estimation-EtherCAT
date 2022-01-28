@@ -4,12 +4,12 @@
 */
 
 /**
-\addtogroup NEWECATSlave NEWECAT Slave
+\addtogroup ADIS16375F28388DIMUECATSlave ADIS16375 F28388D IMU ECAT Slave
 @{
 */
 
 /**
-\file NEWECAT Slave.c
+\file ADIS16375 F28388D IMU ECAT Slave.c
 \brief Implementation
  Created with SSC Tool application parser 1.6.2.0
 \version 0.0.0.1
@@ -25,9 +25,9 @@
 
 #include "applInterface.h"
 
-#define _NEWECAT_SLAVE_ 1
-#include "NEWECAT Slave.h"
-#undef _NEWECAT_SLAVE_
+#define _ADIS16375_F28388_D_IMU_ECAT_SLAVE_ 1
+#include "ADIS16375 F28388D IMU ECAT Slave.h"
+#undef _ADIS16375_F28388_D_IMU_ECAT_SLAVE_
 /*--------------------------------------------------------------------------------------
 ------
 ------    local types and defines
@@ -63,10 +63,19 @@ ECAT_IPC_GetDataBuffer ipcCPUToCMDataBuffer;
 //
 void PDO_ResetOutputs(void)
 {
-    Vars_0x7000.LED1 = 0x0U;
-    Vars_0x7000.LED2 = 0x0U;
-    Vars_0x7000.LED3 = 0x0U;
-    Vars_0x7000.LED4 = 0x0U;
+    SUS_CONTROL0x7000.XGyro_on      = 0x0U;
+    SUS_CONTROL0x7000.YGyro_on      = 0x0U;
+    SUS_CONTROL0x7000.ZGyro_on      = 0x0U;
+    SUS_CONTROL0x7000.XAcc_on       = 0x0U;
+    SUS_CONTROL0x7000.YAcc_on       = 0x0U;
+    SUS_CONTROL0x7000.ZAcc_on       = 0x0U;
+    SUS_CONTROL0x7000.XAngle_on     = 0x0U;
+    SUS_CONTROL0x7000.YAngle_on     = 0x0U;
+    SUS_CONTROL0x7000.ZAngle_on     = 0x0U;
+    SUS_CONTROL0x7000.XLinVel_on    = 0x0U;
+    SUS_CONTROL0x7000.YLinVel_on    = 0x0U;
+    SUS_CONTROL0x7000.ZLinVel_on    = 0x0U;
+    SUS_CONTROL0x7000.Temp_on       = 0x0U;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -287,7 +296,7 @@ UINT16 APPL_GenerateMapping(UINT16 *pInputSize,UINT16 *pOutputSize)
 void APPL_InputMapping(uint16_t* pData)
 {
     //UINT8 *pTmpData = (UINT8 *)pData;
-    uint16_t *pTmpData = (uint16_t *)pData;
+    uint16_t *pTmpData = pData;
     /*
     UINT8 data;
     data = ((Vars_0x6000.Switch8 << 7U) |
@@ -299,22 +308,28 @@ void APPL_InputMapping(uint16_t* pData)
             (Vars_0x6000.Switch2 << 1U) |
             Vars_0x6000.Switch1);
     */
-/*
-    memcpy(pTmpData, &Vars_0x6000.Switch1,SIZEOF(Vars_0x6000.Switch1));
-    pTmpData += 2U;
-    memcpy(pTmpData, &Vars_0x6000.Switch2,SIZEOF(Vars_0x6000.Switch2));
-    pTmpData += 2U;
-    memcpy(pTmpData, &Vars_0x6000.Switch3,SIZEOF(Vars_0x6000.Switch3));
-    pTmpData += 2U;
-    memcpy(pTmpData, &Vars_0x6000.Switch4,SIZEOF(Vars_0x6000.Switch4));*/
 
+    memcpy(pTmpData, &SUS_SENCE0x6000.XGyro_sence,SIZEOF(SUS_SENCE0x6000.XGyro_sence));
+    pTmpData += 2U;
+    memcpy(pTmpData, &SUS_SENCE0x6000.YGyro_sence,SIZEOF(SUS_SENCE0x6000.YGyro_sence));
+    pTmpData += 2U;
+    memcpy(pTmpData, &SUS_SENCE0x6000.ZGyro_sence,SIZEOF(SUS_SENCE0x6000.ZGyro_sence));
+    pTmpData += 2U;
+    memcpy(pTmpData, &SUS_SENCE0x6000.XAcc_sence,SIZEOF(SUS_SENCE0x6000.XAcc_sence));
+    pTmpData += 2U;
+    memcpy(pTmpData, &SUS_SENCE0x6000.YAcc_sence,SIZEOF(SUS_SENCE0x6000.YAcc_sence));
+    pTmpData += 2U;
+    memcpy(pTmpData, &SUS_SENCE0x6000.ZAcc_sence,SIZEOF(SUS_SENCE0x6000.ZAcc_sence));
+    pTmpData += 2U;
+    memcpy(pTmpData, &SUS_SENCE0x6000.Temp_sence,SIZEOF(SUS_SENCE0x6000.Temp_sence));
+    /*
     *(volatile uint16_t *) pTmpData = Vars_0x6000.Switch1;
-    pTmpData += 2;
+    pTmpData += 1U;
     *(volatile uint16_t *) pTmpData = Vars_0x6000.Switch2;
-    pTmpData += 2;
+    pTmpData += 1U;
     *(volatile uint16_t *) pTmpData = Vars_0x6000.Switch3;
-    pTmpData += 2;
-    *(volatile uint16_t *) pTmpData = Vars_0x6000.Switch4;
+    pTmpData += 1U;
+    *(volatile uint16_t *) pTmpData = Vars_0x6000.Switch4;*/
 
 }
 
@@ -327,47 +342,48 @@ void APPL_InputMapping(uint16_t* pData)
 *////////////////////////////////////////////////////////////////////////////////////////
 void APPL_OutputMapping(uint16_t* pData)
 {
-    uint16_t *pTmpData = (uint16_t *)pData;
+    uint16_t *pTmpData = pData;
 
-    /*
+
     UINT8 data = 0;
     data = (*(volatile UINT8 *)pTmpData);
 
-    Vars_0x7000.LED1 = data & BIT_MASK;
+    SUS_CONTROL0x7000.XGyro_on      = data & BIT_MASK;
     data = data >> 1U;
-    Vars_0x7000.LED2 = data & BIT_MASK;
+    SUS_CONTROL0x7000.YGyro_on      = data & BIT_MASK;
     data = data >> 1U;
-    Vars_0x7000.LED3 = data & BIT_MASK;
+    SUS_CONTROL0x7000.ZGyro_on      = data & BIT_MASK;
     data = data >> 1U;
-    Vars_0x7000.LED4 = data & BIT_MASK;
+    SUS_CONTROL0x7000.XAcc_on       = data & BIT_MASK;
     data = data >> 1U;
-    Vars_0x7000.LED5 = data & BIT_MASK;
+    SUS_CONTROL0x7000.YAcc_on       = data & BIT_MASK;
     data = data >> 1U;
-    Vars_0x7000.LED6 = data & BIT_MASK;
+    SUS_CONTROL0x7000.ZAcc_on       = data & BIT_MASK;
     data = data >> 1U;
-    Vars_0x7000.LED7 = data & BIT_MASK;
+    SUS_CONTROL0x7000.XAngle_on     = data & BIT_MASK;
     data = data >> 1U;
-    Vars_0x7000.LED8 = data & BIT_MASK;
+    SUS_CONTROL0x7000.YAngle_on     = data & BIT_MASK;
+    data = data >> 1U;
+    SUS_CONTROL0x7000.ZAngle_on     = data & BIT_MASK;
+    data = data >> 1U;
+    SUS_CONTROL0x7000.XLinVel_on    = data & BIT_MASK;
+    data = data >> 1U;
+    SUS_CONTROL0x7000.YLinVel_on    = data & BIT_MASK;
+    data = data >> 1U;
+    SUS_CONTROL0x7000.ZLinVel_on    = data & BIT_MASK;
+    data = data >> 1U;
+    SUS_CONTROL0x7000.Temp_on       = data & BIT_MASK;
+
+
+    /*
+    Vars_0x7000.LED1 = *(volatile uint16_t *)pTmpData;
+    pTmpData += 1U;
+    Vars_0x7000.LED2 = *(volatile uint16_t *)pTmpData;
+    pTmpData += 1U;
+    Vars_0x7000.LED3 = *(volatile uint16_t *)pTmpData;
+    pTmpData += 1U;
+    Vars_0x7000.LED4 = *(volatile uint16_t *)pTmpData;
     */
-
-    // THIS WORKS with uint16_t as pTmpData
-    Vars_0x7000.LED1= *(volatile float *) pTmpData;
-    pTmpData += 2;
-    Vars_0x7000.LED2= *(volatile float *) pTmpData;
-    pTmpData += 2;
-    Vars_0x7000.LED3= *(volatile float *) pTmpData;
-    pTmpData += 2;
-    Vars_0x7000.LED4= *(volatile float *) pTmpData;
-
-/*
-    memcpy(&Vars_0x7000.LED1, pTmpData,SIZEOF(Vars_0x7000.LED1));
-    pTmpData += 2U;
-    memcpy(&Vars_0x7000.LED2, pTmpData,SIZEOF(Vars_0x7000.LED2));
-    pTmpData += 2U;
-    memcpy(&Vars_0x7000.LED3, pTmpData,SIZEOF(Vars_0x7000.LED3));
-    pTmpData += 2U;
-    memcpy(&Vars_0x7000.LED4, pTmpData,SIZEOF(Vars_0x7000.LED4));*/
-
 
 }
 
@@ -378,15 +394,39 @@ void APPL_OutputMapping(uint16_t* pData)
 *////////////////////////////////////////////////////////////////////////////////////////
 void APPL_Application(void)
 {
-    ipcCMToCPUDataBuffer.ctrlNode.sw1 = Vars_0x7000.LED1;
-    ipcCMToCPUDataBuffer.ctrlNode.sw2 = Vars_0x7000.LED2;
-    ipcCMToCPUDataBuffer.ctrlNode.sw3 = Vars_0x7000.LED3;
-    ipcCMToCPUDataBuffer.ctrlNode.sw4 = Vars_0x7000.LED4;
+    // Data from EtherCAT to IMU (control checks)
+    ipcCMToCPUDataBuffer.ctrlNode.XGyro_on = SUS_CONTROL0x7000.XGyro_on;
+    ipcCMToCPUDataBuffer.ctrlNode.YGyro_on = SUS_CONTROL0x7000.YGyro_on;
+    ipcCMToCPUDataBuffer.ctrlNode.ZGyro_on = SUS_CONTROL0x7000.ZGyro_on;
 
-    Vars_0x6000.Switch1 = ipcCPUToCMDataBuffer.statusNode.led1;
-    Vars_0x6000.Switch2 = ipcCPUToCMDataBuffer.statusNode.led2;
-    Vars_0x6000.Switch3 = ipcCPUToCMDataBuffer.statusNode.led3;
-    Vars_0x6000.Switch4 = ipcCPUToCMDataBuffer.statusNode.led4;
+    ipcCMToCPUDataBuffer.ctrlNode.XAcc_on = SUS_CONTROL0x7000.XAcc_on;
+    ipcCMToCPUDataBuffer.ctrlNode.YAcc_on = SUS_CONTROL0x7000.YAcc_on;
+    ipcCMToCPUDataBuffer.ctrlNode.ZAcc_on = SUS_CONTROL0x7000.ZAcc_on;
+
+    ipcCMToCPUDataBuffer.ctrlNode.XAngle_on = SUS_CONTROL0x7000.XAngle_on;
+    ipcCMToCPUDataBuffer.ctrlNode.YAngle_on = SUS_CONTROL0x7000.YAngle_on;
+    ipcCMToCPUDataBuffer.ctrlNode.ZAngle_on = SUS_CONTROL0x7000.ZAngle_on;
+
+    ipcCMToCPUDataBuffer.ctrlNode.XLinVel_on = SUS_CONTROL0x7000.XLinVel_on;
+    ipcCMToCPUDataBuffer.ctrlNode.YLinVel_on = SUS_CONTROL0x7000.YLinVel_on;
+    ipcCMToCPUDataBuffer.ctrlNode.ZLinVel_on = SUS_CONTROL0x7000.ZLinVel_on;
+
+    // Data from IMU to EtherCAT (sencing)
+    SUS_SENCE0x6000.XGyro_sence = ipcCPUToCMDataBuffer.statusNode.XGyro_sence;
+    SUS_SENCE0x6000.XGyro_sence = ipcCPUToCMDataBuffer.statusNode.YGyro_sence;
+    SUS_SENCE0x6000.XGyro_sence = ipcCPUToCMDataBuffer.statusNode.ZGyro_sence;
+
+    SUS_SENCE0x6000.XAcc_sence = ipcCPUToCMDataBuffer.statusNode.XAcc_sence;
+    SUS_SENCE0x6000.XAcc_sence = ipcCPUToCMDataBuffer.statusNode.YAcc_sence;
+    SUS_SENCE0x6000.XAcc_sence = ipcCPUToCMDataBuffer.statusNode.ZAcc_sence;
+
+    SUS_SENCE0x6000.XAngle_calc = ipcCPUToCMDataBuffer.statusNode.XAngle_calc;
+    SUS_SENCE0x6000.YAngle_calc = ipcCPUToCMDataBuffer.statusNode.YAngle_calc;
+    SUS_SENCE0x6000.ZAngle_calc = ipcCPUToCMDataBuffer.statusNode.ZAngle_calc;
+
+    SUS_SENCE0x6000.XLinVel_calc = ipcCPUToCMDataBuffer.statusNode.XLinVel_calc;
+    SUS_SENCE0x6000.YLinVel_calc = ipcCPUToCMDataBuffer.statusNode.YLinVel_calc;
+    SUS_SENCE0x6000.ZLinVel_calc = ipcCPUToCMDataBuffer.statusNode.ZLinVel_calc;
 }
 
 #if EXPLICIT_DEVICE_ID

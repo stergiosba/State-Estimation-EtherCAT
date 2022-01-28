@@ -4,20 +4,20 @@
 */
 
 /**
- * \addtogroup NEWECATSlave NEWECAT Slave
+ * \addtogroup ADIS16375F28388DIMUECATSlave ADIS16375 F28388D IMU ECAT Slave
  * @{
  */
 
 /**
-\file NEWECAT Slave.h
-\brief NEWECAT Slave function prototypes and defines
+\file ADIS16375 F28388D IMU ECAT Slave.h
+\brief ADIS16375 F28388D IMU ECAT Slave function prototypes and defines
 
 \version 1.0.0.11
  */
 
  
- #ifndef _NEWECAT_SLAVE_H_
-#define _NEWECAT_SLAVE_H_
+ #ifndef _ADIS16375_F28388_D_IMU_ECAT_SLAVE_H_
+#define _ADIS16375_F28388_D_IMU_ECAT_SLAVE_H_
 
 
 /*-----------------------------------------------------------------------------------------
@@ -35,49 +35,67 @@
 ------
 -----------------------------------------------------------------------------------------*/
 
-#endif //_NEWECAT_SLAVE_H_
+#endif //_ADIS16375_F28388_D_IMU_ECAT_SLAVE_H_
 
 //include custom application object dictionary 
-#include "NEWECAT SlaveObjects.h"
+#include "ADIS16375 F28388D IMU ECAT SlaveObjects.h"
 
 
-#if defined(_NEWECAT_SLAVE_) && (_NEWECAT_SLAVE_ == 1)
+#if defined(_ADIS16375_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16375_F28388_D_IMU_ECAT_SLAVE_ == 1)
     #define PROTO
 #else
     #define PROTO extern
 #endif
 
+#define BIT_MASK        0x1U
 typedef struct
 {
-    float sw1;
-    float sw2;
-    float sw3;
-    float sw4;
-}ECAT_CtrlNode_t;
+    BOOL XGyro_on;
+    BOOL YGyro_on;
+    BOOL ZGyro_on;
+    BOOL XAcc_on;
+    BOOL YAcc_on;
+    BOOL ZAcc_on;
+    BOOL XAngle_on;
+    BOOL YAngle_on;
+    BOOL ZAngle_on;
+    BOOL XLinVel_on;
+    BOOL YLinVel_on;
+    BOOL ZLinVel_on;
+    BOOL Temp_on;
+}IMU_ECAT_CtrlNode_t;
 
 typedef struct
 {
-    float led1;
-    float led2;
-    float led3;
-    float led4;
-}ECAT_StatusNode_t;
+    REAL32 XGyro_sence;
+    REAL32 YGyro_sence;
+    REAL32 ZGyro_sence;
+    REAL32 XAcc_sence;
+    REAL32 YAcc_sence;
+    REAL32 ZAcc_sence;
+    REAL32 XAngle_calc;
+    REAL32 YAngle_calc;
+    REAL32 ZAngle_calc;
+    REAL32 XLinVel_calc;
+    REAL32 YLinVel_calc;
+    REAL32 ZLinVel_calc;
+}IMU_ECAT_StatusNode_t;
 
 //
 // IPC Struct
 //
 typedef struct
 {
-    uint16_t        exchangeDataFlag;
-    uint16_t        exchangeDataNum;
-    ECAT_CtrlNode_t ctrlNode;
+    uint16_t                exchangeDataFlag;
+    uint16_t                exchangeDataNum;
+    IMU_ECAT_CtrlNode_t     ctrlNode;
 }ECAT_IPC_PutDataBuffer;
 
 typedef struct
 {
-    uint16_t          exchangeDataFlag;
-    uint16_t          exchangeDataNum;
-    ECAT_StatusNode_t statusNode;
+    uint16_t                exchangeDataFlag;
+    uint16_t                exchangeDataNum;
+    IMU_ECAT_StatusNode_t   statusNode;
 }ECAT_IPC_GetDataBuffer;
 
 extern ECAT_IPC_PutDataBuffer ipcCMToCPUDataBuffer;

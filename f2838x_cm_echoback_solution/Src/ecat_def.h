@@ -8,7 +8,7 @@
 /*-----------------------------------------------------------------------------------------
 ------	
 ------	ecat_def.h
-------  SSC version : 5.12
+------  SSC version : 5.13
 -----------------------------------------------------------------------------------------*/
 
 #ifndef _ECATDEF_H_
@@ -29,7 +29,7 @@
 ------	
 -----------------------------------------------------------------------------------------*/
 #define SSC_VERSION_MAJOR 5
-#define SSC_VERSION_MINOR 12
+#define SSC_VERSION_MINOR 13
 
 
 /** 
@@ -73,6 +73,12 @@ CONTROLLER_16BIT: Shall be set if the host controller is a 16Bit architecture */
 CONTROLLER_32BIT: Shall be set if the host controller is a 32Bit architecture */
 #ifndef CONTROLLER_32BIT
 #define CONTROLLER_32BIT                          0 //This define was already evaluated by ET9300 Project Handler(V. 1.5.1.0)!
+#endif
+
+/** 
+MEMORY_UNIT_16BIT: Shall be set if the smallest controller memory unit is 16bit */
+#ifndef MEMORY_UNIT_16BIT
+#define MEMORY_UNIT_16BIT                         0 //This define was already evaluated by ET9300 Project Handler(V. 1.5.1.0)!
 #endif
 
 /** 
@@ -126,7 +132,7 @@ If this switch is set, then BIG_ENDIAN_16BIT shall be reset. */
 EXT_DEBUGER_INTERFACE: If this switch is set, the external debugger interface on the EL9800_4A (_PIC24) will be activated.<br>
 This define will be ignored if _PIC24 is not set. */
 #ifndef EXT_DEBUGER_INTERFACE
-#define EXT_DEBUGER_INTERFACE                     0 //This define was already evaluated by ET9300 Project Handler(V. 1.5.1.0)!
+#define EXT_DEBUGER_INTERFACE                     0
 #endif
 
 /** 
@@ -168,8 +174,7 @@ If the AL Event register shall only be polled, this switch has to be defined to 
 #endif
 
 /** 
-DC_SUPPORTED: If distributed clocks should be supported by the slave, then this switch shall be set.<br>
-If this switch is set, then also AL_EVENT_ENABLED shall be set.<br>
+DC_SUPPORTED: If distributed clocks should be supported by the slave, this switch shall be set.<br>
 NOTE: The DC support needs also be set in the "ESC_CONFIG_DATA" settings. */
 #ifndef DC_SUPPORTED
 #define DC_SUPPORTED                              1 //This define was already evaluated by ET9300 Project Handler(V. 1.5.1.0)!
@@ -196,15 +201,21 @@ Select this setting to test the slave stack or a master implementation. For furt
 #endif
 
 /** 
+TEST_APPLICATION_REDUCED_MEMORY: This define reduces the memory footprint of the test application (should only be used if the default test application generates no memory errors when accessing the OD or FoE files) */
+#ifndef TEST_APPLICATION_REDUCED_MEMORY
+#define TEST_APPLICATION_REDUCED_MEMORY  //This define was already evaluated by ET9300 Project Handler(V. 1.5.1.0)!
+#endif
+
+/** 
 EL9800_APPLICATION: Should be set if the Slave Sample Code runs on an EL9800_x Evaluation Board. */
 #ifndef EL9800_APPLICATION
 #define EL9800_APPLICATION                        0 //This define was already evaluated by ET9300 Project Handler(V. 1.5.1.0)!
 #endif
 
 /** 
-CiA402_DEVICE: If this switch is set, then the sample implementation of CiA402 device profile will be activated. */
-#ifndef CiA402_DEVICE
-#define CiA402_DEVICE                             0 //This define was already evaluated by ET9300 Project Handler(V. 1.5.1.0)!
+CiA402_SAMPLE_APPLICATION: If this switch is set, then the sample implementation of CiA402 device profile will be activated. */
+#ifndef CiA402_SAMPLE_APPLICATION
+#define CiA402_SAMPLE_APPLICATION                 0 //This define was already evaluated by ET9300 Project Handler(V. 1.5.1.0)!
 #endif
 
 /** 
@@ -228,7 +239,7 @@ BOOTLOADER_SAMPLE: Select this define to enable a small footprint application wh
 
 /** 
 USE_DEFAULT_MAIN: Set to 1 if the main function of a default application shall be used.<br>
-Otherwise the Init functions and the mainloop handler shall be called for a user specific function (see ET9300 Application Note for further details www.beckhoff.com/english.asp?download/ethercat_development_products.htm?id=71003127100387). */
+Otherwise the Init functions and the mainloop handler shall be called for a user specific function (see ET9300 Application Note for further details https://www.beckhoff.com/de-de/support/downloadfinder/technische-dokumentationen/?q=ET1100). */
 #ifndef USE_DEFAULT_MAIN
 #define USE_DEFAULT_MAIN                          1 //This define was already evaluated by ET9300 Project Handler(V. 1.5.1.0)!
 #endif
@@ -822,37 +833,37 @@ OBJ_WORD_ALIGN: Shall be set if the object structures are not Byte aligned and 1
 #endif
 
 /** 
-ENTER_MBX_CRITICAL: Marco which is called when a critical mailbox section is entered */
+ENTER_MBX_CRITICAL: Macro which is called when a critical mailbox section is entered */
 #ifndef ENTER_MBX_CRITICAL
 #define ENTER_MBX_CRITICAL 
 #endif
 
 /** 
-LEAVE_MBX_CRITICAL: Marco which is called when a critical mailbox section is left */
+LEAVE_MBX_CRITICAL: Macro which is called when a critical mailbox section is left */
 #ifndef LEAVE_MBX_CRITICAL
 #define LEAVE_MBX_CRITICAL 
 #endif
 
 /** 
-ENTER_AOE_CRITICAL: Marco which is called when a critical AoE section is entered */
+ENTER_AOE_CRITICAL: Macro which is called when a critical AoE section is entered */
 #ifndef ENTER_AOE_CRITICAL
 #define ENTER_AOE_CRITICAL 
 #endif
 
 /** 
-LEAVE_AOE_CRITICAL: Marco which is called when a critical AoE section is left */
+LEAVE_AOE_CRITICAL: Macro which is called when a critical AoE section is left */
 #ifndef LEAVE_AOE_CRITICAL
 #define LEAVE_AOE_CRITICAL 
 #endif
 
 /** 
-ENTER_EMCY_CRITICAL: Marco which is called when a critical emergency section is entered */
+ENTER_EMCY_CRITICAL: Macro which is called when a critical emergency section is entered */
 #ifndef ENTER_EMCY_CRITICAL
 #define ENTER_EMCY_CRITICAL 
 #endif
 
 /** 
-LEAVE_EMCY_CRITICAL: Marco which is called when a critical emergency section is left */
+LEAVE_EMCY_CRITICAL: Macro which is called when a critical emergency section is left */
 #ifndef LEAVE_EMCY_CRITICAL
 #define LEAVE_EMCY_CRITICAL 
 #endif
@@ -911,13 +922,13 @@ DEVICE_PROFILE_TYPE: Slave device type (Object 0x1000)  */
 /** 
 DEVICE_NAME: Name of the slave device (Object 0x1008) */
 #ifndef DEVICE_NAME
-#define DEVICE_NAME                               "NEWECAT Slave"
+#define DEVICE_NAME                               "ADIS16375 F28388D IMU ECAT Slave"
 #endif
 
 /** 
 DEVICE_NAME_LEN: Length of 'DEVICE_NAME' without '\0' */
 #ifndef DEVICE_NAME_LEN
-#define DEVICE_NAME_LEN                           0xD
+#define DEVICE_NAME_LEN                           0x20
 #endif
 
 /** 

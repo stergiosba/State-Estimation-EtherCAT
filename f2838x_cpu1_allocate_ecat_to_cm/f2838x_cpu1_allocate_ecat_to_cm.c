@@ -2,12 +2,12 @@
 
 // Included Files
 //
-#include "device.h"
 #include "SCI_init.h"
 #include "ECAT_init.h"
 #include <math.h>
 #include "SPI_init.h"
 #include <stdio.h>
+#include "ADIS_16354.h"
 
 #define DEBUG_MODE 1
 
@@ -17,21 +17,22 @@
 //TODO Make a IPC header file
 void ECAT_exchangeDataCPUandCM(void);
 #pragma DATA_SECTION(ipcCMToCPUDataBuffer, "MSGRAM_CM_TO_CPU_ECAT")
-ECAT_IPC_GetDataBuffer ipcCMToCPUDataBuffer;
+IMU_ECAT_IPC_GetDataBuffer ipcCMToCPUDataBuffer;
 
 #pragma DATA_SECTION(ipcCPUToCMDataBuffer, "MSGRAM_CPU_TO_CM_ECAT")
-ECAT_IPC_PutDataBuffer ipcCPUToCMDataBuffer;
+IMU_ECAT_IPC_PutDataBuffer ipcCPUToCMDataBuffer;
 
 #if DEBUG_MODE
         char* msg;
 #endif
-
+uint16_t imu_check;
 #if DEBUG_MODE == 2
         char* buffer;
         //long Ecat_Sw1_Return;
 #endif
 
 
+#define TEST_VALUE 157.5f
 
 //
 // Main
@@ -84,24 +85,32 @@ void main(void)
                        SYSCTL_AUXPLL_IMULT(20) | SYSCTL_AUXPLL_FMULT_0 |
                        SYSCTL_AUXPLL_DIV_1);
 
+    Interrupt_initModule();
+    Interrupt_initVectorTable();
     //
     // Setup GPIOs for SPI/EtherCAT
     //
     SPI_init();
     ECAT_init();
+    imu_check=IMUCommsCheck();
 #if DEBUG_MODE
     SCI_init();
     GPIO_setPadConfig(CCARD_LED_1_GPIO, GPIO_PIN_TYPE_STD);
     GPIO_setDirectionMode(CCARD_LED_1_GPIO, GPIO_DIR_MODE_OUT);
     GPIO_setPadConfig(CCARD_LED_2_GPIO, GPIO_PIN_TYPE_STD);
     GPIO_setDirectionMode(CCARD_LED_2_GPIO, GPIO_DIR_MODE_OUT);
-    msg = "\r\nInitialization Successful!\0";
-    SCI_writeCharArray(SCIA_BASE, (uint16_t*)msg, 29);
+    msg = "\r\n?SUS>Board Initialization Success!\0\n";
+    SCI_writeCharArray(SCIA_BASE, (uint16_t*)msg, 42);
+    msg = (imu_check) ? "\r\n?SUS>IMU Initialization Success\0\n":"\r\nIMU Initialization Failed!\0\n";
+    SCI_writeCharArray(SCIA_BASE, (uint16_t*)msg, 39);
 #endif
+    EINT;
+    ERTM;
     //
     // Wait Forever
     //
     float i=1;
+
 
     while(1)
     {
@@ -112,8 +121,8 @@ void main(void)
 
         ECAT_exchangeDataCPUandCM();
 #if DEBUG_MODE
-        GPIO_writePin(CCARD_LED_1_GPIO, !ipcCPUToCMDataBuffer.statusNode.led1);
-        GPIO_writePin(CCARD_LED_2_GPIO, !ipcCMToCPUDataBuffer.ctrlNode.sw2);
+        //GPIO_writePin(CCARD_LED_1_GPIO, !ipcCPUToCMDataBuffer.statusNode.led1);
+        //GPIO_writePin(CCARD_LED_2_GPIO, !ipcCMToCPUDataBuffer.ctrlNode.sw2);
         //DEVICE_DELAY_US(5000);
 #endif
         i++;
@@ -122,12 +131,45 @@ void main(void)
 
 void ECAT_exchangeDataCPUandCM()
 {
-    //TODO check why TwinCat3 does not show floats properly
     // CPU to CM data
-    ipcCPUToCMDataBuffer.statusNode.led1 = ipcCMToCPUDataBuffer.ctrlNode.sw1;
-    ipcCPUToCMDataBuffer.statusNode.led2 = ipcCMToCPUDataBuffer.ctrlNode.sw2;
-    ipcCPUToCMDataBuffer.statusNode.led3 = ipcCMToCPUDataBuffer.ctrlNode.sw3;
-    ipcCPUToCMDataBuffer.statusNode.led4 = ipcCMToCPUDataBuffer.ctrlNode.sw4;
+    ipcCPUToCMDataBuffer.statusNode.XGyro_sence = (ipcCMToCPUDataBuffer.ctrlNode.XGyro_on)
+            ? SensorRead(ADIS16375_REG_X_GYRO_OUT):0.0f;
+
+    ipcCPUToCMDataBuffer.statusNode.YGyro_sence = (ipcCMToCPUDataBuffer.ctrlNode.YGyro_on)
+            ? SensorRead(ADIS16375_REG_Y_GYRO_OUT):0.0f;
+
+    ipcCPUToCMDataBuffer.statusNode.ZGyro_sence = (ipcCMToCPUDataBuffer.ctrlNode.ZGyro_on)
+            ? SensorRead(ADIS16375_REG_Z_GYRO_OUT):0.0f;
+
+    ipcCPUToCMDataBuffer.statusNode.XAcc_sence = (ipcCMToCPUDataBuffer.ctrlNode.XAcc_on)
+            ? SensorRead(ADIS16375_REG_X_ACCL_OUT):0.0f;
+
+    ipcCPUToCMDataBuffer.statusNode.YAcc_sence = (ipcCMToCPUDataBuffer.ctrlNode.YAcc_on)
+            ? SensorRead(ADIS16375_REG_Y_ACCL_OUT):0.0f;
+
+    ipcCPUToCMDataBuffer.statusNode.ZAcc_sence = (ipcCMToCPUDataBuffer.ctrlNode.ZAcc_on)
+            ? SensorRead(ADIS16375_REG_Z_ACCL_OUT):0.0f;
+
+    ipcCPUToCMDataBuffer.statusNode.XAngle_calc = (ipcCMToCPUDataBuffer.ctrlNode.XAngle_on)
+            ? TEST_VALUE:0.0f;
+            //? SensorRead(ADIS16375_REG_Z_ACCL_OUT):0.0f;
+
+    ipcCPUToCMDataBuffer.statusNode.YAngle_calc = (ipcCMToCPUDataBuffer.ctrlNode.YAngle_on)
+            ? TEST_VALUE:0.0f;
+            //? SensorRead(ADIS16375_REG_Z_ACCL_OUT):0.0f;
+
+    ipcCPUToCMDataBuffer.statusNode.ZAngle_calc = (ipcCMToCPUDataBuffer.ctrlNode.ZAngle_on)
+            ? TEST_VALUE:0.0f;
+            //? SensorRead(ADIS16375_REG_Z_ACCL_OUT):0.0f;
+    ipcCPUToCMDataBuffer.statusNode.XLinVel_calc = (ipcCMToCPUDataBuffer.ctrlNode.XLinVel_on)
+            ? TEST_VALUE:0.0f;
+            //? SensorRead(ADIS16375_REG_Z_ACCL_OUT):0.0f;
+    ipcCPUToCMDataBuffer.statusNode.YLinVel_calc = (ipcCMToCPUDataBuffer.ctrlNode.YLinVel_on)
+            ? TEST_VALUE:0.0f;
+            //? SensorRead(ADIS16375_REG_Z_ACCL_OUT):0.0f;
+    ipcCPUToCMDataBuffer.statusNode.ZLinVel_calc = (ipcCMToCPUDataBuffer.ctrlNode.ZLinVel_on)
+            ? TEST_VALUE:0.0f;
+            //? SensorRead(ADIS16375_REG_Z_ACCL_OUT):0.0f;
 }
 
 //

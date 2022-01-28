@@ -1,6 +1,7 @@
 /*
 * This source file is part of the EtherCAT Slave Stack Code licensed by Beckhoff Automation GmbH & Co KG, 33415 Verl, Germany.
 * The corresponding license agreement applies. This hint shall not be removed.
+* https://www.beckhoff.com/media/downloads/slave-stack-code/ethercat_ssc_license.pdf
 */
 
 /**

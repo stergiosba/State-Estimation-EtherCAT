@@ -10,10 +10,10 @@
 
 void SPI_init()
 {
-    EALLOW;
-    SPI_PinMuxOptions();
+    //SPI initialization
 
-    //SPi initialization
+    EALLOW;
+
     SPI_disableModule(SUS_SPI_BASE);
 
     SPI_setConfig(SUS_SPI_BASE, DEVICE_LSPCLK_FREQ, SUS_SPI_TRANSFER_PROTOCOL_OPT,
@@ -24,8 +24,12 @@ void SPI_init()
     #else
         SPI_disableLoopback(SUS_SPI_BASE);
     #endif
-
     SPI_setEmulationMode(SUS_SPI_BASE, SUS_SPI_EMULATION_OPT);
+
+    #if SUS_SPI_INTERRUPTS_OPT == 1
+        SPI_clearInterruptStatus(SUS_SPI_BASE, SPI_INT_TXFF | SPI_INT_RXFF);
+        SPI_enableInterrupt(SUS_SPI_BASE, SPI_INT_RXFF | SPI_INT_TXFF);
+    #endif
 
     #if SUS_SPI_FIFO_OPT == 1
         SPI_enableFIFO(SUS_SPI_BASE);
@@ -33,13 +37,8 @@ void SPI_init()
     #else
         SPI_disableFIFO(SUS_SPI_BASE);
     #endif
-
-    #if SUS_SPI_INTERRUPTS_OPT == 1
-        SPI_clearInterruptStatus(SUS_SPI_BASE, SPI_INT_TXFF | SPI_INT_RXFF);
-        SPI_enableInterrupt(SUS_SPI_BASE, SPI_INT_RXFF | SPI_INT_TXFF);
-    #endif
-
     SPI_enableModule(SUS_SPI_BASE);
+    SPI_PinMuxOptions();
     EDIS;
 }
 

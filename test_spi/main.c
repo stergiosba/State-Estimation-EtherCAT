@@ -1,13 +1,16 @@
 #include "SPI_init.h"
+#include "SCI_init.h"
 #include "ADIS_16354.h"
 #include <stdio.h>
 
 
+float32_t xg=0;
+float32_t yg=0;
+float32_t zg=0;
+char buffer[128];
+uint16_t imu_check;
 int main(void)
 {
-
-    uint16_t sData = 0;                  // Send data
-    uint16_t rData = 0;                  // Receive data
     Device_init();
     Device_initGPIO();
     Interrupt_initModule();
@@ -17,22 +20,15 @@ int main(void)
     EINT;
     ERTM;
 
+    imu_check=IMUCommsCheck();
+
     while(1)
     {
-        // Transmit data
-        SPI_writeDataNonBlocking(SUS_SPI_BASE, sData);
-
-        // Block until data is received and then return it
-        rData = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
-
-        // Check received data against sent data
-        if(rData != sData)
-        {
-            // Something went wrong. rData doesn't contain expected data.
-            ESTOP0;
-        }
-
-        sData++;
+        xg = SensorRead(ADIS16375_REG_X_ACCL_OUT);
+        yg = SensorRead(ADIS16375_REG_Y_ACCL_OUT);
+        zg = SensorRead(ADIS16375_REG_Z_ACCL_OUT);
+        //sprintf(buffer,"%d\r\n",(int16_t)xg);
+        //SCI_writeCharArray(SCIA_BASE, (uint16_t*)buffer, 128);
 
     }
 

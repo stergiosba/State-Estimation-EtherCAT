@@ -1,6 +1,7 @@
 /*
 * This source file is part of the EtherCAT Slave Stack Code licensed by Beckhoff Automation GmbH & Co KG, 33415 Verl, Germany.
 * The corresponding license agreement applies. This hint shall not be removed.
+* https://www.beckhoff.com/media/downloads/slave-stack-code/ethercat_ssc_license.pdf
 */
 
 /**
@@ -14,8 +15,13 @@
 \brief Implementation
 This file contains the object dictionary access functions
 
-\version 5.12
+\version 5.13
 
+<br>Changes to version V5.12:<br>
+V5.13 COE1: handling objects with 255 entries<br>
+V5.13 COE4: update default entry name handling in case of 16Bit characters, add CoE Read/write indication functions<br>
+V5.13 COE9: prevent compiler warning in get entry description if char is 8bit<br>
+V5.13 TEST7: add entries with bit9-16 types<br>
 <br>Changes to version V5.11:<br>
 V5.12 COE10: update object entry string handling<br>
 V5.12 COE3: update entry access right handling<br>
@@ -47,7 +53,7 @@ V5.10 ECAT13: Update Synchronisation handling (FreeRun,SM Sync, Sync0, Sync1)<br
               Compare DC UINT configuration (by ESC Config data) vs. DC activation register settings<br>
               Update 0x1C3x entries<br>
 V5.10 ECAT3: Add new datatype handling (BITARRxx)<br>
-             Use read/write marco to access STRING entries<br>
+             Use read/write macro to access STRING entries<br>
 V5.10 SDO1: Handle access to enums on odd memory addresses (only for MBX_16BIT_ACCESS)<br>
 V5.10 SDO2: Check for termination char in every substring<br>
 V5.10 SDO5: Check also for PDO mapping object if the subindex 0 was set to 0 before the entries will be changed.<br>
@@ -111,7 +117,7 @@ V4.00 COEAPPL 2: The handling of backup parameters was included according to<br>
 */
 
 
-#define    OBJDEF        0x4000
+#define    OBJDEF       0x4000
 #define    OBJDEFMAX    0x0A
 
 /*---------------------------------------------------------------------------------------
@@ -131,6 +137,8 @@ V4.00 COEAPPL 2: The handling of backup parameters was included according to<br>
 #include "objdef.h"
 #undef    _OBJDEF_
 /*remove definition of _OBJDEF_ (#ifdef is used in objdef.h)*/
+
+#include "applInterface.h"
 
 
 
@@ -213,9 +221,7 @@ UINT32 OBJ_GetObjectLength( UINT16 index, UINT8 subindex, OBJCONST TOBJECT OBJME
     /* get the information of ObjCode and MaxSubindex in local variables to support different types of microcontroller */
     UINT8 objCode = (pObjEntry->ObjDesc.ObjFlags & OBJFLAGS_OBJCODEMASK) >> OBJFLAGS_OBJCODESHIFT;
     
-/*ECATCHANGE_START(V5.12) COE6*/
     UINT8 maxSubindex = (pObjEntry->ObjDesc.ObjFlags & OBJFLAGS_MAXSUBINDEXMASK) >> OBJFLAGS_MAXSUBINDEXSHIFT;
-/*ECATCHANGE_END(V5.12) COE6*/
     UINT32 size = 0;
 
     if ( bCompleteAccess )
@@ -250,7 +256,9 @@ UINT32 OBJ_GetObjectLength( UINT16 index, UINT8 subindex, OBJCONST TOBJECT OBJME
         }
         else
         {
-            UINT8 i;
+/*ECATCHANGE_START(V5.13) COE1*/
+            UINT16 i;
+/*ECATCHANGE_END(V5.13) COE1*/
 
             /* add the sizes of all entries */
             for (i = 1; i <= maxSubindex; i++)
@@ -290,7 +298,6 @@ UINT32 OBJ_GetObjectLength( UINT16 index, UINT8 subindex, OBJCONST TOBJECT OBJME
         else
         {
             {
-/*ECATCHANGE_START(V5.12) COE6*/
                 if (maxSubindex < subindex)
                 {
                     return 0;
@@ -300,7 +307,6 @@ UINT32 OBJ_GetObjectLength( UINT16 index, UINT8 subindex, OBJCONST TOBJECT OBJME
                 {
                     return (BIT2BYTE(pObjEntry->pEntryDesc[subindex].BitLength));
                 }
-/*ECATCHANGE_END(V5.12) COE6*/
             }
         }
     }
@@ -436,11 +442,13 @@ UINT16    OBJ_GetObjectList(UINT16 listType, UINT16 *pIndex, UINT16 size, UINT16
                 if ( t )
                 {
                     UINT8 maxSubindex = (pObjEntry->ObjDesc.ObjFlags & OBJFLAGS_MAXSUBINDEXMASK) >> OBJFLAGS_MAXSUBINDEXSHIFT;
-                    UINT8 i = 0;
+/*ECATCHANGE_START(V5.13) COE1*/
+                    UINT16 i = 0;
+/*ECATCHANGE_END(V5.13) COE1*/
 
                     while ( t && i <= maxSubindex )
                     {
-                        if ( OBJ_GetEntryDesc(pObjEntry, i)->ObjAccess & listFlags )
+                        if ( OBJ_GetEntryDesc(pObjEntry, (UINT8)i)->ObjAccess & listFlags )
                         {
                             t = 0;
                         }
@@ -537,10 +545,11 @@ UINT16 OBJ_GetDesc( UINT16 index, UINT8 subindex, OBJCONST TOBJECT OBJMEM * pObj
             {
 
             OBJCONST UCHAR OBJMEM * pSubDesc = (OBJCONST UCHAR OBJMEM *) OBJGETNEXTSTR( pDesc );
-/* ECATCHANGE_START(V5.12) COE10*/
             while (( i <= tmpSubindex )
-                &&( pSubDesc[0] != 0xFF && pSubDesc[0] != 0xFE && pSubDesc[0] != 0xFFFF))
-/* ECATCHANGE_END(V5.12) COE10*/
+                &&( pSubDesc[0] != 0xFF && pSubDesc[0] != 0xFE 
+/* ECATCHANGE_START(V5.13) COE9*/
+/* ECATCHANGE_END(V5.13) COE9*/
+                    ))
             {
                 if ( i == tmpSubindex )
                 {
@@ -569,7 +578,9 @@ UINT16 OBJ_GetDesc( UINT16 index, UINT8 subindex, OBJCONST TOBJECT OBJMEM * pObj
             if ( pData )
             {
                 UCHAR OBJMEM         TmpDescr[13];
-                OBJSTRCPY(TmpDescr,aSubindexDesc,SIZEOF(TmpDescr));
+                /* ECATCHANGE_START(V5.13) COE4*/
+                MEMCPY(TmpDescr, aSubindexDesc, SIZEOF(TmpDescr));
+                /* ECATCHANGE_END(V5.13) COE4*/
                 
                 OBJ_CopyNumberToString( &TmpDescr[9], subindex );
                 MBXSTRCPY( pData, TmpDescr, SIZEOF(TmpDescr) );
@@ -710,8 +721,10 @@ UINT16 OBJ_GetEntryOffset(UINT8 subindex, OBJCONST TOBJECT OBJMEM * pObjEntry)
                 {
                     bitOffset += pEntry->BitLength;
                 }
-
-                bitOffset += 16;
+                else
+                {
+                    bitOffset += 16;
+                }
             }
             break;
         case    DEFTYPE_UNSIGNED32:
@@ -742,6 +755,26 @@ UINT16 OBJ_GetEntryOffset(UINT8 subindex, OBJCONST TOBJECT OBJMEM * pObjEntry)
                 {
                    bitOffset += 32;
                 }
+            }
+            break;
+        
+        case DEFTYPE_REAL64:
+        case DEFTYPE_INTEGER64:
+        case DEFTYPE_UNSIGNED64:
+#if OBJ_DWORD_ALIGN
+            /* the 64-bit variables in the structure are dword-aligned,
+               align the actual bitOffset to a dword */
+            bitOffset = (bitOffset + 31) & 0xFFE0;
+#elif OBJ_WORD_ALIGN
+            /* the 64-bit variables in the structure are word-aligned,
+               align the actual bitOffset to a word */
+            bitOffset = (bitOffset + 15) & 0xFFF0;
+#endif
+
+            if (i < subindex)
+            {
+
+                bitOffset += 64;
             }
             break;
         default:
@@ -897,9 +930,7 @@ UINT8 OBJ_Read( UINT16 index, UINT8 subindex, UINT32 objSize, OBJCONST TOBJECT O
             {
                 /* check if we have read access (bits 0-2 (PREOP, SAFEOP, OP) of ObjAccess)
                 by comparing with the actual state (bits 1-3 (PREOP, SAFEOP, OP) of AL Status) */
-/*ECATCHANGE_START(V5.12) COE3*/
                 if (0 == (((UINT8) ((pEntry->ObjAccess & ACCESS_READ)<<1)) & (nAlStatus & STATE_MASK)))
-/*ECATCHANGE_END(V5.12) COE3*/
                 {
                     /* we don't have read access */
                     if ( (pEntry->ObjAccess & ACCESS_READ) == 0 )
@@ -914,13 +945,20 @@ UINT8 OBJ_Read( UINT16 index, UINT8 subindex, UINT32 objSize, OBJCONST TOBJECT O
                     }
                 }
             }
-/* ECATCHANGE_START(V5.12) COE7*/
             else
             {
                 return ABORTIDX_UNSUPPORTED_ACCESS;
             }
-/* ECATCHANGE_END(V5.12) COE7*/
+
         }
+
+    /* ECATCHANGE_START(V5.13) COE4*/
+        if (pAPPL_CoeReadInd != NULL)
+        {
+            pAPPL_CoeReadInd(index, subindex, bCompleteAccess);
+        }
+        /* ECATCHANGE_END(V5.13) COE4*/
+
         if ( pObjEntry->Read != NULL )
         {
             /* Read function is defined, we call the object specific read function */
@@ -940,12 +978,16 @@ UINT8 OBJ_Read( UINT16 index, UINT8 subindex, UINT32 objSize, OBJCONST TOBJECT O
             p = (CHAR **) pVarPtr;
             pVarPtr = (UINT16 MBXMEM *)p[subindex-1];
 
+            /*ECATCHANGE_START(V5.13) */
             {
             // Get enum value (first 32Bit)
+/*ECATCHANGE_START(V5.13) */
+
             pData[0] = pVarPtr[0];
             pData[1] = pVarPtr[1];
             pData += 2;
             pVarPtr += 2;
+/*ECATCHANGE_END(V5.13) */
 
             // Get enum description
             OBJTOMBXSTRCPY(pData,pVarPtr,size-4);
@@ -980,9 +1022,7 @@ UINT8 OBJ_Read( UINT16 index, UINT8 subindex, UINT32 objSize, OBJCONST TOBJECT O
 
                 /* get the corresponding entry description */
                 pEntry = OBJ_GetEntryDesc(pObjEntry, (UINT8)i);
-/*ECATCHANGE_START(V5.12) COE3*/
                 if (0 != (((UINT8) ((pEntry->ObjAccess & ACCESS_READ)<<1)) & (nAlStatus & STATE_MASK)) )
-/*ECATCHANGE_END(V5.12) COE3*/
                 {
                     if ( i == subindex                                     /* requested entry */
                         || (bCompleteAccess && i >= subindex) )       /* complete access and entry should be read */
@@ -1270,7 +1310,7 @@ UINT8 OBJ_Read( UINT16 index, UINT8 subindex, UINT32 objSize, OBJCONST TOBJECT O
                                      object shall be done or not
 
  \return    result of the write operation (0 (success) or an abort code (ABORTIDX_.... defined in
-            sdosrv.h))
+            sdoserv.h))
 
  \brief    This function writes the requested object
 *////////////////////////////////////////////////////////////////////////////////////////
@@ -1298,10 +1338,8 @@ UINT8 OBJ_Write( UINT16 index, UINT8 subindex, UINT32 dataSize, OBJCONST TOBJECT
             object's variable */
         maxSubindex = (UINT8) ((UINT16 MBXMEM *) (pObjEntry->pVarPtr))[0];
 
-/*ECATCHANGE_START(V5.12) COE9*/
         /*If the subindex0 of a PDO assign or PDO mapping object is 0 the maximum subindex is specified by the object description*/
         if(maxSubindex == 0 && (IS_PDO_ASSIGN(index) || IS_RX_PDO(index) || IS_TX_PDO(index) || (index == 0xF030)))
-/*ECATCHANGE_END(V5.12) COE9*/
         {
             maxSubindex = maxConfiguredSubindex;
         }
@@ -1342,19 +1380,15 @@ UINT8 OBJ_Write( UINT16 index, UINT8 subindex, UINT32 dataSize, OBJCONST TOBJECT
 
         /* check if we have write access (bits 3-5 (PREOP, SAFEOP, OP) of ObjAccess)
            by comparing with the actual state (bits 1-3 (PREOP, SAFEOP, OP) of AL Status) */
-/*ECATCHANGE_START(V5.12) COE3*/
         if (0 == (((UINT8)((pEntry->ObjAccess & ACCESS_WRITE) >> 2)) & (nAlStatus & STATE_MASK) ))
-/*ECATCHANGE_END(V5.12) COE3*/
         {
             /* we don't have write access */
             if ( (pEntry->ObjAccess & ACCESS_WRITE) == 0 )
             {
-/* ECATCHANGE_START(V5.12) COE7*/
                 if (pEntry->ObjAccess == 0)
                 {
                         return ABORTIDX_UNSUPPORTED_ACCESS;
                 }
-/* ECATCHANGE_END(V5.12) COE7*/
                 else
                 {
                         /* it is a read only entry */
@@ -1367,14 +1401,14 @@ UINT8 OBJ_Write( UINT16 index, UINT8 subindex, UINT32 dataSize, OBJCONST TOBJECT
                 return ABORTIDX_IN_THIS_STATE_DATA_CANNOT_BE_READ_OR_STORED;
             }
         }
+
+
     }
 
     /* Subindex 0 shall be set to zero if a single PDO / PDO assign entry is written
     or a complete access without subindex0 is requested */
-/*ECATCHANGE_START(V5.12) COE9*/
     if((subindex > 0) &&
         (IS_PDO_ASSIGN(index) || IS_RX_PDO(index)|| IS_TX_PDO(index) || (index == 0xF030))
-/*ECATCHANGE_END(V5.12) COE9*/
         )
     {
         /*Check if Subindex0 was cleared before*/
@@ -1388,7 +1422,18 @@ UINT8 OBJ_Write( UINT16 index, UINT8 subindex, UINT32 dataSize, OBJCONST TOBJECT
     if ( pObjEntry->Write != NULL )
     {
         /* Write function is defined, we call the object specific write function */
-        return pObjEntry->Write(index, subindex, dataSize, pData, bCompleteAccess);
+        /* ECATCHANGE_START(V5.13) COE4*/
+        UINT8 result = 0;
+
+        result = pObjEntry->Write(index, subindex, dataSize, pData, bCompleteAccess);
+
+        if ((result == 0) && (pAPPL_CoeWriteInd != NULL))
+        {
+            pAPPL_CoeWriteInd(index, subindex, bCompleteAccess);
+        }
+        
+        return result;
+        /* ECATCHANGE_END(V5.13) COE4*/
     }
     else
     {
@@ -1415,9 +1460,7 @@ UINT8 OBJ_Write( UINT16 index, UINT8 subindex, UINT32 dataSize, OBJCONST TOBJECT
 
             /* we check if we have write access (bits 3-5 (PREOP, SAFEOP, OP) of ObjAccess)
                by comparing with the actual state (bits 1-3 (PREOP, SAFEOP, OP) of AL Status) */
-/*ECATCHANGE_START(V5.12) COE3*/
             if (0 != (((UINT8)((pEntry->ObjAccess & ACCESS_WRITE) >> 2)) & (nAlStatus & STATE_MASK) ))
-/*ECATCHANGE_END(V5.12) COE3*/
             {
                 /* we have write access for this entry */
                 if (i != 0)
@@ -1596,7 +1639,6 @@ UINT8 OBJ_Write( UINT16 index, UINT8 subindex, UINT32 dataSize, OBJCONST TOBJECT
                                   bSyncSetByUser = TRUE;
                                }
 
-/*ECATCHANGE_START(V5.12) ECAT1*/
                                if (i == 8) /* "Get Cycle Time" written*/
                                {
 
@@ -1621,7 +1663,6 @@ UINT8 OBJ_Write( UINT16 index, UINT8 subindex, UINT32 dataSize, OBJCONST TOBJECT
                                      sSyncManInPar.u8SyncError = 0;
                                   }
                                } /* Subindex 8 written*/
-/*ECATCHANGE_END(V5.12) ECAT1*/
                             }
 
                             pVarPtr[0] = u16NewData;
@@ -1742,6 +1783,13 @@ UINT8 OBJ_Write( UINT16 index, UINT8 subindex, UINT32 dataSize, OBJCONST TOBJECT
             return result;
         }
     }
+
+    /* ECATCHANGE_START(V5.13) COE4*/
+    if (pAPPL_CoeWriteInd != NULL)
+    {
+        pAPPL_CoeWriteInd(index, subindex, bCompleteAccess);
+    }
+    /* ECATCHANGE_END(V5.13) COE4*/
 
     return 0;
 }

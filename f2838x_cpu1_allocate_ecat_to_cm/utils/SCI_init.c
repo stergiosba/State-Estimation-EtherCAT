@@ -7,7 +7,8 @@
 
 #include "SCI_init.h"
 
-void SCI_init(){
+void SCI_init()
+{
     GPIO_setMasterCore(DEVICE_GPIO_PIN_SCIRXDA, GPIO_CORE_CPU1);
     GPIO_setPinConfig(DEVICE_GPIO_CFG_SCIRXDA);
     GPIO_setDirectionMode(DEVICE_GPIO_PIN_SCIRXDA, GPIO_DIR_MODE_IN);
@@ -28,9 +29,7 @@ void SCI_init(){
 
     SCI_performSoftwareReset(SCIA_BASE);
 
-    SCI_setConfig(SCIA_BASE, DEVICE_LSPCLK_FREQ, SCI_BITRATE, (SCI_CONFIG_WLEN_8 |
-                                                        SCI_CONFIG_STOP_ONE |
-                                                        SCI_CONFIG_PAR_NONE));
+    SCI_setConfig(SCIA_BASE, DEVICE_LSPCLK_FREQ, SCI_BITRATE, (SCI_CONFIG_WLEN_8 | SCI_CONFIG_STOP_ONE | SCI_CONFIG_PAR_NONE));
     SCI_resetChannels(SCIA_BASE);
     SCI_resetRxFIFO(SCIA_BASE);
     SCI_resetTxFIFO(SCIA_BASE);
@@ -40,15 +39,18 @@ void SCI_init(){
     SCI_performSoftwareReset(SCIA_BASE);
 }
 
-
-void swap(char *x, char *y) {
-    char t = *x; *x = *y; *y = t;
+void swap(char *x, char *y)
+{
+    char t = *x;
+    *x = *y;
+    *y = t;
 }
 
-// Function to reverse `buffer[i…j]`
-char* reverse(char *buffer, int i, int j)
+// Function to reverse `buffer[iï¿½j]`
+char *reverse(char *buffer, int i, int j)
 {
-    while (i < j) {
+    while (i < j)
+    {
         swap(&buffer[i++], &buffer[j--]);
     }
 
@@ -58,7 +60,7 @@ char* reverse(char *buffer, int i, int j)
 // Iterative function to implement `itoa()` function in C
 int_st litoa(int value, int base)
 {
-    char* buffer;
+    char *buffer;
     int_st returnsct;
 
     // consider the absolute value of the number
@@ -68,10 +70,12 @@ int_st litoa(int value, int base)
     {
         int r = n % base;
 
-        if (r >= 10) {
+        if (r >= 10)
+        {
             buffer[i++] = 65 + (r - 10);
         }
-        else {
+        else
+        {
             buffer[i++] = 48 + r;
         }
 
@@ -79,14 +83,16 @@ int_st litoa(int value, int base)
     }
 
     // if the number is 0
-    if (i == 0) {
+    if (i == 0)
+    {
         buffer[i++] = '0';
     }
 
     // If the base is 10 and the value is negative, the resulting string
     // is preceded with a minus sign (-)
     // With any other base, value is always considered unsigned
-    if (value < 0 && base == 10) {
+    if (value < 0 && base == 10)
+    {
         buffer[i++] = '-';
     }
 
@@ -94,7 +100,7 @@ int_st litoa(int value, int base)
 
     // reverse the string and return it
     returnsct.size = i;
-    returnsct.narray=reverse(buffer, 0, i - 1);
+    returnsct.narray = reverse(buffer, 0, i - 1);
 
     return returnsct;
 }

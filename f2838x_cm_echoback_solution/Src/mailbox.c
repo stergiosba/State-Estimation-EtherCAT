@@ -1,6 +1,7 @@
 /*
 * This source file is part of the EtherCAT Slave Stack Code licensed by Beckhoff Automation GmbH & Co KG, 33415 Verl, Germany.
 * The corresponding license agreement applies. This hint shall not be removed.
+* https://www.beckhoff.com/media/downloads/slave-stack-code/ethercat_ssc_license.pdf
 */
 
 /**
@@ -71,8 +72,13 @@ psRepeatMbx will be set to 0.<br>
 When the repeated mailbox service was sent (call of MBX_MailboxReadInd), psReadMbx will be stored in psRepeatMbx<br>
 and psStoreMbx will be sent (in MBX_CopyToSendMailbox) and stored in psReadMbx, psStoreMbx will be set to 0.
 
-\version 5.12
+\version 5.13
 
+<br>Changes to version V5.12:<br>
+V5.13 EOE1: <br>
+V5.13 MBX2: clear unused bytes before write mailbox response<br>
+V5.13 MBX3: fix potential double free memory and lost of last read mailbox data<br>
+V5.13 TEST3: 0x2040.4 send ARP on unsupported mailbox request<br>
 <br>Changes to version V5.11:<br>
 V5.12 EOE5: free pending buffer in EoE_Init, EoE_Init is called on startup and PI transition<br>
 V5.12 MBX1: use only 16Bit variables to write the last byte of the mailbox buffer in case of ESC_16BIT_Access,update clear message queue in case of stop mailbox handler<br>
@@ -142,9 +148,7 @@ V4.07 ECAT 1: The sources for SPI and MCI were merged (in ecat_def.h<br>
 /*remove definition of _MAILBOX_ (#ifdef is used in mailbox.h)*/
 
 #include "ecatcoe.h"
-/* ECATCHANGE_START(V5.12) MBX3*/
 #include "sdoserv.h"
-/* ECATCHANGE_END(V5.12) MBX3*/
 
 
 /*--------------------------------------------------------------------------------------
@@ -391,7 +395,7 @@ void MBX_StopMailboxHandler(void)
     }
 
 
-    SODS_ClearPendingResponse();
+    SDOS_ClearPendingResponse();
 
 
 
@@ -420,8 +424,6 @@ void MBX_StopMailboxHandler(void)
         if (pMbx)
         {
             APPL_FreeMailboxBuffer(pMbx);
-/*ECATCHANGE_START(V5.12) MBX1*/
-/*ECATCHANGE_END(V5.12) MBX1*/
         }
     } while (pMbx != NULL);
     
@@ -431,8 +433,6 @@ void MBX_StopMailboxHandler(void)
         if (pMbx)
         {
             APPL_FreeMailboxBuffer(pMbx);
-/*ECATCHANGE_START(V5.12) MBX1*/
-/*ECATCHANGE_END(V5.12) MBX1*/
         }
     } while (pMbx != NULL);
 
@@ -459,6 +459,7 @@ UINT8 MailboxServiceInd(TMBX MBXMEM *pMbx)
         break;
 
     default:
+
         result = MBXERR_UNSUPPORTEDPROTOCOL;
         break;
     }
@@ -540,11 +541,17 @@ void MBX_MailboxReadInd(void)
 
     // HBu 02.05.06: the pointer psRepeatMbx is only free if there is no stored
     //               mailbox service from the last repeat
-    if ( psRepeatMbx && psStoreMbx == NULL )
+    if (psRepeatMbx && psStoreMbx == NULL)
     {
-    /* the last sent service is not stored for repeat any longer */
-        APPL_FreeMailboxBuffer(psRepeatMbx);
-        psRepeatMbx = NULL;
+        /* the last sent service is not stored for repeat any longer */
+/*ECATCHANGE_START(V5.13) MBX3*/
+        if (psReadMbx != psRepeatMbx)
+        {
+            APPL_FreeMailboxBuffer(psRepeatMbx);
+            psRepeatMbx = NULL;
+        }
+/*ECATCHANGE_END(V5.13) MBX3*/
+
     }
 
     /* the actual sent service has to be stored for repeat */
@@ -559,7 +566,9 @@ void MBX_MailboxReadInd(void)
       }
       else
     {
-        TMBX MBXMEM *pMbx = GetOutOfMbxQueue(&sMbxSendQueue);
+        TMBX MBXMEM* pMbx = GetOutOfMbxQueue(&sMbxSendQueue);
+
+        
         if (pMbx)
         {
             MBX_CopyToSendMailbox(pMbx);
@@ -585,6 +594,10 @@ void MBX_MailboxReadInd(void)
             }
         }
         else
+/*ECATCHANGE_START(V5.13) EOE1*/
+/*pending EoE commands are handled from the MBX_Main function*/
+/*ECATCHANGE_END(V5.13) EOE1*/
+
         {
         }
     }
@@ -855,8 +868,25 @@ UINT8 MBX_CopyToSendMailbox( TMBX MBXMEM *pMbx )
     {
         /* the variable mbxSize contains the size of the mailbox data to be sent */
         UINT16 mbxSize = pMbx->MbxHeader.Length;
+/*ECATCHANGE_START(V5.13) MBX2*/
+        /*Reset the not used mailbox memory*/
+        {
+            UINT16 LastUsedAddr = u16EscAddrSendMbx + mbxSize + MBX_HEADER_SIZE;
+            UINT16 LastAddrToReset = (u16EscAddrSendMbx + u16SendMbxSize);
+            LastAddrToReset = LastAddrToReset - 1;
+            u8dummy = 0;
+
+            /*clear all unused bytes*/
+            while (LastUsedAddr < LastAddrToReset) /*reset all bytes until the second last valid address*/
+            {
+                HW_EscWriteByte(u8dummy, LastUsedAddr);
+                LastUsedAddr = LastUsedAddr + 1;
+            }
+        }
+/*ECATCHANGE_END(V5.13) MBX2*/
+
         HW_EscWriteMbxMem((MEM_ADDR *)pMbx, u16EscAddrSendMbx, (mbxSize + MBX_HEADER_SIZE));
-/* ECATCHANGE_HW(V5.10) HW1*/
+
 
         {
         /*Read Control and Status of SyncManager 1 to check if the buffer is still marked as empty*/
@@ -865,10 +895,11 @@ UINT8 MBX_CopyToSendMailbox( TMBX MBXMEM *pMbx )
 
         if(!(smstate & SM_STATUS_MBX_BUFFER_FULL))
         {
+            
 
             /*Write last Byte to trigger mailbox full flag*/
             u8dummy = 0;
-            HW_EscWriteByte(u8dummy,(u16EscAddrSendMbx + u16SendMbxSize - 1));
+            HW_EscWriteByte(u8dummy, (u16EscAddrSendMbx + u16SendMbxSize - 1));
         }
         }
 
@@ -883,8 +914,6 @@ UINT8 MBX_CopyToSendMailbox( TMBX MBXMEM *pMbx )
         {
             psWriteMbx = NULL;
         }
-        // HBu 17.06.06: psRepeatMbx was already updated in MBX_MailboxReadInd
-        // psRepeatMbx = psReadMbx;
         psReadMbx = pMbx;
 
         /* set flag that send mailbox is full now */
@@ -928,12 +957,21 @@ void MBX_Main(void)
     while ( pMbx != NULL );
 
 
-      if ( bReceiveMbxIsLocked )
-      {
-          /* the work on the receive mailbox is locked, check if it can be unlocked (if all
-             mailbox commands has been sent */
-          MBX_CheckAndCopyMailbox();
-      }
+    if (bReceiveMbxIsLocked)
+    {
+        /* the work on the receive mailbox is locked, check if it can be unlocked (if all
+           mailbox commands has been sent */
+        MBX_CheckAndCopyMailbox();
+    }
+
+    /*ECATCHANGE_START(V5.13) EOE1*/
+    /*Try to send pending Mailbox data,
+       could be to pending previously due to local (memory) limitations which are no available*/
+    if (u8MailboxSendReqStored)
+    {
+        /* there are mailbox services stored to be sent */
+    }
+/*ECATCHANGE_END(V5.13) EOE1*/
 }
 
 /** @} */
