@@ -7,7 +7,7 @@
 #include <math.h>
 #include "SPI_init.h"
 #include <stdio.h>
-#include "ADIS_16354.h"
+#include "ADIS16364.h"
 
 #define DEBUG_MODE 1
 
@@ -131,45 +131,46 @@ void main(void)
 
 void ECAT_exchangeDataCPUandCM()
 {
+
     // CPU to CM data
     ipcCPUToCMDataBuffer.statusNode.XGyro_sence = (ipcCMToCPUDataBuffer.ctrlNode.XGyro_on)
-            ? SensorRead(ADIS16375_REG_X_GYRO_OUT):0.0f;
+            ? RawToReal(SensorRead(XGYRO_OUT, SBITS14), g_GyroScale, SBITS14, 1):0.0f;
 
     ipcCPUToCMDataBuffer.statusNode.YGyro_sence = (ipcCMToCPUDataBuffer.ctrlNode.YGyro_on)
-            ? SensorRead(ADIS16375_REG_Y_GYRO_OUT):0.0f;
+            ? RawToReal(SensorRead(YGYRO_OUT, SBITS14), g_GyroScale, SBITS14, 1):0.0f;
 
     ipcCPUToCMDataBuffer.statusNode.ZGyro_sence = (ipcCMToCPUDataBuffer.ctrlNode.ZGyro_on)
-            ? SensorRead(ADIS16375_REG_Z_GYRO_OUT):0.0f;
+            ? RawToReal(SensorRead(ZGYRO_OUT, SBITS14), g_GyroScale, SBITS14, 1):0.0f;
 
     ipcCPUToCMDataBuffer.statusNode.XAcc_sence = (ipcCMToCPUDataBuffer.ctrlNode.XAcc_on)
-            ? SensorRead(ADIS16375_REG_X_ACCL_OUT):0.0f;
+            ? RawToReal(SensorRead(XACCL_OUT, SBITS14), g_AcclScale, SBITS14, 1):0.0f;
 
     ipcCPUToCMDataBuffer.statusNode.YAcc_sence = (ipcCMToCPUDataBuffer.ctrlNode.YAcc_on)
-            ? SensorRead(ADIS16375_REG_Y_ACCL_OUT):0.0f;
+            ? RawToReal(SensorRead(YACCL_OUT, SBITS14), g_AcclScale, SBITS14, 1):0.0f;
 
     ipcCPUToCMDataBuffer.statusNode.ZAcc_sence = (ipcCMToCPUDataBuffer.ctrlNode.ZAcc_on)
-            ? SensorRead(ADIS16375_REG_Z_ACCL_OUT):0.0f;
+            ? RawToReal(SensorRead(ZACCL_OUT, SBITS14), g_AcclScale, SBITS14, 1):0.0f;
 
     ipcCPUToCMDataBuffer.statusNode.XAngle_calc = (ipcCMToCPUDataBuffer.ctrlNode.XAngle_on)
             ? TEST_VALUE:0.0f;
-            //? SensorRead(ADIS16375_REG_Z_ACCL_OUT):0.0f;
+
 
     ipcCPUToCMDataBuffer.statusNode.YAngle_calc = (ipcCMToCPUDataBuffer.ctrlNode.YAngle_on)
             ? TEST_VALUE:0.0f;
-            //? SensorRead(ADIS16375_REG_Z_ACCL_OUT):0.0f;
+
 
     ipcCPUToCMDataBuffer.statusNode.ZAngle_calc = (ipcCMToCPUDataBuffer.ctrlNode.ZAngle_on)
             ? TEST_VALUE:0.0f;
-            //? SensorRead(ADIS16375_REG_Z_ACCL_OUT):0.0f;
+
     ipcCPUToCMDataBuffer.statusNode.XLinVel_calc = (ipcCMToCPUDataBuffer.ctrlNode.XLinVel_on)
             ? TEST_VALUE:0.0f;
-            //? SensorRead(ADIS16375_REG_Z_ACCL_OUT):0.0f;
+
+
     ipcCPUToCMDataBuffer.statusNode.YLinVel_calc = (ipcCMToCPUDataBuffer.ctrlNode.YLinVel_on)
             ? TEST_VALUE:0.0f;
-            //? SensorRead(ADIS16375_REG_Z_ACCL_OUT):0.0f;
+
     ipcCPUToCMDataBuffer.statusNode.ZLinVel_calc = (ipcCMToCPUDataBuffer.ctrlNode.ZLinVel_on)
             ? TEST_VALUE:0.0f;
-            //? SensorRead(ADIS16375_REG_Z_ACCL_OUT):0.0f;
 }
 
 //

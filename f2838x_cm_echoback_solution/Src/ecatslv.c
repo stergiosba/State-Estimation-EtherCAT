@@ -218,7 +218,7 @@ V4.00 ECAT 7: The return values for the AL-StatusCode were changed to UINT16
 
 
 /*ECATCHANGE_START(V5.13) CIA402 3*/
-#include "ADIS16375 F28388D IMU ECAT Slave.h"
+#include "ADIS16364 F28388D IMU ECAT Slave.h"
 
 /*--------------------------------------------------------------------------------------
 ------

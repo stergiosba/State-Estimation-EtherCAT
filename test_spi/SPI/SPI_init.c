@@ -42,8 +42,6 @@ void SPI_init()
     EDIS;
 }
 
-
-
 void SPI_PinMuxOptions()
 {
     //

@@ -131,7 +131,7 @@ V4.00 ECAT 1: The handling of the Sync Manager Parameter was included according 
 
 /*Add Application specific Objects*/
 /*ECATCHANGE_START(V5.13) CIA402 3*/
-#include "ADIS16375 F28388D IMU ECAT Slave.h"
+#include "ADIS16364 F28388D IMU ECAT Slave.h"
 
 
 #undef _OBJD_

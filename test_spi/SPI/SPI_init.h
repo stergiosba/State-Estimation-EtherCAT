@@ -21,7 +21,7 @@
 
 // SPI Interfaces (A/B/C/D)
 #define SUS_SPI_BASE                      SPIA_BASE
-#define SUS_SPI_BITRATE                   12000000UL
+#define SUS_SPI_BITRATE                   2000000UL
 #define SUS_SPI_DATAWIDTH                 16U
 
 // SPI Transfer Protocol Option (SPI_TransferProtocol enumeration in spi.h)

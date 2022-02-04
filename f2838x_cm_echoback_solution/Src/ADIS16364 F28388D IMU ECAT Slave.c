@@ -4,12 +4,12 @@
 */
 
 /**
-\addtogroup ADIS16375F28388DIMUECATSlave ADIS16375 F28388D IMU ECAT Slave
+\addtogroup ADIS16364F28388DIMUECATSlave ADIS16364 F28388D IMU ECAT Slave
 @{
 */
 
 /**
-\file ADIS16375 F28388D IMU ECAT Slave.c
+\file ADIS16364 F28388D IMU ECAT Slave.c
 \brief Implementation
  Created with SSC Tool application parser 1.6.2.0
 \version 0.0.0.1
@@ -25,9 +25,9 @@
 
 #include "applInterface.h"
 
-#define _ADIS16375_F28388_D_IMU_ECAT_SLAVE_ 1
-#include "ADIS16375 F28388D IMU ECAT Slave.h"
-#undef _ADIS16375_F28388_D_IMU_ECAT_SLAVE_
+#define _ADIS16364_F28388_D_IMU_ECAT_SLAVE_ 1
+#include "ADIS16364 F28388D IMU ECAT Slave.h"
+#undef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_
 /*--------------------------------------------------------------------------------------
 ------
 ------    local types and defines
@@ -411,7 +411,7 @@ void APPL_Application(void)
     ipcCMToCPUDataBuffer.ctrlNode.YLinVel_on = SUS_CONTROL0x7000.YLinVel_on;
     ipcCMToCPUDataBuffer.ctrlNode.ZLinVel_on = SUS_CONTROL0x7000.ZLinVel_on;
 
-    // Data from IMU to EtherCAT (sencing)
+    // Data from IMU to EtherCAT (sensing)
     SUS_SENCE0x6000.XGyro_sence = ipcCPUToCMDataBuffer.statusNode.XGyro_sence;
     SUS_SENCE0x6000.XGyro_sence = ipcCPUToCMDataBuffer.statusNode.YGyro_sence;
     SUS_SENCE0x6000.XGyro_sence = ipcCPUToCMDataBuffer.statusNode.ZGyro_sence;
@@ -496,3 +496,4 @@ void main(void)
 }
 #endif //#if USE_DEFAULT_MAIN
 /** @} */
+

@@ -922,7 +922,7 @@ DEVICE_PROFILE_TYPE: Slave device type (Object 0x1000)  */
 /** 
 DEVICE_NAME: Name of the slave device (Object 0x1008) */
 #ifndef DEVICE_NAME
-#define DEVICE_NAME                               "ADIS16375 F28388D IMU ECAT Slave"
+#define DEVICE_NAME                               "ADIS16364 F28388D IMU ECAT Slave"
 #endif
 
 /** 

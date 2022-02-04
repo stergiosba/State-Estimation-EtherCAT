@@ -150,7 +150,7 @@ V4.00 APPL 6: The main function was split in MainInit and MainLoop
 #undef _APPL_INTERFACE_
 
 /*ECATCHANGE_START(V5.13) CIA402 3*/
-#include "ADIS16375 F28388D IMU ECAT Slave.h"
+#include "ADIS16364 F28388D IMU ECAT Slave.h"
 
 
 

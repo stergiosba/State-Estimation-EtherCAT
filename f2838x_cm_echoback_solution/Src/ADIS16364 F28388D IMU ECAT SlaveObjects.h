@@ -4,19 +4,19 @@
 */
 
 /**
-* \addtogroup ADIS16375F28388DIMUECATSlave ADIS16375 F28388D IMU ECAT Slave
+* \addtogroup ADIS16364F28388DIMUECATSlave ADIS16364 F28388D IMU ECAT Slave
 * @{
 */
 
 /**
-\file ADIS16375 F28388D IMU ECAT SlaveObjects
+\file ADIS16364 F28388D IMU ECAT SlaveObjects
 \author ET9300Utilities.ApplicationHandler (Version 1.6.2.0) | EthercatSSC@beckhoff.com
 
-\brief ADIS16375 F28388D IMU ECAT Slave specific objects<br>
+\brief ADIS16364 F28388D IMU ECAT Slave specific objects<br>
 \brief NOTE : This file will be overwritten if a new object dictionary is generated!<br>
 */
 
-#if defined(_ADIS16375_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16375_F28388_D_IMU_ECAT_SLAVE_ == 1)
+#if defined(_ADIS16364_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16364_F28388_D_IMU_ECAT_SLAVE_ == 1)
 #define PROTO
 #else
 #define PROTO extern
@@ -89,7 +89,7 @@ OBJCONST UCHAR OBJMEM aName0x1600[] = "SUS_CONTROL process data mapping\000"
 "SubIndex 015\000\377";
 #endif //#ifdef _OBJD_
 
-#ifndef _ADIS16375_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
 /**
 * \brief Object structure
 */
@@ -112,13 +112,13 @@ UINT32 SI14; /* Subindex14 - Reference to 0x7000.20 */
 UINT32 SI15; /* Subindex15 - Padding entry (6Bit) */
 } OBJ_STRUCT_PACKED_END
 TOBJ1600;
-#endif //#ifndef _ADIS16375_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#endif //#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
 
 /**
 * \brief Object variable
 */
 PROTO TOBJ1600 SUS_CONTROLProcessDataMapping0x1600
-#if defined(_ADIS16375_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16375_F28388_D_IMU_ECAT_SLAVE_ == 1)
+#if defined(_ADIS16364_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16364_F28388_D_IMU_ECAT_SLAVE_ == 1)
 ={15,0x70000101,0x70000201,0x70000301,0x70000401,0x70000501,0x70000601,0x70000701,0x70000801,0x70000901,0x70001001,0x70001101,0x70001201,0x70001301,0x70001401,0x00000006}
 #endif
 ;
@@ -188,7 +188,7 @@ OBJCONST UCHAR OBJMEM aName0x1A00[] = "SUS_SENCE process data mapping\000"
 "SubIndex 013\000\377";
 #endif //#ifdef _OBJD_
 
-#ifndef _ADIS16375_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
 /**
 * \brief Object structure
 */
@@ -209,13 +209,13 @@ UINT32 SI12; /* Subindex12 - Reference to 0x6000.18 */
 UINT32 SI13; /* Subindex13 - Reference to 0x6000.19 */
 } OBJ_STRUCT_PACKED_END
 TOBJ1A00;
-#endif //#ifndef _ADIS16375_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#endif //#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
 
 /**
 * \brief Object variable
 */
 PROTO TOBJ1A00 SUS_SENCEProcessDataMapping0x1A00
-#if defined(_ADIS16375_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16375_F28388_D_IMU_ECAT_SLAVE_ == 1)
+#if defined(_ADIS16364_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16364_F28388_D_IMU_ECAT_SLAVE_ == 1)
 ={13,0x60000120,0x60000220,0x60000320,0x60000420,0x60000520,0x60000620,0x60000720,0x60000820,0x60000920,0x60001020,0x60001120,0x60001220,0x60001320}
 #endif
 ;
@@ -249,7 +249,7 @@ OBJCONST TSDOINFOENTRYDESC    OBJMEM asEntryDesc0x1C12[] = {
 OBJCONST UCHAR OBJMEM aName0x1C12[] = "SyncManager 2 assignment\000\377";
 #endif //#ifdef _OBJD_
 
-#ifndef _ADIS16375_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
 /**
 * \brief Object structure
 */
@@ -258,13 +258,13 @@ UINT16   u16SubIndex0;  /**< \brief Subindex 0 */
 UINT16 aEntries[1];  /**< \brief Subindex 1 - 1 */
 } OBJ_STRUCT_PACKED_END
 TOBJ1C12;
-#endif //#ifndef _ADIS16375_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#endif //#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
 
 /**
 * \brief Object variable
 */
 PROTO TOBJ1C12 sRxPDOassign
-#if defined(_ADIS16375_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16375_F28388_D_IMU_ECAT_SLAVE_ == 1)
+#if defined(_ADIS16364_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16364_F28388_D_IMU_ECAT_SLAVE_ == 1)
 ={1,{0x1600}}
 #endif
 ;
@@ -298,7 +298,7 @@ OBJCONST TSDOINFOENTRYDESC    OBJMEM asEntryDesc0x1C13[] = {
 OBJCONST UCHAR OBJMEM aName0x1C13[] = "SyncManager 3 assignment\000\377";
 #endif //#ifdef _OBJD_
 
-#ifndef _ADIS16375_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
 /**
 * \brief Object structure
 */
@@ -307,13 +307,13 @@ UINT16   u16SubIndex0;  /**< \brief Subindex 0 */
 UINT16 aEntries[1];  /**< \brief Subindex 1 - 1 */
 } OBJ_STRUCT_PACKED_END
 TOBJ1C13;
-#endif //#ifndef _ADIS16375_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#endif //#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
 
 /**
 * \brief Object variable
 */
 PROTO TOBJ1C13 sTxPDOassign
-#if defined(_ADIS16375_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16375_F28388_D_IMU_ECAT_SLAVE_ == 1)
+#if defined(_ADIS16364_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16364_F28388_D_IMU_ECAT_SLAVE_ == 1)
 ={1,{0x1A00}}
 #endif
 ;
@@ -401,7 +401,7 @@ OBJCONST UCHAR OBJMEM aName0x6000[] = "SUS_SENCE\000"
 "ZLinVel_calc\000\377";
 #endif //#ifdef _OBJD_
 
-#ifndef _ADIS16375_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
 /**
 * \brief Object structure
 */
@@ -422,13 +422,13 @@ REAL32 YLinVel_calc; /* Subindex18 - YLinVel_calc */
 REAL32 ZLinVel_calc; /* Subindex19 - ZLinVel_calc */
 } OBJ_STRUCT_PACKED_END
 TOBJ6000;
-#endif //#ifndef _ADIS16375_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#endif //#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
 
 /**
 * \brief Object variable
 */
 PROTO TOBJ6000 SUS_SENCE0x6000
-#if defined(_ADIS16375_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16375_F28388_D_IMU_ECAT_SLAVE_ == 1)
+#if defined(_ADIS16364_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16364_F28388_D_IMU_ECAT_SLAVE_ == 1)
 ={19,0,0,0,0,0,0,0,0,0,0,0,0,0}
 #endif
 ;
@@ -519,7 +519,7 @@ OBJCONST UCHAR OBJMEM aName0x7000[] = "SUS_CONTROL\000"
 "HP_on\000\377";
 #endif //#ifdef _OBJD_
 
-#ifndef _ADIS16375_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
 /**
 * \brief Object structure
 */
@@ -541,13 +541,13 @@ BOOLEAN(Temp_on); /* Subindex19 - Temp_on */
 BOOLEAN(HP_on); /* Subindex20 - HP_on */
 } OBJ_STRUCT_PACKED_END
 TOBJ7000;
-#endif //#ifndef _ADIS16375_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#endif //#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
 
 /**
 * \brief Object variable
 */
 PROTO TOBJ7000 SUS_CONTROL0x7000
-#if defined(_ADIS16375_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16375_F28388_D_IMU_ECAT_SLAVE_ == 1)
+#if defined(_ADIS16364_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16364_F28388_D_IMU_ECAT_SLAVE_ == 1)
 ={20,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
 #endif
 ;
@@ -584,7 +584,7 @@ OBJCONST UCHAR OBJMEM aName0xF000[] = "Modular Device Profile\000"
 "Maximum number of modules \000\377";
 #endif //#ifdef _OBJD_
 
-#ifndef _ADIS16375_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
 /**
 * \brief Object structure
 */
@@ -594,13 +594,13 @@ UINT16 IndexDistance; /* Subindex1 - Index distance  */
 UINT16 MaximumNumberOfModules; /* Subindex2 - Maximum number of modules  */
 } OBJ_STRUCT_PACKED_END
 TOBJF000;
-#endif //#ifndef _ADIS16375_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#endif //#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
 
 /**
 * \brief Object variable
 */
 PROTO TOBJF000 ModularDeviceProfile0xF000
-#if defined(_ADIS16375_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16375_F28388_D_IMU_ECAT_SLAVE_ == 1)
+#if defined(_ADIS16364_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16364_F28388_D_IMU_ECAT_SLAVE_ == 1)
 ={2,0x0010,0}
 #endif
 ;
@@ -634,4 +634,4 @@ TOBJECT    OBJMEM ApplicationObjDic[] = {
 #undef PROTO
 
 /** @}*/
-#define _ADIS16375_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#define _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_

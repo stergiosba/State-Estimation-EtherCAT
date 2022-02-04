@@ -4,20 +4,20 @@
 */
 
 /**
- * \addtogroup ADIS16375F28388DIMUECATSlave ADIS16375 F28388D IMU ECAT Slave
+ * \addtogroup ADIS16364F28388DIMUECATSlave ADIS16364 F28388D IMU ECAT Slave
  * @{
  */
 
 /**
-\file ADIS16375 F28388D IMU ECAT Slave.h
-\brief ADIS16375 F28388D IMU ECAT Slave function prototypes and defines
+\file ADIS16364 F28388D IMU ECAT Slave.h
+\brief ADIS16364 F28388D IMU ECAT Slave function prototypes and defines
 
 \version 1.0.0.11
  */
 
  
- #ifndef _ADIS16375_F28388_D_IMU_ECAT_SLAVE_H_
-#define _ADIS16375_F28388_D_IMU_ECAT_SLAVE_H_
+ #ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_H_
+#define _ADIS16364_F28388_D_IMU_ECAT_SLAVE_H_
 
 
 /*-----------------------------------------------------------------------------------------
@@ -35,19 +35,20 @@
 ------
 -----------------------------------------------------------------------------------------*/
 
-#endif //_ADIS16375_F28388_D_IMU_ECAT_SLAVE_H_
+#endif //_ADIS16364_F28388_D_IMU_ECAT_SLAVE_H_
 
 //include custom application object dictionary 
-#include "ADIS16375 F28388D IMU ECAT SlaveObjects.h"
+#include "ADIS16364 F28388D IMU ECAT SlaveObjects.h"
 
 
-#if defined(_ADIS16375_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16375_F28388_D_IMU_ECAT_SLAVE_ == 1)
+#if defined(_ADIS16364_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16364_F28388_D_IMU_ECAT_SLAVE_ == 1)
     #define PROTO
 #else
     #define PROTO extern
 #endif
 
 #define BIT_MASK        0x1U
+
 typedef struct
 {
     BOOL XGyro_on;
@@ -101,6 +102,7 @@ typedef struct
 extern ECAT_IPC_PutDataBuffer ipcCMToCPUDataBuffer;
 extern ECAT_IPC_GetDataBuffer ipcCPUToCMDataBuffer;
 
+
 PROTO void APPL_Application(void);
 #if EXPLICIT_DEVICE_ID
 PROTO UINT16 APPL_GetDeviceID(void);
@@ -117,6 +119,8 @@ PROTO UINT16 APPL_StopOutputHandler(void);
 PROTO UINT16 APPL_GenerateMapping(UINT16 *pInputSize,UINT16 *pOutputSize);
 PROTO void APPL_InputMapping(UINT16* pData);
 PROTO void APPL_OutputMapping(UINT16* pData);
+PROTO void PDO_ResetOutputs(void);
 
 #undef PROTO
 /** @}*/
+

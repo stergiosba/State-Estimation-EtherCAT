@@ -1,6 +1,6 @@
 #include "SPI_init.h"
 #include "SCI_init.h"
-#include "ADIS_16354.h"
+#include "ADIS16364.h"
 #include <stdio.h>
 
 
@@ -24,9 +24,9 @@ int main(void)
 
     while(1)
     {
-        xg = SensorRead(ADIS16375_REG_X_ACCL_OUT);
-        yg = SensorRead(ADIS16375_REG_Y_ACCL_OUT);
-        zg = SensorRead(ADIS16375_REG_Z_ACCL_OUT);
+        //xg = RawToReal(SensorRead(XACCL_OUT, SBITS14), g_AcclScale,SBITS14, 1);
+        //yg = RawToReal(SensorRead(YACCL_OUT, SBITS14), g_AcclScale,SBITS14, 1);
+        zg = RawToReal(SensorRead(ZACCL_OUT, SBITS14), g_AcclScale,SBITS14, 1);
         //sprintf(buffer,"%d\r\n",(int16_t)xg);
         //SCI_writeCharArray(SCIA_BASE, (uint16_t*)buffer, 128);
 
