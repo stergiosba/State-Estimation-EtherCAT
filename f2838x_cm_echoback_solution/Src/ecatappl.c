@@ -1,7 +1,6 @@
 /*
 * This source file is part of the EtherCAT Slave Stack Code licensed by Beckhoff Automation GmbH & Co KG, 33415 Verl, Germany.
 * The corresponding license agreement applies. This hint shall not be removed.
-* https://www.beckhoff.com/media/downloads/slave-stack-code/ethercat_ssc_license.pdf
 */
 
 /**
@@ -16,18 +15,8 @@
 \brief Implementation
 This file contains the Process Data interface
 
-\version 5.13
+\version 5.12
 
-<br>Changes to version V5.12:<br>
-V5.13 CIA402 3: change define "CIA402_DEVICE" to "CiA402_SAMPLE_APPLICATION"<br>
-V5.13 CIA402 4: decouple CIA402 state machine and application from ESM (according ETG.6010, clause 4)<br>
-V5.13 COE4: update default entry name handling in case of 16Bit characters, add CoE Read/write indication functions<br>
-V5.13 ECAT 5: check inputsize before calling PDO_InputMappingdo not call PDO_InputMapping in case of no available process data<br>
-V5.13 ECAT 6: change input mapping trigger in case of DC Sync<br>
-V5.13 ECAT1: handle Sync mapped to AL Event<br>
-V5.13 ECAT4: set delay between EEPROM access retries to 10ms<br>
-V5.13 EEPROM1: update eeprom reload in case of ESC 32Bit access (and the small eeprom emulation)<br>
-V5.13 TEST6: add 0xA002 monitoring ob function calls<br>
 <br>Changes to version V5.11:<br>
 V5.12 APPL1: add optional application function called from the main loop (after mbx and esm are executed)<br>
 V5.12 BOOT1: add a bootloader sample application (only the ESM and FoE is supported)<br>
@@ -62,7 +51,7 @@ V5.10 ECAT13: Update Synchronisation handling (FreeRun,SM Sync, Sync0, Sync1)<br
               Update 0x1C3x entries<br>
 V5.10 ECAT2: Prevent EEPROM data null pointer access (if the pointer is null an command error is set)<br>
              EEPROM emulation return command error if unknown command was received<br>
-V5.10 ECAT4: Update alignment macro for 8 to 15 bit alignments (16 and 32 Bit controllers)<br>
+V5.10 ECAT4: Update alignment marco for 8 to 15 bit alignments (16 and 32 Bit controllers)<br>
              Bugfix calculate LED blink frequency<br>
 V5.10 ECAT7: Add "bInitFinished" to indicate if the initialization is complete<br>
 V5.10 HW2: Change HW_GetTimer return value to UINT32<br>
@@ -149,8 +138,7 @@ V4.00 APPL 6: The main function was split in MainInit and MainLoop
 #include "applInterface.h"
 #undef _APPL_INTERFACE_
 
-/*ECATCHANGE_START(V5.13) CIA402 3*/
-#include "ADIS16364 F28388D IMU ECAT Slave.h"
+#include "ADIS16364_IMU_SLAVE.h"
 
 
 
@@ -170,13 +158,16 @@ V4.00 APPL 6: The main function was split in MainInit and MainLoop
 
 
 
+/*ECATCHANGE_START(V5.12) ECAT1*/
 #define    MEASUREMENT_ACTIVE (((sSyncManOutPar.u16GetCycleTime & 0x1) == 0x1) || ((sSyncManInPar.u16GetCycleTime & 0x1) == 0x1))
+/*ECATCHANGE_END(V5.12) ECAT1*/
 
 /*-----------------------------------------------------------------------------------------
 ------
 ------    local variables and constants
 ------
 -----------------------------------------------------------------------------------------*/
+/*ECATCHANGE_START(V5.12) ECAT1*/
 /*variables required to calculate values for SM Synchronisation objects (0x1C3x)*/
 
 UINT32 u32CycleTimeStartValue; /** <\brief contains the timer start value to measure the application cycle (used in freerun and SM2 sync)*/
@@ -189,6 +180,7 @@ BOOL bMinCycleTimeMeasurementStarted; /** <\brief Indicates if the min cycle mea
 
 UINT32 u32MinCycleTimeValue; /** <\brief tmp value of the min cycle time during measurement*/
 
+/*ECATCHANGE_END(V5.12) ECAT1*/
 
 
 
@@ -206,8 +198,10 @@ BOOL bInitFinished = FALSE; /** < \brief indicates if the initialization is fini
 ------    local functions
 ------
 -----------------------------------------------------------------------------------------*/
+/*ECATCHANGE_START(V5.12) ECAT1*/
 UINT32 GetSystemTimeDelay(UINT32 u32StartTime);
 void HandleCycleTimeMeasurement(void);
+/*ECATCHANGE_END(V5.12) ECAT1*/
 
 /*-----------------------------------------------------------------------------------------
 ------
@@ -222,14 +216,17 @@ void PDO_InputMapping(void)
 {
 
 #if ((MIN_PD_CYCLE_TIME == 0) || (PD_INPUT_CALC_AND_COPY_TIME == 0))
+    /*ECATCHANGE_START(V5.12) ECAT1*/
     UINT32 u32TimeValue = 0;
     UINT16 ALEvent = HW_GetALEventRegister_Isr();
     ALEvent = SWAPWORD(ALEvent);
+
 
     if (MEASUREMENT_ACTIVE)
     {
         u32TimeValue = GetSystemTimeDelay(0);
     }
+    /*ECATCHANGE_END(V5.12) ECAT1*/
 #endif /* ((MIN_PD_CYCLE_TIME == 0) || (PD_INPUT_CALC_AND_COPY_TIME == 0)) */
 
 
@@ -244,6 +241,7 @@ void PDO_InputMapping(void)
     
 
 #if ((MIN_PD_CYCLE_TIME == 0) || (PD_INPUT_CALC_AND_COPY_TIME == 0))
+    /*ECATCHANGE_START(V5.12) ECAT1*/
 
     if (MEASUREMENT_ACTIVE)
     {
@@ -280,6 +278,7 @@ void PDO_InputMapping(void)
 #endif /* (MIN_PD_CYCLE_TIME == 0) */
     }
 
+    /*ECATCHANGE_END(V5.12) ECAT1*/
 #endif /* ((MIN_PD_CYCLE_TIME == 0) || (PD_INPUT_CALC_AND_COPY_TIME == 0)) */
 
 }
@@ -290,6 +289,7 @@ void PDO_InputMapping(void)
 *////////////////////////////////////////////////////////////////////////////////////////
 void PDO_OutputMapping(void)
 {
+/*ECATCHANGE_START(V5.12) ECAT1*/
    UINT32 u32TimeValue = 0;
    if (MEASUREMENT_ACTIVE)
    {
@@ -305,11 +305,13 @@ void PDO_OutputMapping(void)
       HandleCycleTimeMeasurement();
 
    }
+/*ECATCHANGE_END(V5.12) ECAT1*/
 
     HW_EscReadIsr(((MEM_ADDR *)aPdOutputData), nEscAddrOutputData, nPdOutputSize );
     APPL_OutputMapping((UINT16*) aPdOutputData);
 
 
+/*ECATCHANGE_START(V5.12) ECAT1*/
 #if ((MIN_PD_CYCLE_TIME == 0) || (PD_OUTPUT_CALC_AND_COPY_TIME == 0))
     if (MEASUREMENT_ACTIVE)
     {
@@ -328,6 +330,7 @@ void PDO_OutputMapping(void)
 #endif
     }
 #endif /* #if ((MIN_PD_CYCLE_TIME == 0) || (PD_OUTPUT_CALC_AND_COPY_TIME == 0)) */
+/*ECATCHANGE_END(V5.12) ECAT1*/
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -353,11 +356,10 @@ void ECAT_CheckTimer(void)
     DC_CheckWatchdog();
 
 
+/*ECATCHANGE_START(V5.12) COE4*/
 
-/*ECATCHANGE_START(V5.13) */
     /* Increment the counter every ms between two updates based on the system time (32Bit overrun is handled in COE_SyncTimeStamp) */
-    if (!b32BitDc || ((u64Timestamp & 0xFFFFFFFF) <= 4293000000UL))
-/*ECATCHANGE_END(V5.13) */
+    if (!b32BitDc || ((u64Timestamp & 0xFFFFFFFF) <= 4293000000))
     {
 
         /* the timestamp is stored in ns */
@@ -371,10 +373,10 @@ void ECAT_CheckTimer(void)
     }
 
     u32CheckForDcOverrunCnt++;
-
-
+/*ECATCHANGE_END(V5.12) COE4*/
 }
 
+/*ECATCHANGE_START(V5.12) ECAT1*/
 /////////////////////////////////////////////////////////////////////////////////////////
 /**
 \brief    In case of non DC synchronization the cycle time measurement is started and 0x1C3.2 (Cycle time) is updated
@@ -451,32 +453,16 @@ UINT32 GetSystemTimeDelay(UINT32 u32StartTime)
    }
    return u32Delta;
 }
+/*ECATCHANGE_END(V5.12) ECAT1*/
 
-/*ECATCHANGE_START(V5.13) ECAT1*/
-/*ECATCHANGE_END(V5.13) ECAT1*/
 void PDI_Isr(void)
 {
-    /*ECATCHANGE_START(V5.13) ECAT1*/
-    BOOL SyncAcknowledgePending = FALSE;
-
-    /* get the AL event register */
-    UINT16  ALEvent = HW_GetALEventRegister_Isr();
-    ALEvent = SWAPWORD(ALEvent);
-
-
-    /* Check if Sync1 Isr has to be called */
-
-    if (ALEvent & SYNC1_EVENT)
-    {
-        Sync1_Isr();
-
-        SyncAcknowledgePending = TRUE;
-    }
-    /*ECATCHANGE_END(V5.13) ECAT1*/
-    
-
     if(bEscIntEnabled)
     {
+        /* get the AL event register */
+        UINT16  ALEvent = HW_GetALEventRegister_Isr();
+        ALEvent = SWAPWORD(ALEvent);
+
         if ( ALEvent & PROCESS_OUTPUT_EVENT )
         {
             if(bDcRunning && bDcSyncActive)
@@ -489,7 +475,9 @@ void PDI_Isr(void)
                 sSyncManOutPar.u16SmEventMissedCounter--;
             }
 
+/*ECATCHANGE_START(V5.12) ECAT5*/
             sSyncManInPar.u16SmEventMissedCounter = sSyncManOutPar.u16SmEventMissedCounter;
+/*ECATCHANGE_END(V5.12) ECAT5*/
 
 
 
@@ -522,9 +510,7 @@ void PDI_Isr(void)
             ECAT_Application();
         }
 
-/*ECATCHANGE_START(V5.13) ECAT 5*/
-    if ( (bEcatInputUpdateRunning == TRUE) && (nPdInputSize > 0)
-/*ECATCHANGE_END(V5.13) ECAT 5*/
+    if ( bEcatInputUpdateRunning 
        && ((sSyncManInPar.u16SyncType == SYNCTYPE_SM_SYNCHRON) || (sSyncManInPar.u16SyncType == SYNCTYPE_SM2_SYNCHRON))
         )
     {
@@ -550,24 +536,9 @@ void PDI_Isr(void)
     }
     } //if(bEscIntEnabled)
 
-      /*ECATCHANGE_START(V5.13) ECAT1*/
-    if (ALEvent & SYNC0_EVENT)
-    {
-        Sync0_Isr();
-
-        SyncAcknowledgePending = TRUE;
-    }
-
-    /* Read Sync0/1 Status Register to acknowledge the event bit in the AL Event register */
-    if (SyncAcknowledgePending)
-    {
-        volatile UINT32 SyncState = 0;
-        HW_EscReadDWord(SyncState, ESC_DC_SYNC_STATUS);
-
-    }
-    /*ECATCHANGE_END(V5.13) ECAT1*/
-
+/*ECATCHANGE_START(V5.12) ECAT5*/
     COE_UpdateSyncErrorStatus();
+/*ECATCHANGE_END(V5.12) ECAT5*/
 
 }
 
@@ -577,24 +548,11 @@ void Sync0_Isr(void)
 
     if(bDcSyncActive)
     {
-/*ECATCHANGE_START(V5.13) ECAT 6*/
-        BOOL bCallInputMapping = FALSE;
-/*ECATCHANGE_END(V5.13) ECAT 6*/
 
-/*ECATCHANGE_START(V5.13) ECAT 6*/
-        if ((bEcatInputUpdateRunning == TRUE) && (LatchInputSync0Value > 0) && (nPdInputSize > 0))
+        if ( bEcatInputUpdateRunning )
         {
-            if(LatchInputSync0Value > LatchInputSync0Counter) /* Inputs shall be latched on a specific Sync0 event */
-            {
-                LatchInputSync0Counter++;
-            }
-
-            if (LatchInputSync0Value == LatchInputSync0Counter)
-            {
-                bCallInputMapping = TRUE;
-            }
+            LatchInputSync0Counter++;
         }
-/*ECATCHANGE_END(V5.13) ECAT 6*/
 
         if(u16SmSync0Value > 0)
         {
@@ -606,10 +564,10 @@ void Sync0_Isr(void)
                  sSyncManOutPar.u16SmEventMissedCounter = sSyncManOutPar.u16SmEventMissedCounter + 3;
               }
 
-               if ((nPdInputSize > 0) && (nPdOutputSize == 0) && (sSyncManInPar.u16SmEventMissedCounter <= sErrorSettings.u16SyncErrorCounterLimit))
-               {
-                   sSyncManInPar.u16SmEventMissedCounter = sSyncManInPar.u16SmEventMissedCounter + 3;
-               }
+           if ((nPdInputSize > 0) && (nPdOutputSize == 0) && (sSyncManInPar.u16SmEventMissedCounter <= sErrorSettings.u16SyncErrorCounterLimit))
+           {
+               sSyncManInPar.u16SmEventMissedCounter = sSyncManInPar.u16SmEventMissedCounter + 3;
+           }
 
            } // if (u16SmSync0Counter > u16SmSync0Value)
 
@@ -649,8 +607,8 @@ void Sync0_Isr(void)
         /* Application is synchronized to SYNC0 event*/
         ECAT_Application();
 
-/*ECATCHANGE_START(V5.13) ECAT 6*/
-        if (bCallInputMapping == TRUE)
+        if ( bEcatInputUpdateRunning 
+           && (LatchInputSync0Value > 0) && (LatchInputSync0Value == LatchInputSync0Counter) ) /* Inputs shall be latched on a specific Sync0 event */
         {
             /* EtherCAT slave is at least in SAFE-OPERATIONAL, update inputs */
             PDO_InputMapping();
@@ -661,11 +619,12 @@ void Sync0_Isr(void)
                 LatchInputSync0Counter = 0;
             }
         }
-/*ECATCHANGE_END(V5.13) ECAT 6*/
 
     }
 
+/*ECATCHANGE_START(V5.12) ECAT5*/
     COE_UpdateSyncErrorStatus();
+/*ECATCHANGE_END(V5.12) ECAT5*/
 
 }
 
@@ -673,9 +632,7 @@ void Sync1_Isr(void)
 {
     Sync1WdCounter = 0;
 
-    /*ECATCHANGE_START(V5.13) ECAT 5*/
-    if ( (bEcatInputUpdateRunning == TRUE) && (nPdInputSize > 0)
-/*ECATCHANGE_END(V5.13) ECAT 5*/
+        if ( bEcatInputUpdateRunning 
             && (sSyncManInPar.u16SyncType == SYNCTYPE_DCSYNC1)
             && (LatchInputSync0Value == 0)) /* Inputs are latched on Sync1 (LatchInputSync0Value == 0), if LatchInputSync0Value > 0 inputs are latched with Sync0 */
         {
@@ -889,17 +846,14 @@ UINT16 MainInit(void)
 #endif
 
 
+/*ECATCHANGE_START(V5.12) ECAT8*/
 /* Reset application function pointer*/
 
 
 
 
-    /* ECATCHANGE_START(V5.13) COE4*/
-    pAPPL_CoeReadInd = NULL;
-    pAPPL_CoeWriteInd = NULL;
-    /* ECATCHANGE_END(V5.13) COE4*/
-
     pAPPL_MainLoop = NULL;
+/*ECATCHANGE_END(V5.12) ECAT8*/
 
     /* initialize the EtherCAT Slave Interface */
     ECAT_Init();
@@ -910,6 +864,7 @@ UINT16 MainInit(void)
     /*indicate that the slave stack initialization finished*/
     bInitFinished = TRUE;
 
+/*ECATCHANGE_START(V5.12) ECAT1*/
 
     bMinCycleTimeMeasurementStarted = FALSE;
     u32CycleTimeStartValue = 0;
@@ -954,6 +909,7 @@ UINT16 MainInit(void)
     }
 
 
+    /*ECATCHANGE_END(V5.12) ECAT1*/
 
 
 /*Application Init need to be called from the application layer*/
@@ -988,7 +944,7 @@ void MainLoop(void)
             )
         {
             /* if the application is running in ECAT Synchron Mode the function ECAT_Application is called
-               from the ESC interrupt routine,
+               from the ESC interrupt routine (in mcihw.c or spihw.c),
                in ECAT Synchron Mode it should be additionally checked, if the SM-event is received
                at least once (bEcatFirstOutputsReceived = 1), otherwise no interrupt is generated
                and the function ECAT_Application has to be called here (with interrupts disabled,
@@ -1021,17 +977,19 @@ void MainLoop(void)
                 }
             }
 
+/*ECATCHANGE_START(V5.12) ECAT3*/
             DISABLE_ESC_INT();
+/*ECATCHANGE_END(V5.12) ECAT3*/
              ECAT_Application();
 
-/*ECATCHANGE_START(V5.13) ECAT 5*/
-             if ( (bEcatInputUpdateRunning  == TRUE) && (nPdInputSize > 0))
-/*ECATCHANGE_END(V5.13) ECAT 5*/
-             {
+            if ( bEcatInputUpdateRunning )
+            {
                 /* EtherCAT slave is at least in SAFE-OPERATIONAL, update inputs */
                 PDO_InputMapping();
             }
+/*ECATCHANGE_START(V5.12) ECAT3*/
             ENABLE_ESC_INT();
+/*ECATCHANGE_END(V5.12) ECAT3*/
         }
 
         /* there is no interrupt routine for the hardware timer so check the timer register if the desired cycle elapsed*/
@@ -1046,10 +1004,12 @@ void MainLoop(void)
             }
         }
 
+/*ECATCHANGE_START(V5.12) COE4*/
         if (u32CheckForDcOverrunCnt >= CHECK_DC_OVERRUN_IN_MS)
         {
             COE_SyncTimeStamp();
         }
+/*ECATCHANGE_END(V5.12) COE4*/
 
         /* call EtherCAT functions */
         ECAT_Main();
@@ -1059,10 +1019,12 @@ void MainLoop(void)
        CheckIfEcatError();
 
 
+/*ECATCHANGE_START(V5.12) APPL1*/
     if (pAPPL_MainLoop != NULL)
     {
         pAPPL_MainLoop();
     }
+/*ECATCHANGE_END(V5.12) APPL1*/
 }
 
 /*The main function was moved to the application files.*/
@@ -1074,8 +1036,8 @@ void MainLoop(void)
 void ECAT_Application(void)
 {
 #if (MIN_PD_CYCLE_TIME == 0)
+    /*ECATCHANGE_START(V5.12) ECAT1*/
     UINT32 u32TimeValue = 0;
-
 
     if (MEASUREMENT_ACTIVE)
     {
@@ -1090,6 +1052,7 @@ void ECAT_Application(void)
             u32MinCycleTimeValue = 0;
         }
     } /* measurement started*/
+/*ECATCHANGE_END(V5.12) ECAT1*/
 #endif /* (MIN_PD_CYCLE_TIME == 0)*/
 
     if (MEASUREMENT_ACTIVE)
@@ -1101,15 +1064,13 @@ void ECAT_Application(void)
         }
     }
 
-
-    /*ECATCHANGE_START(V5.13) CIA402 4*/
-    /*decouple CIA402 application from ESM*/
-    /*ECATCHANGE_END(V5.13) CIA402 4*/
-    APPL_Application();
-
+    {
+        APPL_Application();
+    }
 /* PDO Input mapping is called from the specific trigger ISR */
 
 #if (MIN_PD_CYCLE_TIME == 0)
+/*ECATCHANGE_START(V5.12) ECAT1*/
 
     if (MEASUREMENT_ACTIVE)
     {
@@ -1143,6 +1104,7 @@ void ECAT_Application(void)
         }
 
     }/* measurement started*/
+/*ECATCHANGE_END(V5.12) ECAT1*/
 #endif /* #if MIN_PD_CYCLE_TIME == 0 */
 }
 

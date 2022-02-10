@@ -1,7 +1,6 @@
 /*
 * This source file is part of the EtherCAT Slave Stack Code licensed by Beckhoff Automation GmbH & Co KG, 33415 Verl, Germany.
 * The corresponding license agreement applies. This hint shall not be removed.
-* https://www.beckhoff.com/media/downloads/slave-stack-code/ethercat_ssc_license.pdf
 */
 
 /**
@@ -637,7 +636,9 @@ PROTO    UINT8 SDOS_SdoInfoInd(TSDOINFORMATION MBXMEM *pSdoInfoInd);
 PROTO    UINT8 SDOS_SdoInd(TINITSDOMBX MBXMEM *pSdoInd);
 
 PROTO    void  SDOS_SdoRes(UINT8 abort, UINT32 objLength, UINT16 MBXMEM *pData);
-PROTO    void  SDOS_ClearPendingResponse(void);
+/* ECATCHANGE_START(V5.12) MBX3*/
+PROTO    void  SODS_ClearPendingResponse();
+/* ECATCHANGE_END(V5.12) MBX3*/
 
 
 #undef PROTO

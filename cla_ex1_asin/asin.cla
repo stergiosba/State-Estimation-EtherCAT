@@ -1,0 +1,91 @@
+//
+// Included Files
+//
+#include "cla_ex1_asin_shared.h"
+
+//
+// Defines
+//
+
+//
+// Globals
+//
+// Note that the globals defined in the .cla source are global to the cla source
+// file.  i.e. they may be shared across tasks. All of the data shared between
+// the CLA and the C28x CPU must be defined in the C (or C++) code, and not the
+// CLA code.  
+//
+
+static inline void matmul(m_elem A[][N], m_elem B[][N], m_elem C[][N])
+{
+    C[0][0] = A[0][0]*B[0][0] + A[0][1]*B[1][0] + A[0][2]*B[2][0];
+    C[0][1] = A[0][0]*B[0][1] + A[0][1]*B[1][1] + A[0][2]*B[2][1];
+    C[0][2] = A[0][0]*B[0][2] + A[0][1]*B[1][2] + A[0][2]*B[2][2];
+    C[1][0] = A[1][0]*B[0][0] + A[1][1]*B[1][0] + A[1][2]*B[2][0];
+    C[1][1] = A[1][0]*B[0][1] + A[1][1]*B[1][1] + A[1][2]*B[2][1];
+    C[1][2] = A[1][0]*B[0][2] + A[1][1]*B[1][2] + A[1][2]*B[2][2];
+    C[2][0] = A[2][0]*B[0][0] + A[2][1]*B[1][0] + A[2][2]*B[2][0];
+    C[2][1] = A[2][0]*B[0][1] + A[2][1]*B[1][1] + A[2][2]*B[2][1];
+    C[2][2] = A[2][0]*B[0][2] + A[2][1]*B[1][2] + A[2][2]*B[2][2];
+}
+
+__interrupt void Cla1Task1 ( void )
+{
+    //Local Variables
+    __mdebugstop();
+    RESTART_CLOCK;
+    matmul(x, y, z);
+    //matmul(x, z, K);
+    /*
+    short i,j;
+    for(i=0;__mleq(i, (short) N);i++)
+    {
+        for(j=0;__mleq(j,(short) N);j++)
+        {
+            z[i][j] = x[i][0]*y[0][j] + x[i][1]*y[1][j] + x[i][2]*y[2][j] + x[i][3]*y[3][j] + x[i][4]*y[4][j] + x[i][5]*y[5][j] +
+                      x[i][6]*y[6][j] + x[i][7]*y[7][j] + x[i][8]*y[8][j] + x[i][9]*y[9][j] + x[i][10]*y[10][j] +
+                      x[i][11]*y[11][j] + x[i][12]*y[12][j] + x[i][13]*y[13][j] + x[i][14]*y[14][j] + x[i][15]*y[15][j]+ x[i][16]*y[16][j] + x[i][17]*y[17][j];
+        }
+    }*/
+    READ_CLOCK(ulCycleCount);
+    kk++;
+}
+
+interrupt void Cla1Task2 ( void )
+{
+
+}
+
+interrupt void Cla1Task3 ( void )
+{
+
+}
+
+interrupt void Cla1Task4 ( void )
+{
+
+}
+
+interrupt void Cla1Task5 ( void )
+{
+
+}
+
+interrupt void Cla1Task6 ( void )
+{
+
+}
+
+interrupt void Cla1Task7 ( void )
+{
+
+}
+
+interrupt void Cla1Task8 ( void )
+{
+
+}
+
+//
+// End of file
+//

@@ -1,20 +1,19 @@
 /*
-* This source file is part of the EtherCAT Slave Stack Code licensed by Beckhoff Automation GmbH & Co KG, 33415 Verl, Germany.
-* The corresponding license agreement applies. This hint shall not be removed.
-*/
+ * This source file is part of the EtherCAT Slave Stack Code licensed by Beckhoff Automation GmbH & Co KG, 33415 Verl, Germany.
+ * The corresponding license agreement applies. This hint shall not be removed.
+ */
 
 /**
-\addtogroup ADIS16364F28388DIMUECATSlave ADIS16364 F28388D IMU ECAT Slave
+\addtogroup ADIS16364_IMU_SLAVE ADIS16364_IMU_SLAVE
 @{
 */
 
 /**
-\file ADIS16364 F28388D IMU ECAT Slave.c
+\file ADIS16364_IMU_SLAVE.c
 \brief Implementation
  Created with SSC Tool application parser 1.6.2.0
 \version 0.0.0.1
 */
-
 
 /*-----------------------------------------------------------------------------------------
 ------
@@ -25,9 +24,22 @@
 
 #include "applInterface.h"
 
-#define _ADIS16364_F28388_D_IMU_ECAT_SLAVE_ 1
-#include "ADIS16364 F28388D IMU ECAT Slave.h"
-#undef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_
+#define _ADIS16364__IMU__SLAVE_ 1
+#include "ADIS16364_IMU_SLAVE.h"
+#undef _ADIS16364__IMU__SLAVE_
+
+/*--------------------------------------------------------------------------------------
+------
+------    global types and defines
+------
+--------------------------------------------------------------------------------------*/
+
+#pragma DATA_SECTION(ipcCMToCPUDataBuffer, "MSGRAM_CM_TO_CPU1_ECAT")
+ECAT_IPC_PutDataBuffer ipcCMToCPUDataBuffer;
+
+#pragma DATA_SECTION(ipcCPUToCMDataBuffer, "MSGRAM_CPU1_TO_CM_ECAT")
+ECAT_IPC_GetDataBuffer ipcCPUToCMDataBuffer;
+
 /*--------------------------------------------------------------------------------------
 ------
 ------    local types and defines
@@ -52,41 +64,15 @@
 ------
 -----------------------------------------------------------------------------------------*/
 
-#pragma DATA_SECTION(ipcCMToCPUDataBuffer, "MSGRAM_CM_TO_CPU1_ECAT")
-ECAT_IPC_PutDataBuffer ipcCMToCPUDataBuffer;
-
-#pragma DATA_SECTION(ipcCPUToCMDataBuffer,"MSGRAM_CPU1_TO_CM_ECAT")
-ECAT_IPC_GetDataBuffer ipcCPUToCMDataBuffer;
-
-//
-// PDO_ResetOutputs - Resets the Output data to zero
-//
-void PDO_ResetOutputs(void)
-{
-    SUS_CONTROL0x7000.XGyro_on      = 0x0U;
-    SUS_CONTROL0x7000.YGyro_on      = 0x0U;
-    SUS_CONTROL0x7000.ZGyro_on      = 0x0U;
-    SUS_CONTROL0x7000.XAcc_on       = 0x0U;
-    SUS_CONTROL0x7000.YAcc_on       = 0x0U;
-    SUS_CONTROL0x7000.ZAcc_on       = 0x0U;
-    SUS_CONTROL0x7000.XAngle_on     = 0x0U;
-    SUS_CONTROL0x7000.YAngle_on     = 0x0U;
-    SUS_CONTROL0x7000.ZAngle_on     = 0x0U;
-    SUS_CONTROL0x7000.XLinVel_on    = 0x0U;
-    SUS_CONTROL0x7000.YLinVel_on    = 0x0U;
-    SUS_CONTROL0x7000.ZLinVel_on    = 0x0U;
-    SUS_CONTROL0x7000.Temp_on       = 0x0U;
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////
 /**
  \brief    The function is called when an error state was acknowledged by the master
 
-*////////////////////////////////////////////////////////////////////////////////////////
+*/
+///////////////////////////////////////////////////////////////////////////////////////
 
-void    APPL_AckErrorInd(UINT16 stateTrans)
+void APPL_AckErrorInd(UINT16 stateTrans)
 {
-
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -101,7 +87,8 @@ void    APPL_AckErrorInd(UINT16 stateTrans)
             the state transition immediately, in that case this function will be called cyclically
             until a value unequal NOERROR_INWORK is returned
 
-*////////////////////////////////////////////////////////////////////////////////////////
+*/
+///////////////////////////////////////////////////////////////////////////////////////
 
 UINT16 APPL_StartMailboxHandler(void)
 {
@@ -117,7 +104,8 @@ UINT16 APPL_StartMailboxHandler(void)
              about the state transition, the application cannot refuse
              the state transition.
 
-*////////////////////////////////////////////////////////////////////////////////////////
+*/
+///////////////////////////////////////////////////////////////////////////////////////
 
 UINT16 APPL_StopMailboxHandler(void)
 {
@@ -136,9 +124,10 @@ UINT16 APPL_StopMailboxHandler(void)
            informs the application about the state transition, the application can refuse
            the state transition when returning an AL Status error code.
            The return code NOERROR_INWORK can be used, if the application cannot confirm
-           the state transition immediately, in that case the application need to be complete 
+           the state transition immediately, in that case the application need to be complete
            the transition by calling ECAT_StateChange.
-*////////////////////////////////////////////////////////////////////////////////////////
+*/
+///////////////////////////////////////////////////////////////////////////////////////
 
 UINT16 APPL_StartInputHandler(UINT16 *pIntMask)
 {
@@ -154,7 +143,8 @@ UINT16 APPL_StartInputHandler(UINT16 *pIntMask)
              about the state transition, the application cannot refuse
              the state transition.
 
-*////////////////////////////////////////////////////////////////////////////////////////
+*/
+///////////////////////////////////////////////////////////////////////////////////////
 
 UINT16 APPL_StopInputHandler(void)
 {
@@ -170,9 +160,10 @@ UINT16 APPL_StopInputHandler(void)
              informs the application about the state transition, the application can refuse
              the state transition when returning an AL Status error code.
            The return code NOERROR_INWORK can be used, if the application cannot confirm
-           the state transition immediately, in that case the application need to be complete 
+           the state transition immediately, in that case the application need to be complete
            the transition by calling ECAT_StateChange.
-*////////////////////////////////////////////////////////////////////////////////////////
+*/
+///////////////////////////////////////////////////////////////////////////////////////
 
 UINT16 APPL_StartOutputHandler(void)
 {
@@ -188,7 +179,8 @@ UINT16 APPL_StartOutputHandler(void)
              about the state transition, the application cannot refuse
              the state transition.
 
-*////////////////////////////////////////////////////////////////////////////////////////
+*/
+///////////////////////////////////////////////////////////////////////////////////////
 
 UINT16 APPL_StopOutputHandler(void)
 {
@@ -203,8 +195,9 @@ UINT16 APPL_StopOutputHandler(void)
 
 \brief    This function calculates the process data sizes from the actual SM-PDO-Assign
             and PDO mapping
-*////////////////////////////////////////////////////////////////////////////////////////
-UINT16 APPL_GenerateMapping(UINT16 *pInputSize,UINT16 *pOutputSize)
+*/
+///////////////////////////////////////////////////////////////////////////////////////
+UINT16 APPL_GenerateMapping(UINT16 *pInputSize, UINT16 *pOutputSize)
 {
     UINT16 result = ALSTATUSCODE_NOERROR;
     UINT16 InputSize = 0;
@@ -212,24 +205,24 @@ UINT16 APPL_GenerateMapping(UINT16 *pInputSize,UINT16 *pOutputSize)
 
 #if COE_SUPPORTED
     UINT16 PDOAssignEntryCnt = 0;
-    OBJCONST TOBJECT OBJMEM * pPDO = NULL;
+    OBJCONST TOBJECT OBJMEM *pPDO = NULL;
     UINT16 PDOSubindex0 = 0;
     UINT32 *pPDOEntry = NULL;
     UINT16 PDOEntryCnt = 0;
-   
+
 #if MAX_PD_OUTPUT_SIZE > 0
     /*Scan object 0x1C12 RXPDO assign*/
-    for(PDOAssignEntryCnt = 0; PDOAssignEntryCnt < sRxPDOassign.u16SubIndex0; PDOAssignEntryCnt++)
+    for (PDOAssignEntryCnt = 0; PDOAssignEntryCnt < sRxPDOassign.u16SubIndex0; PDOAssignEntryCnt++)
     {
         pPDO = OBJ_GetObjectHandle(sRxPDOassign.aEntries[PDOAssignEntryCnt]);
-        if(pPDO != NULL)
+        if (pPDO != NULL)
         {
             PDOSubindex0 = *((UINT16 *)pPDO->pVarPtr);
-            for(PDOEntryCnt = 0; PDOEntryCnt < PDOSubindex0; PDOEntryCnt++)
+            for (PDOEntryCnt = 0; PDOEntryCnt < PDOSubindex0; PDOEntryCnt++)
             {
-                pPDOEntry = (UINT32 *)(((UINT16 *)pPDO->pVarPtr) + (OBJ_GetEntryOffset((PDOEntryCnt+1),pPDO)>>4));    //goto PDO entry
+                pPDOEntry = (UINT32 *)(((UINT16 *)pPDO->pVarPtr) + (OBJ_GetEntryOffset((PDOEntryCnt + 1), pPDO) >> 4)); // goto PDO entry
                 // we increment the expected output size depending on the mapped Entry
-                OutputSize += (UINT16) ((*pPDOEntry) & 0xFF);
+                OutputSize += (UINT16)((*pPDOEntry) & 0xFF);
             }
         }
         else
@@ -245,20 +238,20 @@ UINT16 APPL_GenerateMapping(UINT16 *pInputSize,UINT16 *pOutputSize)
 #endif
 
 #if MAX_PD_INPUT_SIZE > 0
-    if(result == 0)
+    if (result == 0)
     {
         /*Scan Object 0x1C13 TXPDO assign*/
-        for(PDOAssignEntryCnt = 0; PDOAssignEntryCnt < sTxPDOassign.u16SubIndex0; PDOAssignEntryCnt++)
+        for (PDOAssignEntryCnt = 0; PDOAssignEntryCnt < sTxPDOassign.u16SubIndex0; PDOAssignEntryCnt++)
         {
             pPDO = OBJ_GetObjectHandle(sTxPDOassign.aEntries[PDOAssignEntryCnt]);
-            if(pPDO != NULL)
+            if (pPDO != NULL)
             {
                 PDOSubindex0 = *((UINT16 *)pPDO->pVarPtr);
-                for(PDOEntryCnt = 0; PDOEntryCnt < PDOSubindex0; PDOEntryCnt++)
+                for (PDOEntryCnt = 0; PDOEntryCnt < PDOSubindex0; PDOEntryCnt++)
                 {
-                    pPDOEntry = (UINT32 *)(((UINT16 *)pPDO->pVarPtr) + (OBJ_GetEntryOffset((PDOEntryCnt+1),pPDO)>>4));    //goto PDO entry
+                    pPDOEntry = (UINT32 *)(((UINT16 *)pPDO->pVarPtr) + (OBJ_GetEntryOffset((PDOEntryCnt + 1), pPDO) >> 4)); // goto PDO entry
                     // we increment the expected output size depending on the mapped Entry
-                    InputSize += (UINT16) ((*pPDOEntry) & 0xFF);
+                    InputSize += (UINT16)((*pPDOEntry) & 0xFF);
                 }
             }
             else
@@ -275,9 +268,9 @@ UINT16 APPL_GenerateMapping(UINT16 *pInputSize,UINT16 *pOutputSize)
 
 #else
 #if _WIN32
-   #pragma message ("Warning: Define 'InputSize' and 'OutputSize'.")
+#pragma message("Warning: Define 'InputSize' and 'OutputSize'.")
 #else
-    #warning "Define 'InputSize' and 'OutputSize'."
+#warning "Define 'InputSize' and 'OutputSize'."
 #endif
 #endif
 
@@ -292,45 +285,73 @@ UINT16 APPL_GenerateMapping(UINT16 *pInputSize,UINT16 *pOutputSize)
 
 \brief      This function will copies the inputs from the local memory to the ESC memory
             to the hardware
-*////////////////////////////////////////////////////////////////////////////////////////
-void APPL_InputMapping(uint16_t* pData)
+*/
+///////////////////////////////////////////////////////////////////////////////////////
+void APPL_InputMapping(UINT16 *pData)
 {
-    //UINT8 *pTmpData = (UINT8 *)pData;
+    /*
     uint16_t *pTmpData = pData;
-    /*
-    UINT8 data;
-    data = ((Vars_0x6000.Switch8 << 7U) |
-            (Vars_0x6000.Switch7 << 6U) |
-            (Vars_0x6000.Switch6 << 5U) |
-            (Vars_0x6000.Switch5 << 4U) |
-            (Vars_0x6000.Switch4 << 3U) |
-            (Vars_0x6000.Switch3 << 2U) |
-            (Vars_0x6000.Switch2 << 1U) |
-            Vars_0x6000.Switch1);
+    //Gyroscope Sense
+    memcpy(pTmpData, &SUS_SENSE0x6000.XGyro_sense, SIZEOF(SUS_SENSE0x6000.XGyro_sense));
+    pTmpData += 2U;
+    memcpy(pTmpData, &SUS_SENSE0x6000.YGyro_sense, SIZEOF(SUS_SENSE0x6000.YGyro_sense));
+    pTmpData += 2U;
+    memcpy(pTmpData, &SUS_SENSE0x6000.ZGyro_sense, SIZEOF(SUS_SENSE0x6000.ZGyro_sense));
+    pTmpData += 2U;
+
+    //Accelerometer Sense
+    memcpy(pTmpData, &SUS_SENSE0x6000.XAcc_sense, SIZEOF(SUS_SENSE0x6000.XAcc_sense));
+    pTmpData += 2U;
+    memcpy(pTmpData, &SUS_SENSE0x6000.YAcc_sense, SIZEOF(SUS_SENSE0x6000.YAcc_sense));
+    pTmpData += 2U;
+    memcpy(pTmpData, &SUS_SENSE0x6000.ZAcc_sense, SIZEOF(SUS_SENSE0x6000.ZAcc_sense));
+    pTmpData += 2U;
+
+    //Temperature Sense
+    memcpy(pTmpData, &SUS_SENSE0x6000.Temp_sense, SIZEOF(SUS_SENSE0x6000.Temp_sense));
+    pTmpData += 2U;
+
+    //Angle Calculation
+    memcpy(pTmpData, &SUS_SENSE0x6000.XAngle_calc, SIZEOF(SUS_SENSE0x6000.XAngle_calc));
+    pTmpData += 2U;
+    memcpy(pTmpData, &SUS_SENSE0x6000.YAngle_calc, SIZEOF(SUS_SENSE0x6000.YAngle_calc));
+    pTmpData += 2U;
+    memcpy(pTmpData, &SUS_SENSE0x6000.ZAngle_calc, SIZEOF(SUS_SENSE0x6000.ZAngle_calc));
+    pTmpData += 2U;
+
+    //Linear Velocity Calculation
+    memcpy(pTmpData, &SUS_SENSE0x6000.XLinVel_calc, SIZEOF(SUS_SENSE0x6000.XLinVel_calc));
+    pTmpData += 2U;
+    memcpy(pTmpData, &SUS_SENSE0x6000.YLinVel_calc, SIZEOF(SUS_SENSE0x6000.YLinVel_calc));
+    pTmpData += 2U;
+    memcpy(pTmpData, &SUS_SENSE0x6000.ZLinVel_calc, SIZEOF(SUS_SENSE0x6000.ZLinVel_calc));
     */
-
-    memcpy(pTmpData, &SUS_SENCE0x6000.XGyro_sence,SIZEOF(SUS_SENCE0x6000.XGyro_sence));
-    pTmpData += 2U;
-    memcpy(pTmpData, &SUS_SENCE0x6000.YGyro_sence,SIZEOF(SUS_SENCE0x6000.YGyro_sence));
-    pTmpData += 2U;
-    memcpy(pTmpData, &SUS_SENCE0x6000.ZGyro_sence,SIZEOF(SUS_SENCE0x6000.ZGyro_sence));
-    pTmpData += 2U;
-    memcpy(pTmpData, &SUS_SENCE0x6000.XAcc_sence,SIZEOF(SUS_SENCE0x6000.XAcc_sence));
-    pTmpData += 2U;
-    memcpy(pTmpData, &SUS_SENCE0x6000.YAcc_sence,SIZEOF(SUS_SENCE0x6000.YAcc_sence));
-    pTmpData += 2U;
-    memcpy(pTmpData, &SUS_SENCE0x6000.ZAcc_sence,SIZEOF(SUS_SENCE0x6000.ZAcc_sence));
-    pTmpData += 2U;
-    memcpy(pTmpData, &SUS_SENCE0x6000.Temp_sence,SIZEOF(SUS_SENCE0x6000.Temp_sence));
-    /*
-    *(volatile uint16_t *) pTmpData = Vars_0x6000.Switch1;
-    pTmpData += 1U;
-    *(volatile uint16_t *) pTmpData = Vars_0x6000.Switch2;
-    pTmpData += 1U;
-    *(volatile uint16_t *) pTmpData = Vars_0x6000.Switch3;
-    pTmpData += 1U;
-    *(volatile uint16_t *) pTmpData = Vars_0x6000.Switch4;*/
-
+    uint16_t *pTmpData = (uint16_t *)pData;
+    *(volatile float *)pTmpData = SUS_SENSE0x6000.XGyro_sense;
+    pTmpData += 2;
+    *(volatile float *)pTmpData = SUS_SENSE0x6000.YGyro_sense;
+    pTmpData += 2;
+    *(volatile float *)pTmpData = SUS_SENSE0x6000.ZGyro_sense;
+    pTmpData += 2;
+    *(volatile float *)pTmpData = SUS_SENSE0x6000.XAcc_sense;
+    pTmpData += 2;
+    *(volatile float *)pTmpData = SUS_SENSE0x6000.YAcc_sense;
+    pTmpData += 2;
+    *(volatile float *)pTmpData = SUS_SENSE0x6000.ZAcc_sense;
+    pTmpData += 2;
+    *(volatile float *)pTmpData = SUS_SENSE0x6000.Temp_sense;
+    pTmpData += 2;
+    *(volatile float *)pTmpData = SUS_SENSE0x6000.XAngle_calc;
+    pTmpData += 2;
+    *(volatile float *)pTmpData = SUS_SENSE0x6000.YAngle_calc;
+    pTmpData += 2;
+    *(volatile float *)pTmpData = SUS_SENSE0x6000.ZAngle_calc;
+    pTmpData += 2;
+    *(volatile float *)pTmpData = SUS_SENSE0x6000.XLinVel_calc;
+    pTmpData += 2;
+    *(volatile float *)pTmpData = SUS_SENSE0x6000.YLinVel_calc;
+    pTmpData += 2;
+    *(volatile float *)pTmpData = SUS_SENSE0x6000.ZLinVel_calc;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -339,59 +360,47 @@ void APPL_InputMapping(uint16_t* pData)
 
 \brief    This function will copies the outputs from the ESC memory to the local memory
             to the hardware
-*////////////////////////////////////////////////////////////////////////////////////////
-void APPL_OutputMapping(uint16_t* pData)
+*/
+///////////////////////////////////////////////////////////////////////////////////////
+void APPL_OutputMapping(UINT16 *pData)
 {
     uint16_t *pTmpData = pData;
 
-
-    UINT8 data = 0;
-    data = (*(volatile UINT8 *)pTmpData);
-
-    SUS_CONTROL0x7000.XGyro_on      = data & BIT_MASK;
-    data = data >> 1U;
-    SUS_CONTROL0x7000.YGyro_on      = data & BIT_MASK;
-    data = data >> 1U;
-    SUS_CONTROL0x7000.ZGyro_on      = data & BIT_MASK;
-    data = data >> 1U;
-    SUS_CONTROL0x7000.XAcc_on       = data & BIT_MASK;
-    data = data >> 1U;
-    SUS_CONTROL0x7000.YAcc_on       = data & BIT_MASK;
-    data = data >> 1U;
-    SUS_CONTROL0x7000.ZAcc_on       = data & BIT_MASK;
-    data = data >> 1U;
-    SUS_CONTROL0x7000.XAngle_on     = data & BIT_MASK;
-    data = data >> 1U;
-    SUS_CONTROL0x7000.YAngle_on     = data & BIT_MASK;
-    data = data >> 1U;
-    SUS_CONTROL0x7000.ZAngle_on     = data & BIT_MASK;
-    data = data >> 1U;
-    SUS_CONTROL0x7000.XLinVel_on    = data & BIT_MASK;
-    data = data >> 1U;
-    SUS_CONTROL0x7000.YLinVel_on    = data & BIT_MASK;
-    data = data >> 1U;
-    SUS_CONTROL0x7000.ZLinVel_on    = data & BIT_MASK;
-    data = data >> 1U;
-    SUS_CONTROL0x7000.Temp_on       = data & BIT_MASK;
-
-
-    /*
-    Vars_0x7000.LED1 = *(volatile uint16_t *)pTmpData;
-    pTmpData += 1U;
-    Vars_0x7000.LED2 = *(volatile uint16_t *)pTmpData;
-    pTmpData += 1U;
-    Vars_0x7000.LED3 = *(volatile uint16_t *)pTmpData;
-    pTmpData += 1U;
-    Vars_0x7000.LED4 = *(volatile uint16_t *)pTmpData;
-    */
-
+    SUS_CONTROL0x7000.XGyro_on = *(volatile UINT16 *)pTmpData;
+    pTmpData += 2U;
+    SUS_CONTROL0x7000.YGyro_on = *(volatile UINT16 *)pTmpData;
+    pTmpData += 2U;
+    SUS_CONTROL0x7000.ZGyro_on = *(volatile UINT16 *)pTmpData;
+    pTmpData += 2U;
+    SUS_CONTROL0x7000.XAcc_on = *(volatile UINT16 *)pTmpData;
+    pTmpData += 2U;
+    SUS_CONTROL0x7000.YAcc_on = *(volatile UINT16 *)pTmpData;
+    pTmpData += 2U;
+    SUS_CONTROL0x7000.ZAcc_on = *(volatile UINT16 *)pTmpData;
+    pTmpData += 2U;
+    SUS_CONTROL0x7000.XAngle_on = *(volatile UINT16 *)pTmpData;
+    pTmpData += 2U;
+    SUS_CONTROL0x7000.YAngle_on = *(volatile UINT16 *)pTmpData;
+    pTmpData += 2U;
+    SUS_CONTROL0x7000.ZAngle_on = *(volatile UINT16 *)pTmpData;
+    pTmpData += 2U;
+    SUS_CONTROL0x7000.XLinVel_on = *(volatile UINT16 *)pTmpData;
+    pTmpData += 2U;
+    SUS_CONTROL0x7000.YLinVel_on = *(volatile UINT16 *)pTmpData;
+    pTmpData += 2U;
+    SUS_CONTROL0x7000.ZLinVel_on = *(volatile UINT16 *)pTmpData;
+    pTmpData += 2U;
+    SUS_CONTROL0x7000.Temp_on = *(volatile UINT16 *)pTmpData;
+    pTmpData += 2U;
+    SUS_CONTROL0x7000.HP_on = *(volatile UINT16 *)pTmpData;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /**
-\brief    This function will called from the synchronisation ISR 
+\brief    This function will called from the synchronisation ISR
             or from the mainloop if no synchronisation is supported
-*////////////////////////////////////////////////////////////////////////////////////////
+*/
+///////////////////////////////////////////////////////////////////////////////////////
 void APPL_Application(void)
 {
     // Data from EtherCAT to IMU (control checks)
@@ -412,21 +421,21 @@ void APPL_Application(void)
     ipcCMToCPUDataBuffer.ctrlNode.ZLinVel_on = SUS_CONTROL0x7000.ZLinVel_on;
 
     // Data from IMU to EtherCAT (sensing)
-    SUS_SENCE0x6000.XGyro_sence = ipcCPUToCMDataBuffer.statusNode.XGyro_sence;
-    SUS_SENCE0x6000.XGyro_sence = ipcCPUToCMDataBuffer.statusNode.YGyro_sence;
-    SUS_SENCE0x6000.XGyro_sence = ipcCPUToCMDataBuffer.statusNode.ZGyro_sence;
+    SUS_SENSE0x6000.XGyro_sense = ipcCPUToCMDataBuffer.statusNode.XGyro_sense;
+    SUS_SENSE0x6000.YGyro_sense = ipcCPUToCMDataBuffer.statusNode.YGyro_sense;
+    SUS_SENSE0x6000.ZGyro_sense = ipcCPUToCMDataBuffer.statusNode.ZGyro_sense;
 
-    SUS_SENCE0x6000.XAcc_sence = ipcCPUToCMDataBuffer.statusNode.XAcc_sence;
-    SUS_SENCE0x6000.XAcc_sence = ipcCPUToCMDataBuffer.statusNode.YAcc_sence;
-    SUS_SENCE0x6000.XAcc_sence = ipcCPUToCMDataBuffer.statusNode.ZAcc_sence;
+    SUS_SENSE0x6000.XAcc_sense = ipcCPUToCMDataBuffer.statusNode.XAcc_sense;
+    SUS_SENSE0x6000.YAcc_sense = ipcCPUToCMDataBuffer.statusNode.YAcc_sense;
+    SUS_SENSE0x6000.ZAcc_sense = ipcCPUToCMDataBuffer.statusNode.ZAcc_sense;
 
-    SUS_SENCE0x6000.XAngle_calc = ipcCPUToCMDataBuffer.statusNode.XAngle_calc;
-    SUS_SENCE0x6000.YAngle_calc = ipcCPUToCMDataBuffer.statusNode.YAngle_calc;
-    SUS_SENCE0x6000.ZAngle_calc = ipcCPUToCMDataBuffer.statusNode.ZAngle_calc;
+    SUS_SENSE0x6000.XAngle_calc = ipcCPUToCMDataBuffer.statusNode.XAngle_calc;
+    SUS_SENSE0x6000.YAngle_calc = ipcCPUToCMDataBuffer.statusNode.YAngle_calc;
+    SUS_SENSE0x6000.ZAngle_calc = ipcCPUToCMDataBuffer.statusNode.ZAngle_calc;
 
-    SUS_SENCE0x6000.XLinVel_calc = ipcCPUToCMDataBuffer.statusNode.XLinVel_calc;
-    SUS_SENCE0x6000.YLinVel_calc = ipcCPUToCMDataBuffer.statusNode.YLinVel_calc;
-    SUS_SENCE0x6000.ZLinVel_calc = ipcCPUToCMDataBuffer.statusNode.ZLinVel_calc;
+    SUS_SENSE0x6000.XLinVel_calc = ipcCPUToCMDataBuffer.statusNode.XLinVel_calc;
+    SUS_SENSE0x6000.YLinVel_calc = ipcCPUToCMDataBuffer.statusNode.YLinVel_calc;
+    SUS_SENSE0x6000.ZLinVel_calc = ipcCPUToCMDataBuffer.statusNode.ZLinVel_calc;
 }
 
 #if EXPLICIT_DEVICE_ID
@@ -435,13 +444,14 @@ void APPL_Application(void)
  \return    The Explicit Device ID of the EtherCAT slave
 
  \brief     Read the Explicit Device ID (from an external ID switch)
-*////////////////////////////////////////////////////////////////////////////////////////
+*/
+///////////////////////////////////////////////////////////////////////////////////////
 UINT16 APPL_GetDeviceID()
 {
 #if _WIN32
-   #pragma message ("Warning: Implement explicit Device ID latching")
+#pragma message("Warning: Implement explicit Device ID latching")
 #else
-    #warning "Implement explicit Device ID latching"
+#warning "Implement explicit Device ID latching"
 #endif
     /* Explicit Device 5 is expected by Explicit Device ID conformance tests*/
     return 0x5;
@@ -454,11 +464,12 @@ UINT16 APPL_GetDeviceID()
 
  \brief    This is the main function
 
-*////////////////////////////////////////////////////////////////////////////////////////
+*/
+///////////////////////////////////////////////////////////////////////////////////////
 #if _PIC24 && EL9800_HW
 int main(void)
 #elif _WIN32
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 #else
 void main(void)
 #endif
@@ -472,7 +483,7 @@ void main(void)
         u16FcInstance = atoi(argv[1]);
     }
 #endif
-    if(HW_Init())
+    if (HW_Init())
     {
         HW_Release();
         return;
@@ -486,7 +497,7 @@ void main(void)
     do
     {
         MainLoop();
-        
+
     } while (bRunApplication == TRUE);
 
     HW_Release();
@@ -496,4 +507,3 @@ void main(void)
 }
 #endif //#if USE_DEFAULT_MAIN
 /** @} */
-

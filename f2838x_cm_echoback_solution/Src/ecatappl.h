@@ -1,7 +1,6 @@
 /*
 * This source file is part of the EtherCAT Slave Stack Code licensed by Beckhoff Automation GmbH & Co KG, 33415 Verl, Germany.
 * The corresponding license agreement applies. This hint shall not be removed.
-* https://www.beckhoff.com/media/downloads/slave-stack-code/ethercat_ssc_license.pdf
 */
 
 /**
@@ -23,7 +22,7 @@ V5.11 ECAT10: change PROTO handling to prevent compiler errors<br>
 V5.10 ECAT13: Update Synchronisation handling (FreeRun,SM Sync, Sync0, Sync1)<br>
               Compare DC UINT configuration (by ESC Config data) vs. DC activation register settings<br>
               Update 0x1C3x entries<br>
-V5.10 ECAT4: Update alignment macro for 8 to 15 bit alignments (16 and 32 Bit controllers)<br>
+V5.10 ECAT4: Update alignment marco for 8 to 15 bit alignments (16 and 32 Bit controllers)<br>
              Bugfix calculate LED blink frequency<br>
 <br>Changes to version - :<br>
 V5.01 : Start file change log
@@ -56,31 +55,31 @@ V5.01 : Start file change log
 ------
 -----------------------------------------------------------------------------------------*/
 
-#define     BOOLEAN(x)                  UINT8 x:1 /**< \brief Macro to define BOOLEAN object entry*/
-#define     BIT1(x)                     UINT8 x:1 /**< \brief Macro to define BIT1 object entry*/
-#define     BIT2(x)                     UINT8 x:2 /**< \brief Macro to define BIT2 object entry*/
-#define     BIT3(x)                     UINT8 x:3 /**< \brief Macro to define BIT3 object entry*/
-#define     BIT4(x)                     UINT8 x:4 /**< \brief Macro to define BIT4 object entry*/
-#define     BIT5(x)                     UINT8 x:5 /**< \brief Macro to define BIT5 object entry*/
-#define     BIT6(x)                     UINT8 x:6 /**< \brief Macro to define BIT5 object entry*/
-#define     BIT7(x)                     UINT8 x:7 /**< \brief Macro to define BIT6 object entry*/
-#define     BIT8(x)                     UINT8 x:8 /**< \brief Macro to define BIT7 object entry*/
+#define     BOOLEAN(x)                  UINT8(x):1 /**< \brief Marco to define BOOLEAN object entry*/
+#define     BIT1(x)                     UINT8(x):1 /**< \brief Marco to define BIT1 object entry*/
+#define     BIT2(x)                     UINT8(x):2 /**< \brief Marco to define BIT2 object entry*/
+#define     BIT3(x)                     UINT8(x):3 /**< \brief Marco to define BIT3 object entry*/
+#define     BIT4(x)                     UINT8(x):4 /**< \brief Marco to define BIT4 object entry*/
+#define     BIT5(x)                     UINT8(x):5 /**< \brief Marco to define BIT5 object entry*/
+#define     BIT6(x)                     UINT8(x):6 /**< \brief Marco to define BIT5 object entry*/
+#define     BIT7(x)                     UINT8(x):7 /**< \brief Marco to define BIT6 object entry*/
+#define     BIT8(x)                     UINT8(x):8 /**< \brief Marco to define BIT7 object entry*/
 #define     ALIGN0(x)
-#define     ALIGN1(x)                   UINT8 x:1; /**< \brief Macro to define ALIGN1 object entry*/
-#define     ALIGN2(x)                   UINT8 x:2; /**< \brief Macro to define ALIGN2 object entry*/
-#define     ALIGN3(x)                   UINT8 x:3; /**< \brief Macro to define ALIGN3 object entry*/
-#define     ALIGN4(x)                   UINT8 x:4; /**< \brief Macro to define ALIGN4 object entry*/
-#define     ALIGN5(x)                   UINT8 x:5; /**< \brief Macro to define ALIGN5 object entry*/
-#define     ALIGN6(x)                   UINT8 x:6; /**< \brief Macro to define ALIGN6 object entry*/
-#define     ALIGN7(x)                   UINT8 x:7; /**< \brief Macro to define ALIGN7 object entry*/
-#define     ALIGN8(x)                   UINT8 x:8; /**< \brief Macro to define ALIGN8 object entry*/
-#define     ALIGN9(x)                  UINT16 x:9; /**< \brief Macro to define ALIGN9 object entry*/
-#define     ALIGN10(x)                 UINT16 x:10; /**< \brief Macro to define ALIGN10 object entry*/
-#define     ALIGN11(x)                 UINT16 x:11; /**< \brief Macro to define ALIGN11 object entry*/
-#define     ALIGN12(x)                 UINT16 x:12; /**< \brief Macro to define ALIGN12 object entry*/
-#define     ALIGN13(x)                 UINT16 x:13; /**< \brief Macro to define ALIGN13 object entry*/
-#define     ALIGN14(x)                 UINT16 x:14; /**< \brief Macro to define ALIGN14 object entry*/
-#define     ALIGN15(x)                 UINT16 x:15; /**< \brief Macro to define ALIGN15 object entry*/
+#define     ALIGN1(x)                   UINT8(x):1; /**< \brief Marco to define ALIGN1 object entry*/
+#define     ALIGN2(x)                   UINT8(x):2; /**< \brief Marco to define ALIGN2 object entry*/
+#define     ALIGN3(x)                   UINT8(x):3; /**< \brief Marco to define ALIGN3 object entry*/
+#define     ALIGN4(x)                   UINT8(x):4; /**< \brief Marco to define ALIGN4 object entry*/
+#define     ALIGN5(x)                   UINT8(x):5; /**< \brief Marco to define ALIGN5 object entry*/
+#define     ALIGN6(x)                   UINT8(x):6; /**< \brief Marco to define ALIGN6 object entry*/
+#define     ALIGN7(x)                   UINT8(x):7; /**< \brief Marco to define ALIGN7 object entry*/
+#define     ALIGN8(x)                   UINT8(x):8; /**< \brief Marco to define ALIGN8 object entry*/
+#define     ALIGN9(x)                  UINT16(x):9; /**< \brief Marco to define ALIGN9 object entry*/
+#define     ALIGN10(x)                 UINT16(x):10; /**< \brief Marco to define ALIGN10 object entry*/
+#define     ALIGN11(x)                 UINT16(x):11; /**< \brief Marco to define ALIGN11 object entry*/
+#define     ALIGN12(x)                 UINT16(x):12; /**< \brief Marco to define ALIGN12 object entry*/
+#define     ALIGN13(x)                 UINT16(x):13; /**< \brief Marco to define ALIGN13 object entry*/
+#define     ALIGN14(x)                 UINT16(x):14; /**< \brief Marco to define ALIGN14 object entry*/
+#define     ALIGN15(x)                 UINT16(x):15; /**< \brief Marco to define ALIGN15 object entry*/
 #endif //_ECATAPPL_H_
 
 #if defined(_ECATAPPL_) && (_ECATAPPL_ == 1)

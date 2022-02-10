@@ -4,19 +4,19 @@
 */
 
 /**
-* \addtogroup ADIS16364F28388DIMUECATSlave ADIS16364 F28388D IMU ECAT Slave
+* \addtogroup ADIS16364_IMU_SLAVE ADIS16364_IMU_SLAVE
 * @{
 */
 
 /**
-\file ADIS16364 F28388D IMU ECAT SlaveObjects
+\file ADIS16364_IMU_SLAVEObjects
 \author ET9300Utilities.ApplicationHandler (Version 1.6.2.0) | EthercatSSC@beckhoff.com
 
-\brief ADIS16364 F28388D IMU ECAT Slave specific objects<br>
+\brief ADIS16364_IMU_SLAVE specific objects<br>
 \brief NOTE : This file will be overwritten if a new object dictionary is generated!<br>
 */
 
-#if defined(_ADIS16364_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16364_F28388_D_IMU_ECAT_SLAVE_ == 1)
+#if defined(_ADIS16364__IMU__SLAVE_) && (_ADIS16364__IMU__SLAVE_ == 1)
 #define PROTO
 #else
 #define PROTO extern
@@ -48,7 +48,6 @@
 * SubIndex 12 - Reference to 0x7000.18<br>
 * SubIndex 13 - Reference to 0x7000.19<br>
 * SubIndex 14 - Reference to 0x7000.20<br>
-* SubIndex 15 - Padding entry (6Bit)<br>
 */
 OBJCONST TSDOINFOENTRYDESC    OBJMEM asEntryDesc0x1600[] = {
 { DEFTYPE_UNSIGNED8 , 0x8 , ACCESS_READ },
@@ -65,8 +64,7 @@ OBJCONST TSDOINFOENTRYDESC    OBJMEM asEntryDesc0x1600[] = {
 { DEFTYPE_UNSIGNED32 , 0x20 , ACCESS_READ }, /* Subindex11 - Reference to 0x7000.17 */
 { DEFTYPE_UNSIGNED32 , 0x20 , ACCESS_READ }, /* Subindex12 - Reference to 0x7000.18 */
 { DEFTYPE_UNSIGNED32 , 0x20 , ACCESS_READ }, /* Subindex13 - Reference to 0x7000.19 */
-{ DEFTYPE_UNSIGNED32 , 0x20 , ACCESS_READ }, /* Subindex14 - Reference to 0x7000.20 */
-{ DEFTYPE_UNSIGNED32 , 0x20 , ACCESS_READ }}; /* Subindex15 - Padding entry (6Bit) */
+{ DEFTYPE_UNSIGNED32 , 0x20 , ACCESS_READ }}; /* Subindex14 - Reference to 0x7000.20 */
 
 /**
 * \brief Object/Entry names
@@ -85,11 +83,10 @@ OBJCONST UCHAR OBJMEM aName0x1600[] = "SUS_CONTROL process data mapping\000"
 "SubIndex 011\000"
 "SubIndex 012\000"
 "SubIndex 013\000"
-"SubIndex 014\000"
-"SubIndex 015\000\377";
+"SubIndex 014\000\377";
 #endif //#ifdef _OBJD_
 
-#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#ifndef _ADIS16364__IMU__SLAVE_OBJECTS_H_
 /**
 * \brief Object structure
 */
@@ -109,17 +106,16 @@ UINT32 SI11; /* Subindex11 - Reference to 0x7000.17 */
 UINT32 SI12; /* Subindex12 - Reference to 0x7000.18 */
 UINT32 SI13; /* Subindex13 - Reference to 0x7000.19 */
 UINT32 SI14; /* Subindex14 - Reference to 0x7000.20 */
-UINT32 SI15; /* Subindex15 - Padding entry (6Bit) */
 } OBJ_STRUCT_PACKED_END
 TOBJ1600;
-#endif //#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#endif //#ifndef _ADIS16364__IMU__SLAVE_OBJECTS_H_
 
 /**
 * \brief Object variable
 */
 PROTO TOBJ1600 SUS_CONTROLProcessDataMapping0x1600
-#if defined(_ADIS16364_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16364_F28388_D_IMU_ECAT_SLAVE_ == 1)
-={15,0x70000101,0x70000201,0x70000301,0x70000401,0x70000501,0x70000601,0x70000701,0x70000801,0x70000901,0x70001001,0x70001101,0x70001201,0x70001301,0x70001401,0x00000006}
+#if defined(_ADIS16364__IMU__SLAVE_) && (_ADIS16364__IMU__SLAVE_ == 1)
+={14,0x70000110,0x70000210,0x70000310,0x70000410,0x70000510,0x70000610,0x70000710,0x70000810,0x70000910,0x70001010,0x70001110,0x70001210,0x70001310,0x70001410}
 #endif
 ;
 /** @}*/
@@ -127,12 +123,12 @@ PROTO TOBJ1600 SUS_CONTROLProcessDataMapping0x1600
 
 
 /******************************************************************************
-*                    Object 0x1A00 : SUS_SENCE process data mapping
+*                    Object 0x1A00 : SUS_SENSE process data mapping
 ******************************************************************************/
 /**
-* \addtogroup 0x1A00 0x1A00 | SUS_SENCE process data mapping
+* \addtogroup 0x1A00 0x1A00 | SUS_SENSE process data mapping
 * @{
-* \brief Object 0x1A00 (SUS_SENCE process data mapping) definition
+* \brief Object 0x1A00 (SUS_SENSE process data mapping) definition
 */
 #ifdef _OBJD_
 /**
@@ -172,7 +168,7 @@ OBJCONST TSDOINFOENTRYDESC    OBJMEM asEntryDesc0x1A00[] = {
 /**
 * \brief Object/Entry names
 */
-OBJCONST UCHAR OBJMEM aName0x1A00[] = "SUS_SENCE process data mapping\000"
+OBJCONST UCHAR OBJMEM aName0x1A00[] = "SUS_SENSE process data mapping\000"
 "SubIndex 001\000"
 "SubIndex 002\000"
 "SubIndex 003\000"
@@ -188,7 +184,7 @@ OBJCONST UCHAR OBJMEM aName0x1A00[] = "SUS_SENCE process data mapping\000"
 "SubIndex 013\000\377";
 #endif //#ifdef _OBJD_
 
-#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#ifndef _ADIS16364__IMU__SLAVE_OBJECTS_H_
 /**
 * \brief Object structure
 */
@@ -209,13 +205,13 @@ UINT32 SI12; /* Subindex12 - Reference to 0x6000.18 */
 UINT32 SI13; /* Subindex13 - Reference to 0x6000.19 */
 } OBJ_STRUCT_PACKED_END
 TOBJ1A00;
-#endif //#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#endif //#ifndef _ADIS16364__IMU__SLAVE_OBJECTS_H_
 
 /**
 * \brief Object variable
 */
-PROTO TOBJ1A00 SUS_SENCEProcessDataMapping0x1A00
-#if defined(_ADIS16364_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16364_F28388_D_IMU_ECAT_SLAVE_ == 1)
+PROTO TOBJ1A00 SUS_SENSEProcessDataMapping0x1A00
+#if defined(_ADIS16364__IMU__SLAVE_) && (_ADIS16364__IMU__SLAVE_ == 1)
 ={13,0x60000120,0x60000220,0x60000320,0x60000420,0x60000520,0x60000620,0x60000720,0x60000820,0x60000920,0x60001020,0x60001120,0x60001220,0x60001320}
 #endif
 ;
@@ -249,7 +245,7 @@ OBJCONST TSDOINFOENTRYDESC    OBJMEM asEntryDesc0x1C12[] = {
 OBJCONST UCHAR OBJMEM aName0x1C12[] = "SyncManager 2 assignment\000\377";
 #endif //#ifdef _OBJD_
 
-#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#ifndef _ADIS16364__IMU__SLAVE_OBJECTS_H_
 /**
 * \brief Object structure
 */
@@ -258,13 +254,13 @@ UINT16   u16SubIndex0;  /**< \brief Subindex 0 */
 UINT16 aEntries[1];  /**< \brief Subindex 1 - 1 */
 } OBJ_STRUCT_PACKED_END
 TOBJ1C12;
-#endif //#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#endif //#ifndef _ADIS16364__IMU__SLAVE_OBJECTS_H_
 
 /**
 * \brief Object variable
 */
 PROTO TOBJ1C12 sRxPDOassign
-#if defined(_ADIS16364_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16364_F28388_D_IMU_ECAT_SLAVE_ == 1)
+#if defined(_ADIS16364__IMU__SLAVE_) && (_ADIS16364__IMU__SLAVE_ == 1)
 ={1,{0x1600}}
 #endif
 ;
@@ -298,7 +294,7 @@ OBJCONST TSDOINFOENTRYDESC    OBJMEM asEntryDesc0x1C13[] = {
 OBJCONST UCHAR OBJMEM aName0x1C13[] = "SyncManager 3 assignment\000\377";
 #endif //#ifdef _OBJD_
 
-#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#ifndef _ADIS16364__IMU__SLAVE_OBJECTS_H_
 /**
 * \brief Object structure
 */
@@ -307,13 +303,13 @@ UINT16   u16SubIndex0;  /**< \brief Subindex 0 */
 UINT16 aEntries[1];  /**< \brief Subindex 1 - 1 */
 } OBJ_STRUCT_PACKED_END
 TOBJ1C13;
-#endif //#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#endif //#ifndef _ADIS16364__IMU__SLAVE_OBJECTS_H_
 
 /**
 * \brief Object variable
 */
 PROTO TOBJ1C13 sTxPDOassign
-#if defined(_ADIS16364_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16364_F28388_D_IMU_ECAT_SLAVE_ == 1)
+#if defined(_ADIS16364__IMU__SLAVE_) && (_ADIS16364__IMU__SLAVE_ == 1)
 ={1,{0x1A00}}
 #endif
 ;
@@ -322,25 +318,25 @@ PROTO TOBJ1C13 sTxPDOassign
 
 
 /******************************************************************************
-*                    Object 0x6000 : SUS_SENCE
+*                    Object 0x6000 : SUS_SENSE
 ******************************************************************************/
 /**
-* \addtogroup 0x6000 0x6000 | SUS_SENCE
+* \addtogroup 0x6000 0x6000 | SUS_SENSE
 * @{
-* \brief Object 0x6000 (SUS_SENCE) definition
+* \brief Object 0x6000 (SUS_SENSE) definition
 */
 #ifdef _OBJD_
 /**
 * \brief Object entry descriptions<br>
 * <br>
 * SubIndex 0<br>
-* SubIndex 1 - XGyro_sence<br>
-* SubIndex 2 - YGyro_sence<br>
-* SubIndex 3 - ZGyro_sence<br>
-* SubIndex 4 - XAcc_sence<br>
-* SubIndex 5 - YAcc_sence<br>
-* SubIndex 6 - ZAcc_sence<br>
-* SubIndex 7 - Temp_sence<br>
+* SubIndex 1 - XGyro_sense<br>
+* SubIndex 2 - YGyro_sense<br>
+* SubIndex 3 - ZGyro_sense<br>
+* SubIndex 4 - XAcc_sense<br>
+* SubIndex 5 - YAcc_sense<br>
+* SubIndex 6 - ZAcc_sense<br>
+* SubIndex 7 - Temp_sense<br>
 * SubIndex 8 - XAngle_calc<br>
 * SubIndex 9 - YAngle_calc<br>
 * SubIndex 10 does not exists<br>
@@ -356,13 +352,13 @@ PROTO TOBJ1C13 sTxPDOassign
 */
 OBJCONST TSDOINFOENTRYDESC    OBJMEM asEntryDesc0x6000[] = {
 { DEFTYPE_UNSIGNED8 , 0x8 , ACCESS_READ },
-{ DEFTYPE_REAL32 , 0x20 , ACCESS_READ | OBJACCESS_TXPDOMAPPING }, /* Subindex1 - XGyro_sence */
-{ DEFTYPE_REAL32 , 0x20 , ACCESS_READ | OBJACCESS_TXPDOMAPPING }, /* Subindex2 - YGyro_sence */
-{ DEFTYPE_REAL32 , 0x20 , ACCESS_READ | OBJACCESS_TXPDOMAPPING }, /* Subindex3 - ZGyro_sence */
-{ DEFTYPE_REAL32 , 0x20 , ACCESS_READ | OBJACCESS_TXPDOMAPPING }, /* Subindex4 - XAcc_sence */
-{ DEFTYPE_REAL32 , 0x20 , ACCESS_READ | OBJACCESS_TXPDOMAPPING }, /* Subindex5 - YAcc_sence */
-{ DEFTYPE_REAL32 , 0x20 , ACCESS_READ | OBJACCESS_TXPDOMAPPING }, /* Subindex6 - ZAcc_sence */
-{ DEFTYPE_REAL32 , 0x20 , ACCESS_READ | OBJACCESS_TXPDOMAPPING }, /* Subindex7 - Temp_sence */
+{ DEFTYPE_REAL32 , 0x20 , ACCESS_READ | OBJACCESS_TXPDOMAPPING }, /* Subindex1 - XGyro_sense */
+{ DEFTYPE_REAL32 , 0x20 , ACCESS_READ | OBJACCESS_TXPDOMAPPING }, /* Subindex2 - YGyro_sense */
+{ DEFTYPE_REAL32 , 0x20 , ACCESS_READ | OBJACCESS_TXPDOMAPPING }, /* Subindex3 - ZGyro_sense */
+{ DEFTYPE_REAL32 , 0x20 , ACCESS_READ | OBJACCESS_TXPDOMAPPING }, /* Subindex4 - XAcc_sense */
+{ DEFTYPE_REAL32 , 0x20 , ACCESS_READ | OBJACCESS_TXPDOMAPPING }, /* Subindex5 - YAcc_sense */
+{ DEFTYPE_REAL32 , 0x20 , ACCESS_READ | OBJACCESS_TXPDOMAPPING }, /* Subindex6 - ZAcc_sense */
+{ DEFTYPE_REAL32 , 0x20 , ACCESS_READ | OBJACCESS_TXPDOMAPPING }, /* Subindex7 - Temp_sense */
 { DEFTYPE_REAL32 , 0x20 , ACCESS_READ | OBJACCESS_TXPDOMAPPING }, /* Subindex8 - XAngle_calc */
 { DEFTYPE_REAL32 , 0x20 , ACCESS_READ | OBJACCESS_TXPDOMAPPING }, /* Subindex9 - YAngle_calc */
 { DEFTYPE_NULL , 0x00 , 0x0000 }, /* Subindex10 does not exists */
@@ -379,14 +375,14 @@ OBJCONST TSDOINFOENTRYDESC    OBJMEM asEntryDesc0x6000[] = {
 /**
 * \brief Object/Entry names
 */
-OBJCONST UCHAR OBJMEM aName0x6000[] = "SUS_SENCE\000"
-"XGyro_sence\000"
-"YGyro_sence\000"
-"ZGyro_sence\000"
-"XAcc_sence\000"
-"YAcc_sence\000"
-"ZAcc_sence\000"
-"Temp_sence\000"
+OBJCONST UCHAR OBJMEM aName0x6000[] = "SUS_SENSE\000"
+"XGyro_sense\000"
+"YGyro_sense\000"
+"ZGyro_sense\000"
+"XAcc_sense\000"
+"YAcc_sense\000"
+"ZAcc_sense\000"
+"Temp_sense\000"
 "XAngle_calc\000"
 "YAngle_calc\000"
 "\000"
@@ -401,19 +397,19 @@ OBJCONST UCHAR OBJMEM aName0x6000[] = "SUS_SENCE\000"
 "ZLinVel_calc\000\377";
 #endif //#ifdef _OBJD_
 
-#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#ifndef _ADIS16364__IMU__SLAVE_OBJECTS_H_
 /**
 * \brief Object structure
 */
 typedef struct OBJ_STRUCT_PACKED_START {
 UINT16 u16SubIndex0;
-REAL32 XGyro_sence; /* Subindex1 - XGyro_sence */
-REAL32 YGyro_sence; /* Subindex2 - YGyro_sence */
-REAL32 ZGyro_sence; /* Subindex3 - ZGyro_sence */
-REAL32 XAcc_sence; /* Subindex4 - XAcc_sence */
-REAL32 YAcc_sence; /* Subindex5 - YAcc_sence */
-REAL32 ZAcc_sence; /* Subindex6 - ZAcc_sence */
-REAL32 Temp_sence; /* Subindex7 - Temp_sence */
+REAL32 XGyro_sense; /* Subindex1 - XGyro_sense */
+REAL32 YGyro_sense; /* Subindex2 - YGyro_sense */
+REAL32 ZGyro_sense; /* Subindex3 - ZGyro_sense */
+REAL32 XAcc_sense; /* Subindex4 - XAcc_sense */
+REAL32 YAcc_sense; /* Subindex5 - YAcc_sense */
+REAL32 ZAcc_sense; /* Subindex6 - ZAcc_sense */
+REAL32 Temp_sense; /* Subindex7 - Temp_sense */
 REAL32 XAngle_calc; /* Subindex8 - XAngle_calc */
 REAL32 YAngle_calc; /* Subindex9 - YAngle_calc */
 REAL32 ZAngle_calc; /* Subindex16 - ZAngle_calc */
@@ -422,13 +418,13 @@ REAL32 YLinVel_calc; /* Subindex18 - YLinVel_calc */
 REAL32 ZLinVel_calc; /* Subindex19 - ZLinVel_calc */
 } OBJ_STRUCT_PACKED_END
 TOBJ6000;
-#endif //#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#endif //#ifndef _ADIS16364__IMU__SLAVE_OBJECTS_H_
 
 /**
 * \brief Object variable
 */
-PROTO TOBJ6000 SUS_SENCE0x6000
-#if defined(_ADIS16364_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16364_F28388_D_IMU_ECAT_SLAVE_ == 1)
+PROTO TOBJ6000 SUS_SENSE0x6000
+#if defined(_ADIS16364__IMU__SLAVE_) && (_ADIS16364__IMU__SLAVE_ == 1)
 ={19,0,0,0,0,0,0,0,0,0,0,0,0,0}
 #endif
 ;
@@ -472,26 +468,26 @@ PROTO TOBJ6000 SUS_SENCE0x6000
 */
 OBJCONST TSDOINFOENTRYDESC    OBJMEM asEntryDesc0x7000[] = {
 { DEFTYPE_UNSIGNED8 , 0x8 , ACCESS_READ },
-{ DEFTYPE_BOOLEAN , 0x01 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }, /* Subindex1 - XGyro_on */
-{ DEFTYPE_BOOLEAN , 0x01 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }, /* Subindex2 - YGyro_on */
-{ DEFTYPE_BOOLEAN , 0x01 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }, /* Subindex3 - ZGyro_on */
-{ DEFTYPE_BOOLEAN , 0x01 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }, /* Subindex4 - XAcc_on */
-{ DEFTYPE_BOOLEAN , 0x01 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }, /* Subindex5 - YAcc_on */
-{ DEFTYPE_BOOLEAN , 0x01 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }, /* Subindex6 - ZAcc_on */
-{ DEFTYPE_BOOLEAN , 0x01 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }, /* Subindex7 - XAngle_on */
-{ DEFTYPE_BOOLEAN , 0x01 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }, /* Subindex8 - YAngle_on */
-{ DEFTYPE_BOOLEAN , 0x01 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }, /* Subindex9 - ZAngle_on */
+{ DEFTYPE_UNSIGNED16 , 0x10 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }, /* Subindex1 - XGyro_on */
+{ DEFTYPE_UNSIGNED16 , 0x10 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }, /* Subindex2 - YGyro_on */
+{ DEFTYPE_UNSIGNED16 , 0x10 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }, /* Subindex3 - ZGyro_on */
+{ DEFTYPE_UNSIGNED16 , 0x10 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }, /* Subindex4 - XAcc_on */
+{ DEFTYPE_UNSIGNED16 , 0x10 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }, /* Subindex5 - YAcc_on */
+{ DEFTYPE_UNSIGNED16 , 0x10 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }, /* Subindex6 - ZAcc_on */
+{ DEFTYPE_UNSIGNED16 , 0x10 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }, /* Subindex7 - XAngle_on */
+{ DEFTYPE_UNSIGNED16 , 0x10 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }, /* Subindex8 - YAngle_on */
+{ DEFTYPE_UNSIGNED16 , 0x10 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }, /* Subindex9 - ZAngle_on */
 { DEFTYPE_NULL , 0x00 , 0x0000 }, /* Subindex10 does not exists */
 { DEFTYPE_NULL , 0x00 , 0x0000 }, /* Subindex11 does not exists */
 { DEFTYPE_NULL , 0x00 , 0x0000 }, /* Subindex12 does not exists */
 { DEFTYPE_NULL , 0x00 , 0x0000 }, /* Subindex13 does not exists */
 { DEFTYPE_NULL , 0x00 , 0x0000 }, /* Subindex14 does not exists */
 { DEFTYPE_NULL , 0x00 , 0x0000 }, /* Subindex15 does not exists */
-{ DEFTYPE_BOOLEAN , 0x01 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }, /* Subindex16 - XLinVel_on */
-{ DEFTYPE_BOOLEAN , 0x01 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }, /* Subindex17 - YLinVel_on */
-{ DEFTYPE_BOOLEAN , 0x01 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }, /* Subindex18 - ZLinVel_on */
-{ DEFTYPE_BOOLEAN , 0x01 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }, /* Subindex19 - Temp_on */
-{ DEFTYPE_BOOLEAN , 0x01 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }}; /* Subindex20 - HP_on */
+{ DEFTYPE_UNSIGNED16 , 0x10 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }, /* Subindex16 - XLinVel_on */
+{ DEFTYPE_UNSIGNED16 , 0x10 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }, /* Subindex17 - YLinVel_on */
+{ DEFTYPE_UNSIGNED16 , 0x10 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }, /* Subindex18 - ZLinVel_on */
+{ DEFTYPE_UNSIGNED16 , 0x10 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }, /* Subindex19 - Temp_on */
+{ DEFTYPE_UNSIGNED16 , 0x10 , ACCESS_READ | OBJACCESS_RXPDOMAPPING }}; /* Subindex20 - HP_on */
 
 /**
 * \brief Object/Entry names
@@ -519,35 +515,35 @@ OBJCONST UCHAR OBJMEM aName0x7000[] = "SUS_CONTROL\000"
 "HP_on\000\377";
 #endif //#ifdef _OBJD_
 
-#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#ifndef _ADIS16364__IMU__SLAVE_OBJECTS_H_
 /**
 * \brief Object structure
 */
 typedef struct OBJ_STRUCT_PACKED_START {
 UINT16 u16SubIndex0;
-BOOLEAN(XGyro_on); /* Subindex1 - XGyro_on */
-BOOLEAN(YGyro_on); /* Subindex2 - YGyro_on */
-BOOLEAN(ZGyro_on); /* Subindex3 - ZGyro_on */
-BOOLEAN(XAcc_on); /* Subindex4 - XAcc_on */
-BOOLEAN(YAcc_on); /* Subindex5 - YAcc_on */
-BOOLEAN(ZAcc_on); /* Subindex6 - ZAcc_on */
-BOOLEAN(XAngle_on); /* Subindex7 - XAngle_on */
-BOOLEAN(YAngle_on); /* Subindex8 - YAngle_on */
-BOOLEAN(ZAngle_on); /* Subindex9 - ZAngle_on */
-BOOLEAN(XLinVel_on); /* Subindex16 - XLinVel_on */
-BOOLEAN(YLinVel_on); /* Subindex17 - YLinVel_on */
-BOOLEAN(ZLinVel_on); /* Subindex18 - ZLinVel_on */
-BOOLEAN(Temp_on); /* Subindex19 - Temp_on */
-BOOLEAN(HP_on); /* Subindex20 - HP_on */
+UINT16 XGyro_on; /* Subindex1 - XGyro_on */
+UINT16 YGyro_on; /* Subindex2 - YGyro_on */
+UINT16 ZGyro_on; /* Subindex3 - ZGyro_on */
+UINT16 XAcc_on; /* Subindex4 - XAcc_on */
+UINT16 YAcc_on; /* Subindex5 - YAcc_on */
+UINT16 ZAcc_on; /* Subindex6 - ZAcc_on */
+UINT16 XAngle_on; /* Subindex7 - XAngle_on */
+UINT16 YAngle_on; /* Subindex8 - YAngle_on */
+UINT16 ZAngle_on; /* Subindex9 - ZAngle_on */
+UINT16 XLinVel_on; /* Subindex16 - XLinVel_on */
+UINT16 YLinVel_on; /* Subindex17 - YLinVel_on */
+UINT16 ZLinVel_on; /* Subindex18 - ZLinVel_on */
+UINT16 Temp_on; /* Subindex19 - Temp_on */
+UINT16 HP_on; /* Subindex20 - HP_on */
 } OBJ_STRUCT_PACKED_END
 TOBJ7000;
-#endif //#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#endif //#ifndef _ADIS16364__IMU__SLAVE_OBJECTS_H_
 
 /**
 * \brief Object variable
 */
 PROTO TOBJ7000 SUS_CONTROL0x7000
-#if defined(_ADIS16364_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16364_F28388_D_IMU_ECAT_SLAVE_ == 1)
+#if defined(_ADIS16364__IMU__SLAVE_) && (_ADIS16364__IMU__SLAVE_ == 1)
 ={20,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
 #endif
 ;
@@ -584,7 +580,7 @@ OBJCONST UCHAR OBJMEM aName0xF000[] = "Modular Device Profile\000"
 "Maximum number of modules \000\377";
 #endif //#ifdef _OBJD_
 
-#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#ifndef _ADIS16364__IMU__SLAVE_OBJECTS_H_
 /**
 * \brief Object structure
 */
@@ -594,13 +590,13 @@ UINT16 IndexDistance; /* Subindex1 - Index distance  */
 UINT16 MaximumNumberOfModules; /* Subindex2 - Maximum number of modules  */
 } OBJ_STRUCT_PACKED_END
 TOBJF000;
-#endif //#ifndef _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#endif //#ifndef _ADIS16364__IMU__SLAVE_OBJECTS_H_
 
 /**
 * \brief Object variable
 */
 PROTO TOBJF000 ModularDeviceProfile0xF000
-#if defined(_ADIS16364_F28388_D_IMU_ECAT_SLAVE_) && (_ADIS16364_F28388_D_IMU_ECAT_SLAVE_ == 1)
+#if defined(_ADIS16364__IMU__SLAVE_) && (_ADIS16364__IMU__SLAVE_ == 1)
 ={2,0x0010,0}
 #endif
 ;
@@ -615,15 +611,15 @@ PROTO TOBJF000 ModularDeviceProfile0xF000
 #ifdef _OBJD_
 TOBJECT    OBJMEM ApplicationObjDic[] = {
 /* Object 0x1600 */
-{NULL , NULL ,  0x1600 , {DEFTYPE_PDOMAPPING , 15 | (OBJCODE_REC << 8)} , asEntryDesc0x1600 , aName0x1600 , &SUS_CONTROLProcessDataMapping0x1600 , NULL , NULL , 0x0000 },
+{NULL , NULL ,  0x1600 , {DEFTYPE_PDOMAPPING , 14 | (OBJCODE_REC << 8)} , asEntryDesc0x1600 , aName0x1600 , &SUS_CONTROLProcessDataMapping0x1600 , NULL , NULL , 0x0000 },
 /* Object 0x1A00 */
-{NULL , NULL ,  0x1A00 , {DEFTYPE_PDOMAPPING , 13 | (OBJCODE_REC << 8)} , asEntryDesc0x1A00 , aName0x1A00 , &SUS_SENCEProcessDataMapping0x1A00 , NULL , NULL , 0x0000 },
+{NULL , NULL ,  0x1A00 , {DEFTYPE_PDOMAPPING , 13 | (OBJCODE_REC << 8)} , asEntryDesc0x1A00 , aName0x1A00 , &SUS_SENSEProcessDataMapping0x1A00 , NULL , NULL , 0x0000 },
 /* Object 0x1C12 */
 {NULL , NULL ,  0x1C12 , {DEFTYPE_UNSIGNED16 , 1 | (OBJCODE_ARR << 8)} , asEntryDesc0x1C12 , aName0x1C12 , &sRxPDOassign , NULL , NULL , 0x0000 },
 /* Object 0x1C13 */
 {NULL , NULL ,  0x1C13 , {DEFTYPE_UNSIGNED16 , 1 | (OBJCODE_ARR << 8)} , asEntryDesc0x1C13 , aName0x1C13 , &sTxPDOassign , NULL , NULL , 0x0000 },
 /* Object 0x6000 */
-{NULL , NULL ,  0x6000 , {DEFTYPE_RECORD , 19 | (OBJCODE_REC << 8)} , asEntryDesc0x6000 , aName0x6000 , &SUS_SENCE0x6000 , NULL , NULL , 0x0000 },
+{NULL , NULL ,  0x6000 , {DEFTYPE_RECORD , 19 | (OBJCODE_REC << 8)} , asEntryDesc0x6000 , aName0x6000 , &SUS_SENSE0x6000 , NULL , NULL , 0x0000 },
 /* Object 0x7000 */
 {NULL , NULL ,  0x7000 , {DEFTYPE_RECORD , 20 | (OBJCODE_REC << 8)} , asEntryDesc0x7000 , aName0x7000 , &SUS_CONTROL0x7000 , NULL , NULL , 0x0000 },
 /* Object 0xF000 */
@@ -634,4 +630,4 @@ TOBJECT    OBJMEM ApplicationObjDic[] = {
 #undef PROTO
 
 /** @}*/
-#define _ADIS16364_F28388_D_IMU_ECAT_SLAVE_OBJECTS_H_
+#define _ADIS16364__IMU__SLAVE_OBJECTS_H_

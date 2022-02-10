@@ -1,7 +1,6 @@
 /*
 * This source file is part of the EtherCAT Slave Stack Code licensed by Beckhoff Automation GmbH & Co KG, 33415 Verl, Germany.
 * The corresponding license agreement applies. This hint shall not be removed.
-* https://www.beckhoff.com/media/downloads/slave-stack-code/ethercat_ssc_license.pdf
 */
 
 /**
@@ -135,9 +134,9 @@ V5.01 : Start file change log
 #define     SYNCTYPE_TIMESVARIABLE      0x4000 /**< \brief Dynamic Cycle Times supported*/
 
 
-#define     IS_PDO_ASSIGN(x)            ((x >= 0x1C10) && (x <= 0x1C2F)) /**< \brief Macro to check if object index is SyncManager assign object*/
-#define     IS_RX_PDO(x)                (((x) >= 0x1600) && ((x) <= 0x17FF)) /**< \brief Macro to check if object index RxPDO mapping object*/
-#define     IS_TX_PDO(x)                (((x) >= 0x1A00) && ((x) <= 0x1BFF)) /**< \brief Macro to check if object index TxPDO mapping object*/
+#define     IS_PDO_ASSIGN(x)            ((x >= 0x1C10) && (x <= 0x1C2F)) /**< \brief Marco to check if object index is SyncManager assign object*/
+#define     IS_RX_PDO(x)                (((x) >= 0x1600) && ((x) <= 0x17FF)) /**< \brief Marco to check if object index RxPDO mapping object*/
+#define     IS_TX_PDO(x)                (((x) >= 0x1A00) && ((x) <= 0x1BFF)) /**< \brief Marco to check if object index TxPDO mapping object*/
 
 
 /**
@@ -178,7 +177,7 @@ typedef struct OBJ_STRUCT_PACKED_START
     UINT32    u32Sync0CycleTime; /**< \brief SunbIndex 010: Sync0 cycle time*/
     UINT16    u16SmEventMissedCounter; /**< \brief SunbIndex 011: SyncManager event missed counter*/
     UINT16    u16CycleExceededCounter; /**< \brief SunbIndex 012: Cycle exceed counter*/
-    UINT16    u16ShiftTooShort; /**< \brief SunbIndex 013: Shift too short*/
+    UINT16    u16Si13Reserved; /**< \brief SunbIndex 013: Shift too short (not supported, only padding)*/
     UINT16    u16Si14Reserved; /**< \brief SubIndex14 not supported*/
     UINT32    u32Si15Reserved; /**< \brief SubIndex15 not supported*/
     UINT32    u32Si16Reserved; /**< \brief SubIndex16 not supported*/

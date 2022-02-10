@@ -1,7 +1,6 @@
 /*
 * This source file is part of the EtherCAT Slave Stack Code licensed by Beckhoff Automation GmbH & Co KG, 33415 Verl, Germany.
 * The corresponding license agreement applies. This hint shall not be removed.
-* https://www.beckhoff.com/media/downloads/slave-stack-code/ethercat_ssc_license.pdf
 */
 
 /**
@@ -14,10 +13,8 @@
 \author EthercatSSC@beckhoff.com
 \brief Definition of the application interface functions
 
-\version 5.13
+\version 5.12
 
-<br>Changes to version V5.12:<br>
-V5.13 COE4: update default entry name handling in case of 16Bit characters, add CoE Read/write indication functions<br>
 <br>Changes to version V5.11:<br>
 V5.12 APPL1: add optional application function called from the main loop (after mbx and esm are executed)<br>
 V5.12 EEPROM3: implement a store EEPROM timeout handler<br>
@@ -68,34 +65,13 @@ V5.10.1 : Start file change log
 
 
 
-/* ECATCHANGE_START(V5.13) COE4*/
-/////////////////////////////////////////////////////////////////////////////////////////
-/**
-\param     Index            Index of the object to be read
-\param     Subindex         Subindex of the object entry to be read
-\param     CompleteAccess   Indicates if the object is read with complete access
-
-\brief    The function is called before an object/entry is read
-*////////////////////////////////////////////////////////////////////////////////////////
-PROTO void(*pAPPL_CoeReadInd)(UINT16 Index, UINT8 Subindex, BOOL CompleteAccess);
-
-/////////////////////////////////////////////////////////////////////////////////////////
-/**
-\param     Index            Index of the object which was written
-\param     Subindex         Subindex of the object entry which was written
-\param     CompleteAccess   Indicates if the object was written with complete access
-
-\brief    The function is called after an object/entry was successfully written
-*////////////////////////////////////////////////////////////////////////////////////////
-PROTO void(*pAPPL_CoeWriteInd)(UINT16 Index, UINT8 Subindex, BOOL CompleteAccess);
-
-/* ECATCHANGE_END(V5.13) COE4*/
+/*ECATCHANGE_START(V5.12) APPL1*/
 /////////////////////////////////////////////////////////////////////////////////////////
 /**
 \brief    This function is called by the SSC from the main loop
-\brief	   The function pointer is reset in MainInit() so it shall be set afterwards
 *////////////////////////////////////////////////////////////////////////////////////////
 PROTO void(*pAPPL_MainLoop)();
+/*ECATCHANGE_END(V5.12) APPL1*/
 
 /*-----------------------------------------------------------------------------------------
 ------

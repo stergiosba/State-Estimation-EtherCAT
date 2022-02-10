@@ -1,7 +1,6 @@
 /*
 * This source file is part of the EtherCAT Slave Stack Code licensed by Beckhoff Automation GmbH & Co KG, 33415 Verl, Germany. 
 * The corresponding license agreement applies. This hint shall not be removed.
-* https://www.beckhoff.com/media/downloads/slave-stack-code/ethercat_ssc_license.pdf
 */
 
 /**
@@ -15,11 +14,8 @@
 \brief Implementation
 This file contains the CoE mailbox interface
 
-\version 5.13
+\version 5.11
 
-<br>Changes to version V5.11:<br>
-V5.13 COE8: handle failure on continue indication<br>
-V5.13 TEST4: memory leak on SDO response receive<br>
 <br>Changes to version V5.0:<br>
 V5.11 COE4: "change prototype of ""COE_ContinueInd()"" return <> 0 if a failure occurred"<br>
 V5.11 ECAT10: change PROTO handling to prevent compiler errors<br>
@@ -153,12 +149,8 @@ UINT8 COE_ContinueInd(TMBX MBXMEM * pMbx)
     if (pCoeSendStored)
     {
         /* send the stored CoE service which could not be sent before */
-/*ECATCHANGE_START(V5.13) COE8*/
-        if (MBX_MailboxSendReq(pCoeSendStored, COE_SERVICE) == 0)
-        {
-            pCoeSendStored = 0;
-        }
-/*ECATCHANGE_END(V5.13) COE8*/
+        MBX_MailboxSendReq(pCoeSendStored, 0);
+        pCoeSendStored = 0;
     }
     else
     {
