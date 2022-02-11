@@ -4,7 +4,7 @@
 
 SHELL = cmd.exe
 
-CG_TOOL_ROOT := G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS
+CG_TOOL_ROOT := C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS
 
 GEN_OPTS__FLAG := 
 GEN_CMDS__FLAG := 
@@ -149,7 +149,7 @@ all: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 cla_ex1_asin.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: C2000 Linker'
-	"G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/bin/cl2000" -v28 -ml -mt --cla_support=cla2 --float_support=fpu64 --idiv_support=idiv0 --tmu_support=tmu0 --vcu_support=vcrc -O2 --opt_for_speed=2 --advice:performance=all --define=_DUAL_HEADERS --define=RAM --define=CPU1 --diag_suppress=10063 --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --cla_background_task=off --cla_signed_compare_workaround=on -z -m"cla_ex1_asin.map" --heap_size=0x200 --stack_size=0x3F8 --warn_sections -i"G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/lib" -i"G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include" --reread_libs --diag_wrap=off --display_error_number --xml_link_info="cla_ex1_asin_linkInfo.xml" --entry_point=code_start --rom_model -o "cla_ex1_asin.out" $(ORDERED_OBJS)
+	"C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/bin/cl2000" -v28 -ml -mt --cla_support=cla2 --float_support=fpu64 --idiv_support=idiv0 --tmu_support=tmu0 --vcu_support=vcrc -O2 --opt_for_speed=2 --advice:performance=all --define=_DUAL_HEADERS --define=RAM --define=CPU1 --diag_suppress=10063 --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --cla_background_task=off --cla_signed_compare_workaround=on -z -m"cla_ex1_asin.map" --heap_size=0x200 --stack_size=0x3F8 --warn_sections -i"C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/lib" -i"C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include" --reread_libs --diag_wrap=off --display_error_number --xml_link_info="cla_ex1_asin_linkInfo.xml" --entry_point=code_start --rom_model -o "cla_ex1_asin.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 	@$(MAKE) --no-print-directory post-build
@@ -157,7 +157,7 @@ cla_ex1_asin.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 cla_ex1_asin.hex: $(EXE_OUTPUTS)
 	@echo 'Building secondary target: "$@"'
 	@echo 'Invoking: C2000 Hex Utility'
-	"G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/bin/hex2000" --diag_wrap=off -o "cla_ex1_asin.hex" $(EXE_OUTPUTS__QUOTED)
+	"C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/bin/hex2000" --diag_wrap=off -o "cla_ex1_asin.hex" $(EXE_OUTPUTS__QUOTED)
 	@echo 'Finished building secondary target: "$@"'
 	@echo ' '
 	@$(MAKE) --no-print-directory post-build
@@ -173,11 +173,11 @@ clean:
 	-@echo ' '
 
 post-build:
-	-if 0 == 1  mkdir "G:/ti-workspace_v11_22/cla_ex1_asin/CPU1_RAM/simulation"
-	-if 0 == 1  C:/TDM-GCC-64/bin/g++  -c -DCLB_SIM -IC:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/systemc-2.3.3/src -IC:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/systemc/include/type3 -IG:/ti-workspace_v11_22/cla_ex1_asin -IC:/TDM-GCC-64/bin/include -Og -g -gdwarf-3 -gstrict-dwarf -Wall -MMD -MP -MFG:/ti-workspace_v11_22/cla_ex1_asin/CPU1_RAM/simulation/clb_sim.d -MTG:/ti-workspace_v11_22/cla_ex1_asin/CPU1_RAM/simulation/clb_sim.o -IG:/ti-workspace_v11_22/cla_ex1_asin/CPU1_RAM/syscfg   -fno-threadsafe-statics  -oG:/ti-workspace_v11_22/cla_ex1_asin/CPU1_RAM/simulation/clb_sim.o G:/ti-workspace_v11_22/cla_ex1_asin/CPU1_RAM/syscfg/clb_sim.cpp
-	-if 0 == 1  C:/TDM-GCC-64/bin/g++ -DCLB_SIM -Og -g -gdwarf-3 -gstrict-dwarf -Wall -Wl,-Map,G:/ti-workspace_v11_22/cla_ex1_asin/CPU1_RAM/simulation/simulation_output.map -LC:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/systemc-2.3.3/build/src -oG:/ti-workspace_v11_22/cla_ex1_asin/CPU1_RAM/simulation/simulation_output.exe G:/ti-workspace_v11_22/cla_ex1_asin/CPU1_RAM/simulation/clb_sim.o C:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/systemc/src/type3/CLB_FSM_SC_model.o C:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/systemc/src/type3/CLB_HLC_SC_model.o C:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/systemc/src/type3/CLB_LUT4_SC_model.o C:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/systemc/src/type3/CLB_OutputLUT_SC_model.o C:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/systemc/src/type3/CLB_counter_SC_model.o C:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/systemc/src/type3/CLB_counter_top_SC_model.o C:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/systemc/src/type3/CLB_FSM_top_SC_model.o C:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/systemc/src/type3/CLB_LUT4_top_SC_model.o C:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/systemc/src/type3/CLB_OutputLUT_top_SC_model.o  -Wl,--start-group -lsystemc -Wl,--end-group
+	-if 0 == 1  mkdir "C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/cla_ex1_asin/CPU1_RAM/simulation"
+	-if 0 == 1  C:/TDM-GCC-64/bin/g++  -c -DCLB_SIM -IC:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/systemc-2.3.3/src -IC:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/systemc/include/type3 -IC:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/cla_ex1_asin -IC:/TDM-GCC-64/bin/include -Og -g -gdwarf-3 -gstrict-dwarf -Wall -MMD -MP -MFC:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/cla_ex1_asin/CPU1_RAM/simulation/clb_sim.d -MTC:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/cla_ex1_asin/CPU1_RAM/simulation/clb_sim.o -IC:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/cla_ex1_asin/CPU1_RAM/syscfg   -fno-threadsafe-statics  -oC:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/cla_ex1_asin/CPU1_RAM/simulation/clb_sim.o C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/cla_ex1_asin/CPU1_RAM/syscfg/clb_sim.cpp
+	-if 0 == 1  C:/TDM-GCC-64/bin/g++ -DCLB_SIM -Og -g -gdwarf-3 -gstrict-dwarf -Wall -Wl,-Map,C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/cla_ex1_asin/CPU1_RAM/simulation/simulation_output.map -LC:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/systemc-2.3.3/build/src -oC:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/cla_ex1_asin/CPU1_RAM/simulation/simulation_output.exe C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/cla_ex1_asin/CPU1_RAM/simulation/clb_sim.o C:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/systemc/src/type3/CLB_FSM_SC_model.o C:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/systemc/src/type3/CLB_HLC_SC_model.o C:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/systemc/src/type3/CLB_LUT4_SC_model.o C:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/systemc/src/type3/CLB_OutputLUT_SC_model.o C:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/systemc/src/type3/CLB_counter_SC_model.o C:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/systemc/src/type3/CLB_counter_top_SC_model.o C:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/systemc/src/type3/CLB_FSM_top_SC_model.o C:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/systemc/src/type3/CLB_LUT4_top_SC_model.o C:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/systemc/src/type3/CLB_OutputLUT_top_SC_model.o  -Wl,--start-group -lsystemc -Wl,--end-group
 	-if 0 == 1  "./simulation/simulation_output.exe"
-	-if 0 == 1  G:/ti/ccs1110/ccs/tools/node/node.exe "C:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/dot_file_libraries/clbDotUtility.js"  "C:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/" "G:/ti-workspace_v11_22/cla_ex1_asin/CPU1_RAM/syscfg" "G:/ti-workspace_v11_22/cla_ex1_asin/CPU1_RAM/syscfg/clb.dot"
+	-if 0 == 1  C:/ti/ccs1100/ccs/tools/node/node.exe "C:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/dot_file_libraries/clbDotUtility.js"  "C:/ti/c2000/C2000Ware_4_00_00_00/utilities/clb_tool/clb_syscfg/" "C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/cla_ex1_asin/CPU1_RAM/syscfg" "C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/cla_ex1_asin/CPU1_RAM/syscfg/clb.dot"
 	-@echo ' '
 
 .PHONY: all clean dependents

@@ -28,29 +28,31 @@
 
 typedef struct
 {
-    bool XGyro_on;
-    bool YGyro_on;
-    bool ZGyro_on;
-    bool XAcc_on;
-    bool YAcc_on;
-    bool ZAcc_on;
-    bool XAngle_on;
-    bool YAngle_on;
-    bool ZAngle_on;
-    bool XLinVel_on;
-    bool YLinVel_on;
-    bool ZLinVel_on;
-    bool Temp_on;
+    uint16_t XGyro_on;
+    uint16_t YGyro_on;
+    uint16_t ZGyro_on;
+    uint16_t XAcc_on;
+    uint16_t YAcc_on;
+    uint16_t ZAcc_on;
+    uint16_t XAngle_on;
+    uint16_t YAngle_on;
+    uint16_t ZAngle_on;
+    uint16_t XLinVel_on;
+    uint16_t YLinVel_on;
+    uint16_t ZLinVel_on;
+    uint16_t Temp_on;
+    uint16_t HP_on;
 }IMU_ECAT_CtrlNode_t;
 
 typedef struct
 {
-    float XGyro_sence;
-    float YGyro_sence;
-    float ZGyro_sence;
-    float XAcc_sence;
-    float YAcc_sence;
-    float ZAcc_sence;
+    float XGyro_sense;
+    float YGyro_sense;
+    float ZGyro_sense;
+    float XAcc_sense;
+    float YAcc_sense;
+    float ZAcc_sense;
+    float Temp_sense;
     float XAngle_calc;
     float YAngle_calc;
     float ZAngle_calc;

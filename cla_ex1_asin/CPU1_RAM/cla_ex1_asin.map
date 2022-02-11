@@ -1,7 +1,7 @@
 ******************************************************************************
              TMS320C2000 Linker PC v21.6.0                     
 ******************************************************************************
->> Linked Fri Feb 11 00:28:38 2022
+>> Linked Fri Feb 11 13:02:08 2022
 
 OUTPUT FILE NAME:   <cla_ex1_asin.out>
 ENTRY POINT SYMBOL: "code_start"  address: 00000000
@@ -427,7 +427,7 @@ MODULE SUMMARY
     +--+-------------------------------+------+---------+---------+
        Total:                          2749   376       0      
                                                                
-    G:\ti\ccs1110\ccs\tools\compiler\ti-cgt-c2000_21.6.0.LTS\lib\rts2800_fpu64_eabi.lib
+    C:\ti\ccs1100\ccs\tools\compiler\ti-cgt-c2000_21.6.0.LTS\lib\rts2800_fpu64_eabi.lib
        fs_div28.asm.obj                136    0         0      
        copy_decompress_lzss.c.obj      49     0         0      
        exit.c.obj                      41     0         6      

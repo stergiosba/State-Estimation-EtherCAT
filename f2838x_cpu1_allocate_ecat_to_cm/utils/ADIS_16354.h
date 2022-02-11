@@ -34,6 +34,7 @@
 #define ADIS16375_REG_Z_ACCL_LOW                ADIS16375_REG(0x00, 0x24)
 #define ADIS16375_REG_PROD_ID                   ADIS16375_REG(0x00, 0x7E)
 #define ADIS16375_REG_GLOB_CMD                  ADIS16375_REG(0x03U, 0x02U)
+#define ADIS16375_REG_SLP_CNT                   ADIS16375_REG(0x03U, 0x10U)
 
 extern float32_t SensorRead(uint16_t reg);
 extern uint16_t RegisterRead(uint16_t);

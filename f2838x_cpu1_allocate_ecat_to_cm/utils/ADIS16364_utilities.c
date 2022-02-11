@@ -16,6 +16,7 @@
 //
 // Revision History
 // Version 00.01.00 | 2020 | Papatheodorou
+// Version 00.02.00 | 2022 | Bachoumas
 //
 // (C) Copyright 2020, NTUA CSL-EP Legged Robots Team
 //
@@ -652,7 +653,7 @@ unsigned short int IMUCommsCheck(void)
     //
     // IMU Startup Reset
     //
-    //ResetIMU();
+    ResetIMU();
 
     //
     // Check if the Prescribed Product ID matches with the Acquired one.
@@ -714,6 +715,55 @@ unsigned short int ADISConfig(void)
     return Result;
 
 }   // End Of ADISConfig()
+
+//*****************************************************************************
+//
+//! \brief Checks IMU's Power Mode.
+//!
+//! \return Status unsigned short int (uint16_t) ID Match
+//! (L: Low Power Mode | N: Normal Mode as per Table 2 page 6 of the IMUS's manual).
+//
+//*****************************************************************************
+char IMUPowerMode(void)
+{
+    //
+    // Check if the Prescribed Product ID matches with the Acquired one.
+    //
+    volatile uint16_t PowerMode = SensorRead(SMPL_PRD,16);
+
+    //return (PowerMode <= 0x09) ? 'N' : 'L';
+    return PowerMode;
+}   // End Of IMUPowerMode()
+
+//*****************************************************************************
+//
+//! \brief Performs a Manual IMU Self-Test.
+//!
+//! \return Status unsigned short int (uint16_t) ID Match
+//! (0: Low Power Mode | 1: Normal Mode as per Table 2 page 6 of the IMUS's manual).
+//
+//*****************************************************************************
+uint16_t IMUPerformSelfTest(void)
+{
+    uint16_t st_results = 0x0000;
+    //
+    // Execute Manual Self-Test Command SPI Tranfer
+    //
+    SPI_writeDataBlockingNonFIFO(SUS_SPI_BASE, 0xB504);
+
+    //
+    // Data Ready Delay
+    //
+    DEVICE_DELAY_US((25U));
+
+    //
+    // Acquire Self-Test Results
+    //
+    st_results = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
+
+    return st_results;
+
+}   // End Of IMUPerformSelfTest()
 
 //
 // End Of File

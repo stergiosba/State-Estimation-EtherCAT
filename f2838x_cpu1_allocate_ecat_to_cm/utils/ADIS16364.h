@@ -16,6 +16,7 @@
 //
 // Revision History
 // Version 00.01.00 | 2020 | Papatheodorou
+// Version 00.02.00 | 2022 | Bachoumas
 //
 // (C) Copyright 2020, NTUA CSL-EP Legged Robots Team
 //
@@ -126,6 +127,8 @@ extern unsigned short int DRngFIRCtrl(unsigned short int Range);
 extern unsigned short int TapFIRCtrl(unsigned short int Taps);
 unsigned short int IMUCommsCheck(void);
 unsigned short int ADISConfig(void);
+char IMUPowerMode(void);
+uint16_t IMUPerformSelfTest(void);
 
 #endif  // ADIS16364_H_
 

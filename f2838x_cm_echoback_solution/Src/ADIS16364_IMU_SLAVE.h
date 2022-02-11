@@ -71,6 +71,7 @@ typedef struct
     REAL32 XAcc_sense;
     REAL32 YAcc_sense;
     REAL32 ZAcc_sense;
+    REAL32 Temp_sense;
     REAL32 XAngle_calc;
     REAL32 YAngle_calc;
     REAL32 ZAngle_calc;

@@ -4,17 +4,17 @@ cla_ex1_asin.obj: ../cla_ex1_asin.c
 cla_ex1_asin.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/common/include/driverlib.h
 cla_ex1_asin.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_memmap.h
 cla_ex1_asin.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/adc.h
-cla_ex1_asin.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdbool.h
-cla_ex1_asin.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/_ti_config.h
-cla_ex1_asin.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/linkage.h
-cla_ex1_asin.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdint.h
-cla_ex1_asin.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/_stdint40.h
-cla_ex1_asin.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/stdint.h
-cla_ex1_asin.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/cdefs.h
-cla_ex1_asin.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/_types.h
-cla_ex1_asin.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/machine/_types.h
-cla_ex1_asin.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/machine/_stdint.h
-cla_ex1_asin.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/_stdint.h
+cla_ex1_asin.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdbool.h
+cla_ex1_asin.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/_ti_config.h
+cla_ex1_asin.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/linkage.h
+cla_ex1_asin.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdint.h
+cla_ex1_asin.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/_stdint40.h
+cla_ex1_asin.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/stdint.h
+cla_ex1_asin.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/cdefs.h
+cla_ex1_asin.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/_types.h
+cla_ex1_asin.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/machine/_types.h
+cla_ex1_asin.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/machine/_stdint.h
+cla_ex1_asin.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/_stdint.h
 cla_ex1_asin.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_adc.h
 cla_ex1_asin.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_sysctl.h
 cla_ex1_asin.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_types.h
@@ -101,9 +101,9 @@ cla_ex1_asin.obj: ../cla_ex1_asin_shared.h
 cla_ex1_asin.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/common/include/f28x_project.h
 cla_ex1_asin.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/common/include/f2838x_cla_typedefs.h
 cla_ex1_asin.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_device.h
-cla_ex1_asin.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/assert.h
-cla_ex1_asin.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdarg.h
-cla_ex1_asin.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stddef.h
+cla_ex1_asin.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/assert.h
+cla_ex1_asin.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdarg.h
+cla_ex1_asin.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stddef.h
 cla_ex1_asin.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_adc.h
 cla_ex1_asin.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_analogsubsys.h
 cla_ex1_asin.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_bgcrc.h
@@ -173,27 +173,27 @@ C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_memmap.h:
 
 C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/adc.h:
 
-G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdbool.h:
+C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdbool.h:
 
-G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/_ti_config.h:
+C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/_ti_config.h:
 
-G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/linkage.h:
+C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/linkage.h:
 
-G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdint.h:
+C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdint.h:
 
-G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/_stdint40.h:
+C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/_stdint40.h:
 
-G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/stdint.h:
+C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/stdint.h:
 
-G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/cdefs.h:
+C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/cdefs.h:
 
-G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/_types.h:
+C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/_types.h:
 
-G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/machine/_types.h:
+C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/machine/_types.h:
 
-G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/machine/_stdint.h:
+C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/machine/_stdint.h:
 
-G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/_stdint.h:
+C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/_stdint.h:
 
 C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_adc.h:
 
@@ -367,11 +367,11 @@ C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/common/include/f2838x_cla
 
 C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_device.h:
 
-G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/assert.h:
+C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/assert.h:
 
-G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdarg.h:
+C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdarg.h:
 
-G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stddef.h:
+C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stddef.h:
 
 C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_adc.h:
 
