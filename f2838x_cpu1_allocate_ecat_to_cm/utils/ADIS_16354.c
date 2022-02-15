@@ -7,8 +7,8 @@
 
 #include "ADIS_16354.h"
 
-unsigned short int active_page =0x0;
-uint16_t lll;
+unsigned short int active_page = 0x0;
+
 
 float32_t SensorRead(uint16_t reg)
 {
@@ -87,9 +87,6 @@ uint16_t ResetIMU(void)
     // System Ready Delay
     //
     DEVICE_DELAY_US((500000UL));
-
-    //
-    // Return Reset Operation Status
     //
     return Result;
 
@@ -107,7 +104,8 @@ uint16_t IMUCommsCheck(void)
     //
     volatile uint16_t ProdID = RegisterRead(ADIS16375_REG_PROD_ID);
 
-    return (uint16_t)(ProdID == (uint16_t)ADIS16375_ID);
+    //return (uint16_t)(ProdID == (uint16_t)ADIS16375_ID);
+    return (uint16_t) ProdID;
 
 }   // End Of IMUCommsCheck()
 
@@ -117,7 +115,7 @@ uint16_t IMUCommsCheck(void)
 
 unsigned short PageCheck(uint16_t page)
 {
-    unsigned short page_flag=0;
+    uint16_t page_flag=0;
 
     page &= 0x00FF;
     if (page != active_page) {

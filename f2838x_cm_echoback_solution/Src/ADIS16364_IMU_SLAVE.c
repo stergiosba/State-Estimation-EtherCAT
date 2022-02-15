@@ -289,7 +289,6 @@ UINT16 APPL_GenerateMapping(UINT16 *pInputSize, UINT16 *pOutputSize)
 ///////////////////////////////////////////////////////////////////////////////////////
 void APPL_InputMapping(UINT16 *pData)
 {
-    /*
     uint16_t *pTmpData = pData;
     //Gyroscope Sense
     memcpy(pTmpData, &SUS_SENSE0x6000.XGyro_sense, SIZEOF(SUS_SENSE0x6000.XGyro_sense));
@@ -325,7 +324,7 @@ void APPL_InputMapping(UINT16 *pData)
     memcpy(pTmpData, &SUS_SENSE0x6000.YLinVel_calc, SIZEOF(SUS_SENSE0x6000.YLinVel_calc));
     pTmpData += 2U;
     memcpy(pTmpData, &SUS_SENSE0x6000.ZLinVel_calc, SIZEOF(SUS_SENSE0x6000.ZLinVel_calc));
-    */
+    /*
     uint16_t *pTmpData = (uint16_t *)pData;
     *(volatile float *)pTmpData = SUS_SENSE0x6000.XGyro_sense;
     pTmpData += 2;
@@ -351,7 +350,7 @@ void APPL_InputMapping(UINT16 *pData)
     pTmpData += 2;
     *(volatile float *)pTmpData = SUS_SENSE0x6000.YLinVel_calc;
     pTmpData += 2;
-    *(volatile float *)pTmpData = SUS_SENSE0x6000.ZLinVel_calc;
+    *(volatile float *)pTmpData = SUS_SENSE0x6000.ZLinVel_calc;*/
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -365,33 +364,33 @@ void APPL_InputMapping(UINT16 *pData)
 void APPL_OutputMapping(UINT16 *pData)
 {
     uint16_t *pTmpData = pData;
-
+    //TODO CHANGE TO BOOLS AND TEST- kanoo
     SUS_CONTROL0x7000.XGyro_on = *(volatile UINT16 *)pTmpData;
-    pTmpData += 2U;
+    pTmpData += 1U;
     SUS_CONTROL0x7000.YGyro_on = *(volatile UINT16 *)pTmpData;
-    pTmpData += 2U;
+    pTmpData += 1U;
     SUS_CONTROL0x7000.ZGyro_on = *(volatile UINT16 *)pTmpData;
-    pTmpData += 2U;
+    pTmpData += 1U;
     SUS_CONTROL0x7000.XAcc_on = *(volatile UINT16 *)pTmpData;
-    pTmpData += 2U;
+    pTmpData += 1U;
     SUS_CONTROL0x7000.YAcc_on = *(volatile UINT16 *)pTmpData;
-    pTmpData += 2U;
+    pTmpData += 1U;
     SUS_CONTROL0x7000.ZAcc_on = *(volatile UINT16 *)pTmpData;
-    pTmpData += 2U;
+    pTmpData += 1U;
     SUS_CONTROL0x7000.XAngle_on = *(volatile UINT16 *)pTmpData;
-    pTmpData += 2U;
+    pTmpData += 1U;
     SUS_CONTROL0x7000.YAngle_on = *(volatile UINT16 *)pTmpData;
-    pTmpData += 2U;
+    pTmpData += 1U;
     SUS_CONTROL0x7000.ZAngle_on = *(volatile UINT16 *)pTmpData;
-    pTmpData += 2U;
+    pTmpData += 1U;
     SUS_CONTROL0x7000.XLinVel_on = *(volatile UINT16 *)pTmpData;
-    pTmpData += 2U;
+    pTmpData += 1U;
     SUS_CONTROL0x7000.YLinVel_on = *(volatile UINT16 *)pTmpData;
-    pTmpData += 2U;
+    pTmpData += 1U;
     SUS_CONTROL0x7000.ZLinVel_on = *(volatile UINT16 *)pTmpData;
-    pTmpData += 2U;
+    pTmpData += 1U;
     SUS_CONTROL0x7000.Temp_on = *(volatile UINT16 *)pTmpData;
-    pTmpData += 2U;
+    pTmpData += 1U;
     SUS_CONTROL0x7000.HP_on = *(volatile UINT16 *)pTmpData;
 }
 

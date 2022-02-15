@@ -8,6 +8,7 @@
 #include "SPI_init.h"
 #include <stdio.h>
 #include "ADIS16364.h"
+//#include "ADIS_16354.h"
 
 #define DEBUG_MODE 1
 
@@ -26,13 +27,16 @@ IMU_ECAT_IPC_PutDataBuffer ipcCPUToCMDataBuffer;
         char* msg;
 #endif
 uint16_t imu_check;
+char mode;
+uint16_t selftest = 0;
+uint16_t tests;
 #if DEBUG_MODE == 2
         char* buffer;
         //long Ecat_Sw1_Return;
 #endif
 
 
-#define TEST_VALUE 157.5f
+#define TEST_VALUE 157
 
 //
 // Main
@@ -92,7 +96,9 @@ void main(void)
     //
     SPI_init();
     ECAT_init();
-    imu_check=IMUCommsCheck();
+    //imu_check=IMUCommsCheck();
+    //mode = IMUPowerMode();
+    //selftest = IMUPerformSelfTest();
 #if DEBUG_MODE
     SCI_init();
     GPIO_setPadConfig(CCARD_LED_1_GPIO, GPIO_PIN_TYPE_STD);
@@ -128,32 +134,79 @@ void main(void)
         i++;
     }
 }
-
+/*
 void ECAT_exchangeDataCPUandCM()
 {
-
     // CPU to CM data
-    ipcCPUToCMDataBuffer.statusNode.XGyro_sence = (ipcCMToCPUDataBuffer.ctrlNode.XGyro_on)
-            ? RawToReal(SensorRead(XGYRO_OUT, SBITS14), g_GyroScale, SBITS14, 1):0.0f;
+    ipcCPUToCMDataBuffer.statusNode.XGyro_sense = (ipcCMToCPUDataBuffer.ctrlNode.XGyro_on)
+            ? SensorRead(ADIS16375_REG_X_GYRO_OUT):0.0f;
 
-    ipcCPUToCMDataBuffer.statusNode.YGyro_sence = (ipcCMToCPUDataBuffer.ctrlNode.YGyro_on)
-            ? RawToReal(SensorRead(YGYRO_OUT, SBITS14), g_GyroScale, SBITS14, 1):0.0f;
+    ipcCPUToCMDataBuffer.statusNode.YGyro_sense = (ipcCMToCPUDataBuffer.ctrlNode.YGyro_on)
+            ? SensorRead(ADIS16375_REG_Y_GYRO_OUT):0.0f;
 
-    ipcCPUToCMDataBuffer.statusNode.ZGyro_sence = (ipcCMToCPUDataBuffer.ctrlNode.ZGyro_on)
-            ? RawToReal(SensorRead(ZGYRO_OUT, SBITS14), g_GyroScale, SBITS14, 1):0.0f;
+    ipcCPUToCMDataBuffer.statusNode.ZGyro_sense = (ipcCMToCPUDataBuffer.ctrlNode.ZGyro_on)
+            ? SensorRead(ADIS16375_REG_Z_GYRO_OUT):0.0f;
 
-    ipcCPUToCMDataBuffer.statusNode.XAcc_sence = (ipcCMToCPUDataBuffer.ctrlNode.XAcc_on)
-            ? RawToReal(SensorRead(XACCL_OUT, SBITS14), g_AcclScale, SBITS14, 1):0.0f;
+    ipcCPUToCMDataBuffer.statusNode.XAcc_sense = (ipcCMToCPUDataBuffer.ctrlNode.XAcc_on)
+            ? SensorRead(ADIS16375_REG_X_ACCL_OUT):0.0f;
 
-    ipcCPUToCMDataBuffer.statusNode.YAcc_sence = (ipcCMToCPUDataBuffer.ctrlNode.YAcc_on)
-            ? RawToReal(SensorRead(YACCL_OUT, SBITS14), g_AcclScale, SBITS14, 1):0.0f;
+    ipcCPUToCMDataBuffer.statusNode.YAcc_sense = (ipcCMToCPUDataBuffer.ctrlNode.YAcc_on)
+            ? SensorRead(ADIS16375_REG_Y_ACCL_OUT):0.0f;
 
-    ipcCPUToCMDataBuffer.statusNode.ZAcc_sence = (ipcCMToCPUDataBuffer.ctrlNode.ZAcc_on)
-            ? RawToReal(SensorRead(ZACCL_OUT, SBITS14), g_AcclScale, SBITS14, 1):0.0f;
+    ipcCPUToCMDataBuffer.statusNode.ZAcc_sense = (ipcCMToCPUDataBuffer.ctrlNode.ZAcc_on)
+            ? SensorRead(ADIS16375_REG_Z_ACCL_OUT):0.0f;
+
+    ipcCPUToCMDataBuffer.statusNode.Temp_sense = (ipcCMToCPUDataBuffer.ctrlNode.Temp_on)
+            ? SensorRead(ADIS16375_REG_TEMP_OUT):0.0f;
 
     ipcCPUToCMDataBuffer.statusNode.XAngle_calc = (ipcCMToCPUDataBuffer.ctrlNode.XAngle_on)
             ? TEST_VALUE:0.0f;
 
+    ipcCPUToCMDataBuffer.statusNode.YAngle_calc = (ipcCMToCPUDataBuffer.ctrlNode.YAngle_on)
+            ? TEST_VALUE:0.0f;
+
+
+    ipcCPUToCMDataBuffer.statusNode.ZAngle_calc = (ipcCMToCPUDataBuffer.ctrlNode.ZAngle_on)
+            ? TEST_VALUE:0.0f;
+
+    ipcCPUToCMDataBuffer.statusNode.XLinVel_calc = (ipcCMToCPUDataBuffer.ctrlNode.XLinVel_on)
+            ? TEST_VALUE:0.0f;
+
+
+    ipcCPUToCMDataBuffer.statusNode.YLinVel_calc = (ipcCMToCPUDataBuffer.ctrlNode.YLinVel_on)
+            ? TEST_VALUE:0.0f;
+
+    ipcCPUToCMDataBuffer.statusNode.ZLinVel_calc = (ipcCMToCPUDataBuffer.ctrlNode.ZLinVel_on)
+            ? TEST_VALUE:0.0f;
+}
+*/
+void ECAT_exchangeDataCPUandCM()
+{
+
+    // CPU to CM data
+    ipcCPUToCMDataBuffer.statusNode.XGyro_sense = (ipcCMToCPUDataBuffer.ctrlNode.XGyro_on)
+            ? SensorRead(XGYRO_OUT, SBITS14):0.0f;
+
+    ipcCPUToCMDataBuffer.statusNode.YGyro_sense = (ipcCMToCPUDataBuffer.ctrlNode.YGyro_on)
+            ? RawToReal(SensorRead(YGYRO_OUT, SBITS14), g_GyroScale, SBITS14, 1):0.0f;
+
+    ipcCPUToCMDataBuffer.statusNode.ZGyro_sense = (ipcCMToCPUDataBuffer.ctrlNode.ZGyro_on)
+            ? RawToReal(SensorRead(ZGYRO_OUT, SBITS14), g_GyroScale, SBITS14, 1):0.0f;
+
+    ipcCPUToCMDataBuffer.statusNode.XAcc_sense = (ipcCMToCPUDataBuffer.ctrlNode.XAcc_on)
+            ? RawToReal(SensorRead(XACCL_OUT, SBITS14), g_AcclScale, SBITS14, 1):0.0f;
+
+    ipcCPUToCMDataBuffer.statusNode.YAcc_sense = (ipcCMToCPUDataBuffer.ctrlNode.YAcc_on)
+            ? RawToReal(SensorRead(YACCL_OUT, SBITS14), g_AcclScale, SBITS14, 1):0.0f;
+
+    ipcCPUToCMDataBuffer.statusNode.ZAcc_sense = (ipcCMToCPUDataBuffer.ctrlNode.ZAcc_on)
+            ? RawToReal(SensorRead(ZACCL_OUT, SBITS14), g_AcclScale, SBITS14, 1):0.0f;
+
+    ipcCPUToCMDataBuffer.statusNode.Temp_sense = (ipcCMToCPUDataBuffer.ctrlNode.Temp_on)
+            ? RawToReal(SensorRead(ZACCL_OUT, SBITS14), g_AcclScale, SBITS14, 1):0.0f;
+
+    ipcCPUToCMDataBuffer.statusNode.XAngle_calc = (ipcCMToCPUDataBuffer.ctrlNode.XAngle_on)
+            ? TEST_VALUE:0.0f;
 
     ipcCPUToCMDataBuffer.statusNode.YAngle_calc = (ipcCMToCPUDataBuffer.ctrlNode.YAngle_on)
             ? TEST_VALUE:0.0f;
