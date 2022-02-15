@@ -17,8 +17,12 @@
 // Globals
 //
 
-#pragma DATA_SECTION(ulCycleCount,"Cla1ToCpuMsgRAM");
-uint32_t ulCycleCount;
+#pragma DATA_SECTION(ulCycleCount1,"Cla1ToCpuMsgRAM");
+uint32_t ulCycleCount1;
+#pragma DATA_SECTION(ulCycleCount2,"Cla1ToCpuMsgRAM");
+uint32_t ulCycleCount2;
+#pragma DATA_SECTION(ulCycleCount3,"Cla1ToCpuMsgRAM");
+uint32_t ulCycleCount3;
 
 //
 //Task 1 (C) Variables
@@ -31,6 +35,8 @@ m_elem TaskPerformance (m_elem correct[][N],m_elem z[][N],m_elem E[][N]);
 
 #pragma DATA_SECTION(x,"Cla1DataRam")
 m_elem x[N][N];
+#pragma DATA_SECTION(xT,"Cla1DataRam")
+m_elem xT[N][N];
 #pragma DATA_SECTION(y,"Cla1DataRam")
 m_elem y[N][N];
 #pragma DATA_SECTION(z,"Cla1DataRam")

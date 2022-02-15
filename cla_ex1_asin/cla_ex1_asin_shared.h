@@ -32,9 +32,12 @@ typedef float m_elem;
 extern m_elem x[N][N];
 extern m_elem y[N][N];
 extern m_elem z[N][N];
+extern m_elem xT[N][N];
 extern m_elem K[N][N];
 
-extern uint32_t ulCycleCount;
+extern uint32_t ulCycleCount1;
+extern uint32_t ulCycleCount2;
+extern uint32_t ulCycleCount3;
 extern uint32_t kk;
 
 

@@ -1,1 +1,0 @@
-"./asin.obj" "./cla_ex1_asin.obj" "./f2838x_globalvariabledefs.obj" "./setvalue.obj" "./device/device.obj" "./device/f2838x_codestartbranch.obj" "../2838x_RAM_CLA_lnk_cpu1.cmd" "C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/ccs/Debug/driverlib.lib" "../f2838x_headers_nonBIOS_cpu1.cmd" -llibc.a 
