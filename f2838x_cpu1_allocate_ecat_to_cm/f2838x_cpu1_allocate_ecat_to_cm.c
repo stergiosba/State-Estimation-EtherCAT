@@ -17,6 +17,7 @@
 //
 //TODO Make a IPC header file
 void ECAT_exchangeDataCPUandCM(void);
+void readAccel(void);
 #pragma DATA_SECTION(ipcCMToCPUDataBuffer, "MSGRAM_CM_TO_CPU_ECAT")
 IMU_ECAT_IPC_GetDataBuffer ipcCMToCPUDataBuffer;
 
@@ -180,10 +181,42 @@ void ECAT_exchangeDataCPUandCM()
             ? TEST_VALUE:0.0f;
 }
 */
+void readAccel()
+{
+    uint16_t x,y,z;
+    SPI_writeDataNonBlocking(SUS_SPI_BASE, XACCL_OUT);
+    ACTION_DELAY;
+    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000);
+    ACTION_DELAY;
+    x = SPI_readDataNonBlocking(SUS_SPI_BASE);
+    x &= 0x3FFFU;
+    ipcCPUToCMDataBuffer.statusNode.XAcc_sense = RawToRealSign(x, g_AcclScale);
+    //MIN_DELAY;
+
+    SPI_writeDataNonBlocking(SUS_SPI_BASE, YACCL_OUT);
+    ACTION_DELAY;
+    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000);
+    ACTION_DELAY;
+    y = SPI_readDataNonBlocking(SUS_SPI_BASE);
+    y &= 0x3FFFU;
+    //MIN_DELAY;
+    ipcCPUToCMDataBuffer.statusNode.YAcc_sense = RawToRealSign(y, g_AcclScale);
+
+    SPI_writeDataNonBlocking(SUS_SPI_BASE, ZACCL_OUT);
+    ACTION_DELAY;
+    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000);
+    ACTION_DELAY;
+    z = SPI_readDataNonBlocking(SUS_SPI_BASE);
+    z &= 0x3FFFU;
+    ipcCPUToCMDataBuffer.statusNode.ZAcc_sense = RawToRealSign(z, g_AcclScale);
+}
+
 void ECAT_exchangeDataCPUandCM()
 {
 
+    readAccel();
     // CPU to CM data
+    /*
     ipcCPUToCMDataBuffer.statusNode.XGyro_sense = (ipcCMToCPUDataBuffer.ctrlNode.XGyro_on)
             ? SensorRead(XGYRO_OUT, SBITS14):0.0f;
 
@@ -192,6 +225,7 @@ void ECAT_exchangeDataCPUandCM()
 
     ipcCPUToCMDataBuffer.statusNode.ZGyro_sense = (ipcCMToCPUDataBuffer.ctrlNode.ZGyro_on)
             ? RawToReal(SensorRead(ZGYRO_OUT, SBITS14), g_GyroScale, SBITS14, 1):0.0f;
+
 
     ipcCPUToCMDataBuffer.statusNode.XAcc_sense = (ipcCMToCPUDataBuffer.ctrlNode.XAcc_on)
             ? RawToReal(SensorRead(XACCL_OUT, SBITS14), g_AcclScale, SBITS14, 1):0.0f;
@@ -223,7 +257,7 @@ void ECAT_exchangeDataCPUandCM()
             ? TEST_VALUE:0.0f;
 
     ipcCPUToCMDataBuffer.statusNode.ZLinVel_calc = (ipcCMToCPUDataBuffer.ctrlNode.ZLinVel_on)
-            ? TEST_VALUE:0.0f;
+            ? TEST_VALUE:0.0f;*/
 }
 
 //

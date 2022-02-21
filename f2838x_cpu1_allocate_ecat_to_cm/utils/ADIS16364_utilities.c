@@ -16,7 +16,6 @@
 //
 // Revision History
 // Version 00.01.00 | 2020 | Papatheodorou
-// Version 00.02.00 | 2022 | Bachoumas
 //
 // (C) Copyright 2020, NTUA CSL-EP Legged Robots Team
 //
@@ -29,7 +28,6 @@
 //*****************************************************************************
 #include <math.h>
 #include "ADIS16364.h"
-#include "SPI_init.h"
 
 //*****************************************************************************
 //
@@ -47,11 +45,12 @@ float g_GyroScale = 0.05f;
 
 //*****************************************************************************
 //
-// Accelerometer Registers' Scales [deg/s per LSB]
+// Accelerometer Registers' Scales [mg per LSB]
 //
 //*****************************************************************************
 const float g_AcclScale = 1.0f;
 
+const float g_a = 0.001f;
 //*****************************************************************************
 //
 // Temperature Register Scale [C per LSB]  -- 0x0 -> 25 C
@@ -75,26 +74,29 @@ float g_SensBurst[11] = { 0.0f, 0.0f, 0.0f, 0.0f,
                           0.0f, 0.0f, 0.0f, 0.0f,
                           0.0f, 0.0f, 0.0f };
 
+float g_SensBurst2[7] = { 0.0f, 0.0f, 0.0f, 0.0f,
+                          0.0f, 0.0f, 0.0f};
+
 //*****************************************************************************
 //
 // Active Dynamic Range Option
 //
 //*****************************************************************************
-unsigned short int g_ActiveDRng = 4;
+uint16_t g_ActiveDRng = 4U;
 
 //*****************************************************************************
 //
 // Active Filtering Taps Option
 //
 //*****************************************************************************
-unsigned short int g_ActiveTaps = 0;
+uint16_t g_ActiveTaps = 0U;
 
 //*****************************************************************************
 //
 // Minimum Taps for each Dynamic Range Variable
 //
 //*****************************************************************************
-unsigned short int g_MinTaps = 0;
+uint16_t g_MinTaps = 0U;
 
 //*****************************************************************************
 //
@@ -129,17 +131,17 @@ static inline float CpuSat(float x, float xMax, float xMin)
 //! \return Sensrd uint16_t contents of the specified register.
 //
 //*****************************************************************************
-uint16_t SensorRead(uint16_t Reg, unsigned short int NumBits)
+uint16_t SensorRead(uint16_t Reg, uint16_t NumBits)
 {
     //
     // Initialize Results' Variable
     //
-    uint16_t Sensrd = 0x0000;
+    uint16_t Sensrd = 0x0000U;
 
     //
     // Left Shift Register's Value to comply with IMU's SPI Transfer Form
     //
-    Reg <<= 8;
+    Reg <<= 8U;
 
     //
     // Request the specified Register's Contents
@@ -149,17 +151,17 @@ uint16_t SensorRead(uint16_t Reg, unsigned short int NumBits)
     //
     // Data Ready Delay
     //
-    DEVICE_DELAY_US((25U));
+    ACTION_DELAY;
 
     //
     // Dummy Transfer to update SPI's incoming register
     //
-    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000);
+    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000U);
 
     //
     // Data Ready Delay
     //
-    DEVICE_DELAY_US((25U));
+    ACTION_DELAY;
 
     //
     // Acquire SPI incoming Register's Contents
@@ -169,7 +171,7 @@ uint16_t SensorRead(uint16_t Reg, unsigned short int NumBits)
     //
     // Isolate the Register's Significant Bits
     //
-    Sensrd &= (0xFFFF >> (16 - NumBits));
+    Sensrd &= (0xFFFFU >> (16U - NumBits));
 
     //
     // Acquire SPI incoming Register's Contents
@@ -193,37 +195,37 @@ void BurstRead(void)
     //
     // Burst Registers' Significant Bits
     //
-    unsigned short int SBits[11] = { SBITS12, SBITS14, SBITS14, SBITS14,
-                                     SBITS14, SBITS14, SBITS14, SBITS12,
-                                     SBITS12, SBITS12, SBITS12 };
+    uint16_t SBits[11] = { SBITS12, SBITS14, SBITS14, SBITS14,
+                           SBITS14, SBITS14, SBITS14, SBITS12,
+                           SBITS12, SBITS12, SBITS12 };
 
     //
     // Raw Burst Readings' Vector
     //
-    uint16_t Burst[11] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    uint16_t Burst[11] = { 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U };
 
     //
     // Loop Counter Initialization
     //
-    unsigned short int i;
+    uint16_t i = 0x0U;
 
     //
     // Burst Registers' Sign Types
     //
-    unsigned short int Sign[11] = { 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 };
+    const uint16_t Sign[11] = { 0U, 1U, 1U, 1U, 1U, 1U, 1U, 1U, 1U, 1U, 0U };
 
     //
     // Burst Registers' Scales
     //
-    float RegScale[11] = { g_SupplyOutScale, g_GyroScale, g_GyroScale,
-                           g_GyroScale, g_AcclScale, g_AcclScale,
-                           g_AcclScale, g_TempScale, g_TempScale,
-                           g_TempScale, g_AdcScale };
+    const float RegScale[11] = { g_SupplyOutScale, g_GyroScale, g_GyroScale,
+                                 g_GyroScale, g_AcclScale, g_AcclScale,
+                                 g_AcclScale, g_TempScale, g_TempScale,
+                                 g_TempScale, g_AdcScale };
 
     //
     // Burst Read Pointer Initialization
     //
-    float *BurstPtr = NULL;
+    volatile float *BurstPtr = NULL;
 
     //
     // Assign SensBurst Address to Burst Read Pointer
@@ -238,22 +240,22 @@ void BurstRead(void)
     //
     // Data Ready Delay
     //
-    DEVICE_DELAY_US((25U));
+    ACTION_DELAY;
 
     //
     // Acquire Burst Mode Readings
     //
-    for (i = 0; i <= 10; i++)
+    for (i = 0U; i <= 10U; i++)
     {
         //
         // Dummy Transfer to update SPI's incoming register
         //
-        SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000);
+        SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000U);
 
         //
         // Data Ready Delay
         //
-        DEVICE_DELAY_US((25U));
+        ACTION_DELAY;
 
         //
         // Acquire SPI incoming Register's Contents
@@ -263,18 +265,110 @@ void BurstRead(void)
         //
         // Isolate the Register's Significant Bits
         //
-        Burst[i] &= (0xFFFF >> (16 - SBits[i]));
+        Burst[i] &= (0xFFFFU >> (16U - SBits[i]));
     }
 
     //
     // Iterate the Acquired Raw Readings
     //
-    for (i = 0; i <= 10; i++)
+    for (i = 0U; i <= 10U; i++)
     {
         //
         // Translate Raw Readings to the Actual ones
         //
         *(BurstPtr + i) = RawToReal(Burst[i], RegScale[i], SBits[i], Sign[i]);
+    }
+}   // End Of BurstRead()
+
+
+void BurstRead2(void)
+{
+    //
+    // Burst Registers' Significant Bits
+    //
+    uint16_t SBits[7] = { SBITS12, SBITS14, SBITS14, SBITS14,
+                           SBITS14, SBITS14, SBITS14};
+
+    //
+    // Raw Burst Readings' Vector
+    //
+    uint16_t Burst[7] = { 0U, 0U, 0U, 0U, 0U, 0U, 0U};
+
+    //
+    // Loop Counter Initialization
+    //
+    uint16_t i = 0x0U;
+
+    //
+    // Burst Registers' Sign Types
+    //
+    const uint16_t Sign[7] = { 0U, 1U, 1U, 1U, 1U, 1U, 1U};
+
+    //
+    // Burst Registers' Scales
+    //
+    const float RegScale[7] = { g_SupplyOutScale, g_GyroScale, g_GyroScale,
+                                 g_GyroScale, g_AcclScale, g_AcclScale,
+                                 g_AcclScale};
+
+    //
+    // Execute Burst Command SPI Tranfer
+    //
+    SPI_writeDataBlockingNonFIFO(SUS_SPI_BASE, 0x3E00);
+
+    //
+    // Data Ready Delay
+    //
+    ACTION_DELAY;
+
+    //
+    // Acquire Burst Mode Readings
+    //
+    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000U);
+    //ACTION_DELAY;
+    Burst[0] = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
+    Burst[0] &= 0xFFFU;
+    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000U);
+    //ACTION_DELAY;
+    Burst[1] = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
+    Burst[1] &= 0x3FFFU;
+    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000U);
+    //ACTION_DELAY;
+    Burst[2] = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
+    Burst[2] &= 0x3FFFU;
+    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000U);
+    //ACTION_DELAY;
+    Burst[3] = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
+    Burst[3] &= 0x3FFFU;
+    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000U);
+    //ACTION_DELAY;
+    Burst[4] = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
+    Burst[4] &= 0x3FFFU;
+    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000U);
+    //ACTION_DELAY;
+    Burst[5] = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
+    Burst[5] &= 0x3FFFU;
+    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000U);
+    //ACTION_DELAY;
+    Burst[6] = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
+    Burst[6] &= 0x3FFFU;
+    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000U);
+    //MIN_DELAY;
+    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000U);
+    //MIN_DELAY;
+    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000U);
+    //MIN_DELAY;
+    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000U);
+
+    //
+    // Iterate the Acquired Raw Readings
+    //
+    for (i = 0U; i <= 6U; i++)
+    {
+        //
+        // Translate Raw Readings to the Actual ones
+        //
+        g_SensBurst2[i] = RawToReal(Burst[i], RegScale[i], SBits[i], Sign[i]);
     }
 }   // End Of BurstRead()
 
@@ -291,13 +385,12 @@ void BurstRead(void)
 //! \return Status unsigned short int Operation Status (0: Fail | 1: Success)
 //
 //*****************************************************************************
-unsigned short int SensorWrite(unsigned short int Reg,
-                               unsigned short int Value)
+uint16_t SensorWrite(uint16_t Reg, uint16_t Value)
 {
     //
     // Initialize Register's Write Command Variable
     //
-    uint16_t Cmd = 0x0000;
+    uint16_t Cmd = 0x0000U;
 
     //
     // Combine value & Register's address to a single Write Command
@@ -307,12 +400,12 @@ unsigned short int SensorWrite(unsigned short int Reg,
     //
     // Left Shift Register's Value to comply with IMU's SPI Transfer Form
     //
-    Cmd <<= 8;
+    Cmd <<= 8U;
 
     //
     // Form the Register's Write Command
     //
-    Cmd |= (0x8000 | Value);
+    Cmd |= (0x8000U | (0x00FFU & Value));
 
     //
     // Execute SPI Transfer
@@ -327,7 +420,7 @@ unsigned short int SensorWrite(unsigned short int Reg,
     //
     // Write Operation Successful
     //
-    return 1;
+    return 1U;
 
 }   // End Of SensorWrite()
 
@@ -344,13 +437,13 @@ unsigned short int SensorWrite(unsigned short int Reg,
 //! \return Reading float Register's Actual Value.
 //
 //*****************************************************************************
-float RawToReal(uint16_t Raw, float RegScale, unsigned short int NumBits,
-                unsigned short int Sign)
+float RawToReal(uint16_t Raw, float RegScale, uint16_t NumBits,
+                uint16_t Sign)
 {
     //
     // Initialize Mask
     //
-    uint16_t Mask = 0x0000;
+    uint16_t Mask = 0x0000U;
 
     //
     // Signed Floating Point Unscaled Reading Initialization
@@ -360,18 +453,18 @@ float RawToReal(uint16_t Raw, float RegScale, unsigned short int NumBits,
     //
     // Mask for Significant Bits
     //
-    Mask = 0xFFFF << (NumBits - 1);
+    Mask = 0xFFFFU << (NumBits - 1U);
 
     //
     // Register's Value is Signed
     //
-    if (Sign == 1)
+    if (Sign == 1U)
     {
         //
         // Make Sign Negatvie & Reading Floating Point
         //
         Sens = (Raw & Mask) ?
-                        (-1.0f * (~(Raw | 0xFFFF << NumBits) + 1.0f)) :
+                        (-1.0f * (~(Raw | 0xFFFFU << NumBits) + 1.0f)) :
                         (1.0f * Raw);
     }
 
@@ -387,6 +480,29 @@ float RawToReal(uint16_t Raw, float RegScale, unsigned short int NumBits,
 
 }   // End Of RawToReal()
 
+float RawToRealSign(uint16_t Raw, float RegScale)
+{
+    //
+    // Mask for significant bits
+    //
+    uint16_t Mask = 0xE000U;
+
+    //
+    // Signed Floating Point Unscaled Reading Initialization
+    //
+    float Sens;
+
+    //
+    // Register's Value is Signed
+    //
+    Sens = (Raw & Mask) ?
+            (-RegScale * (~(Raw | 0xC000U) + 1.0f)) :
+            (RegScale * Raw);
+
+    return Sens;
+
+}   // End Of RawToReal()
+
 //*****************************************************************************
 //
 //! \brief Translates a floating point value to two-complements usigned
@@ -399,14 +515,14 @@ float RawToReal(uint16_t Raw, float RegScale, unsigned short int NumBits,
 //*****************************************************************************
 uint16_t TwosComp(float Num)
 {
-    uint16_t Raw = 0x0000;
+    uint16_t Raw = 0x0000U;
 
     //
     // Value is Negative
     //
-    if (Num < 0)
+    if (Num < 0U)
     {
-        Raw = ~((uint16_t)(-Num) - 1);
+        Raw = ~((uint16_t)(-Num) - 1U);
     }
 
     //
@@ -431,22 +547,22 @@ uint16_t TwosComp(float Num)
 //! \return Result unsigned short int operation status (0: Fail | 1: Success).
 //
 //*****************************************************************************
-unsigned short int ResetIMU()
+uint16_t ResetIMU(void)
 {
     //
     // Operation Result Variable
     //
-    unsigned short int Result = 1;
+    uint16_t Result = 1U;
 
     //
     // Execute the required SPI Write Transfer to Reset IMU
     //
-    Result *= SensorWrite(GLOB_CMD, 0x80);
+    Result *= SensorWrite(GLOB_CMD, 0x80U);
 
     //
     // System Ready Delay
     //
-    DEVICE_DELAY_US((200*1000UL));
+    DEVICE_DELAY_US((200 * 1000UL));
 
     //
     // Return Reset Operation Status
@@ -466,22 +582,22 @@ unsigned short int ResetIMU()
 //! \return Result unsigned short int Operation Status (0: Fail | 1: Success).
 //
 //*****************************************************************************
-unsigned short int TapFIRCtrl(unsigned short int Taps)
+uint16_t TapFIRCtrl(uint16_t Taps)
 {
     //
     // Operation Result Variable
     //
-    unsigned short int Result = 1;
+    uint16_t Result = 1U;
 
     //
     // Invalid Number of Taps
     //
-    if (Taps > 7)
+    if (Taps > 7U)
     {
         //
         // Return Failed Status
         //
-        Result = 0;
+        Result = 0U;
     }
 
     //
@@ -492,18 +608,19 @@ unsigned short int TapFIRCtrl(unsigned short int Taps)
         //
         // Acquire Current Register's Value
         //
-        uint16_t RegValue = SensorRead(SENS_AVG, 16);
+        uint16_t RegValue = SensorRead(SENS_AVG, 16U);
 
         //
         // Create the Desired Taps' Set Command
         //
-        uint16_t Cmd = ((RegValue & 0xFFF8) | (uint16_t)Taps);
+        uint16_t Cmd = ((RegValue & 0xFFF8U) | (uint16_t)Taps);
+
 
         //
         // Execute the requires SPI Transfers to set the Taps
         //
-        Result *= SensorWrite(SENS_AVG, (0x00FF & Cmd));
-        Result *= SensorWrite(SENS_AVG + 0x0001, ((0xFF00 & Cmd) >> 8));
+        Result *= SensorWrite(SENS_AVG, (0x00FFU & Cmd));
+        Result *= SensorWrite(SENS_AVG + 0x0001U, ((0xFF00U & Cmd) >> 8U));
 
         //
         // Update Active Taps Number
@@ -532,22 +649,22 @@ unsigned short int TapFIRCtrl(unsigned short int Taps)
 //! \return Result unsigned short int Operation Status (0: Fail | 1: Success).
 //
 //*****************************************************************************
-unsigned short int DRngFIRCtrl(unsigned short int Range)
+uint16_t DRngFIRCtrl(uint16_t Range)
 {
     //
     // Operation Result Variable
     //
-    unsigned short int Result = 1;
+    uint16_t Result = 1U;
 
     //
     // Invalid Range
     //
-    if (Range == 0 || Range == 3 || Range > 4)
+    if (Range == 0U || Range == 3U || Range > 4U)
     {
         //
         // Return Failed Status
         //
-        Result = 0;
+        Result = 0U;
     }
 
     //
@@ -558,63 +675,62 @@ unsigned short int DRngFIRCtrl(unsigned short int Range)
         //
         // Set Status to Success
         //
-        Result = 1;
+        Result = 1U;
 
         //
         // Desired Range is (1)
         //
-        if (Range == 1)
+        if (Range == 1U)
         {
             //
             // Minimum Taps Allowed
             //
-            g_MinTaps = 4;
+            g_MinTaps = 4U;
 
             //
             // Change Gyroscopes' Scaling
             //
-            g_GyroScale = 0.0125;
+            g_GyroScale = 0.0125f;
         }
 
         //
         // Desired Range is (2)
         //
-        else if (Range == 2)
+        else if (Range == 2U)
         {
             //
             // Minimum Taps Allowed
             //
-            g_MinTaps = 2;
+            g_MinTaps = 2U;
 
             //
             // Change Gyroscopes' Scaling
             //
-            g_GyroScale = 0.025;
+            g_GyroScale = 0.025f;
         }
         else
         {
             //
             // Minimum Taps Allowed
             //
-            g_MinTaps = 0;
+            g_MinTaps = 0U;
 
             //
             // Change Gyroscopes' Scaling
             //
-            g_GyroScale = 0.05;
+            g_GyroScale = 0.05f;
         }
 
         //
         // Change Active Taps
         //
-        Result *= TapFIRCtrl(
-                        (unsigned short int)CpuSat((float)g_ActiveTaps,
+        Result *= TapFIRCtrl((uint16_t)CpuSat((float)g_ActiveTaps,
                                                    7.0f, (float)g_MinTaps));
 
         //
         // Read Current Register's Value
         //
-        uint16_t RegValue = SensorRead(SENS_AVG, 16);
+        uint16_t RegValue = SensorRead(SENS_AVG, 16U);
 
         //
         // Create Desired Active Range's Command
@@ -624,8 +740,8 @@ unsigned short int DRngFIRCtrl(unsigned short int Range)
         //
         // Execute the requires SPI Transfers to set the Dynamic Range
         //
-        Result *= SensorWrite(SENS_AVG, (0x00FF & Cmd));
-        Result *= SensorWrite(SENS_AVG + 0x0001, ((0xFF00 & Cmd) >> 8));
+        Result *= SensorWrite(SENS_AVG, (0x00FFU & Cmd));
+        Result *= SensorWrite(SENS_AVG + 0x0001U, ((0xFF00U & Cmd) >> 8U));
 
         //
         // Update Active Taps Number
@@ -648,19 +764,14 @@ unsigned short int DRngFIRCtrl(unsigned short int Range)
 //! (0: Mismatching IDs | 1: Matching IDs).
 //
 //*****************************************************************************
-unsigned short int IMUCommsCheck(void)
+uint16_t IMUCommsCheck(void)
 {
-    //
-    // IMU Startup Reset
-    //
     ResetIMU();
-
     //
     // Check if the Prescribed Product ID matches with the Acquired one.
     //
-    volatile uint16_t ProdID = SensorRead(PROD_ID,16);
-
-    return (uint16_t)(ProdID == (uint16_t)ADIS16364_ID);
+    volatile uint16_t ProdID = SensorRead(PROD_ID, 16U);
+    return  (uint16_t)(ProdID == (uint16_t)ADIS16364_ID);
 
 }   // End Of IMUCommsCheck()
 
@@ -671,38 +782,39 @@ unsigned short int IMUCommsCheck(void)
 //! \return Result unsigned short int Operation Status (0: Fail | 1: Success).
 //
 //*****************************************************************************
-unsigned short int ADISConfig(void)
+uint16_t ADISConfig(void)
 {
     //
     // Default Command for Setup
     //
-    uint16_t Cmd = 0x00C2;
+    uint16_t Cmd = 0x00C2U;
 
     //
     // Current Register's Value Variable Initialization
     //
-    uint16_t RegValue = 0x000;
+    uint16_t RegValue = 0x000U;
 
     //
     // Operation Status Variable Initialization
     //
-    unsigned short int Result = 1;
+    uint16_t Result = 1U;
 
     //
     // Acquire Current Register's Value
     //
-    RegValue = SensorRead(MSC_CTRL, 16);
+    RegValue = SensorRead(MSC_CTRL, 16U);
 
     //
     // Change the Command to leave other Options Unchanged
     //
-    Cmd |= (0xFF00 & RegValue);
+    Cmd |= (0xFF00U & RegValue);
+
 
     //
     // Execute the SPI Transfers to Set the Default IMU Setup
     //
-    Result *= SensorWrite(MSC_CTRL, (0x00FF & Cmd));
-    Result *= SensorWrite(MSC_CTRL + 0x0001, ((0xFF00 & Cmd) >> 8));
+    Result *= SensorWrite(MSC_CTRL, (0x00FFU & Cmd));
+    Result *= SensorWrite(MSC_CTRL + 0x0001U, ((0xFF00U & Cmd) >> 8U));
 
     //
     // Reset Filtering Options
@@ -715,55 +827,6 @@ unsigned short int ADISConfig(void)
     return Result;
 
 }   // End Of ADISConfig()
-
-//*****************************************************************************
-//
-//! \brief Checks IMU's Power Mode.
-//!
-//! \return Status unsigned short int (uint16_t) ID Match
-//! (L: Low Power Mode | N: Normal Mode as per Table 2 page 6 of the IMUS's manual).
-//
-//*****************************************************************************
-char IMUPowerMode(void)
-{
-    //
-    // Check if the Prescribed Product ID matches with the Acquired one.
-    //
-    volatile uint16_t PowerMode = SensorRead(SMPL_PRD,16);
-
-    //return (PowerMode <= 0x09) ? 'N' : 'L';
-    return PowerMode;
-}   // End Of IMUPowerMode()
-
-//*****************************************************************************
-//
-//! \brief Performs a Manual IMU Self-Test.
-//!
-//! \return Status unsigned short int (uint16_t) ID Match
-//! (0: Low Power Mode | 1: Normal Mode as per Table 2 page 6 of the IMUS's manual).
-//
-//*****************************************************************************
-uint16_t IMUPerformSelfTest(void)
-{
-    uint16_t st_results = 0x0000;
-    //
-    // Execute Manual Self-Test Command SPI Tranfer
-    //
-    SPI_writeDataBlockingNonFIFO(SUS_SPI_BASE, 0xB504);
-
-    //
-    // Data Ready Delay
-    //
-    DEVICE_DELAY_US((25U));
-
-    //
-    // Acquire Self-Test Results
-    //
-    st_results = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
-
-    return st_results;
-
-}   // End Of IMUPerformSelfTest()
 
 //
 // End Of File
