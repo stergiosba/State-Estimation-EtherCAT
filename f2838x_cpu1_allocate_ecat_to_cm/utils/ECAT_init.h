@@ -78,9 +78,9 @@ typedef struct
     IMU_ECAT_StatusNode_t statusNode;
 }IMU_ECAT_IPC_PutDataBuffer;
 
-/*extern ECAT_IPC_PutDataBuffer ipcCMToCPUDataBuffer;
-extern ECAT_IPC_GetDataBuffer ipcCPUToCMDataBuffer;
-*/
+extern IMU_ECAT_IPC_GetDataBuffer ipcCMToCPUDataBuffer;
+extern IMU_ECAT_IPC_PutDataBuffer ipcCPUToCMDataBuffer;
+
 
 
 void ECAT_init(void);

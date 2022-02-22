@@ -3,9 +3,7 @@
 // Included Files
 //
 #include "SCI_init.h"
-#include "ECAT_init.h"
 #include <math.h>
-#include "SPI_init.h"
 #include <stdio.h>
 #include "ADIS16364.h"
 //#include "ADIS_16354.h"
@@ -18,6 +16,7 @@
 //TODO Make a IPC header file
 void ECAT_exchangeDataCPUandCM(void);
 void readAccel(void);
+void readGyro();
 #pragma DATA_SECTION(ipcCMToCPUDataBuffer, "MSGRAM_CM_TO_CPU_ECAT")
 IMU_ECAT_IPC_GetDataBuffer ipcCMToCPUDataBuffer;
 
@@ -135,52 +134,7 @@ void main(void)
         i++;
     }
 }
-/*
-void ECAT_exchangeDataCPUandCM()
-{
-    // CPU to CM data
-    ipcCPUToCMDataBuffer.statusNode.XGyro_sense = (ipcCMToCPUDataBuffer.ctrlNode.XGyro_on)
-            ? SensorRead(ADIS16375_REG_X_GYRO_OUT):0.0f;
 
-    ipcCPUToCMDataBuffer.statusNode.YGyro_sense = (ipcCMToCPUDataBuffer.ctrlNode.YGyro_on)
-            ? SensorRead(ADIS16375_REG_Y_GYRO_OUT):0.0f;
-
-    ipcCPUToCMDataBuffer.statusNode.ZGyro_sense = (ipcCMToCPUDataBuffer.ctrlNode.ZGyro_on)
-            ? SensorRead(ADIS16375_REG_Z_GYRO_OUT):0.0f;
-
-    ipcCPUToCMDataBuffer.statusNode.XAcc_sense = (ipcCMToCPUDataBuffer.ctrlNode.XAcc_on)
-            ? SensorRead(ADIS16375_REG_X_ACCL_OUT):0.0f;
-
-    ipcCPUToCMDataBuffer.statusNode.YAcc_sense = (ipcCMToCPUDataBuffer.ctrlNode.YAcc_on)
-            ? SensorRead(ADIS16375_REG_Y_ACCL_OUT):0.0f;
-
-    ipcCPUToCMDataBuffer.statusNode.ZAcc_sense = (ipcCMToCPUDataBuffer.ctrlNode.ZAcc_on)
-            ? SensorRead(ADIS16375_REG_Z_ACCL_OUT):0.0f;
-
-    ipcCPUToCMDataBuffer.statusNode.Temp_sense = (ipcCMToCPUDataBuffer.ctrlNode.Temp_on)
-            ? SensorRead(ADIS16375_REG_TEMP_OUT):0.0f;
-
-    ipcCPUToCMDataBuffer.statusNode.XAngle_calc = (ipcCMToCPUDataBuffer.ctrlNode.XAngle_on)
-            ? TEST_VALUE:0.0f;
-
-    ipcCPUToCMDataBuffer.statusNode.YAngle_calc = (ipcCMToCPUDataBuffer.ctrlNode.YAngle_on)
-            ? TEST_VALUE:0.0f;
-
-
-    ipcCPUToCMDataBuffer.statusNode.ZAngle_calc = (ipcCMToCPUDataBuffer.ctrlNode.ZAngle_on)
-            ? TEST_VALUE:0.0f;
-
-    ipcCPUToCMDataBuffer.statusNode.XLinVel_calc = (ipcCMToCPUDataBuffer.ctrlNode.XLinVel_on)
-            ? TEST_VALUE:0.0f;
-
-
-    ipcCPUToCMDataBuffer.statusNode.YLinVel_calc = (ipcCMToCPUDataBuffer.ctrlNode.YLinVel_on)
-            ? TEST_VALUE:0.0f;
-
-    ipcCPUToCMDataBuffer.statusNode.ZLinVel_calc = (ipcCMToCPUDataBuffer.ctrlNode.ZLinVel_on)
-            ? TEST_VALUE:0.0f;
-}
-*/
 void readAccel()
 {
     uint16_t x,y,z;
@@ -188,7 +142,7 @@ void readAccel()
     ACTION_DELAY;
     SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000);
     ACTION_DELAY;
-    x = SPI_readDataNonBlocking(SUS_SPI_BASE);
+    x = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
     x &= 0x3FFFU;
     ipcCPUToCMDataBuffer.statusNode.XAcc_sense = RawToRealSign(x, g_AcclScale);
     //MIN_DELAY;
@@ -197,7 +151,7 @@ void readAccel()
     ACTION_DELAY;
     SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000);
     ACTION_DELAY;
-    y = SPI_readDataNonBlocking(SUS_SPI_BASE);
+    y = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
     y &= 0x3FFFU;
     //MIN_DELAY;
     ipcCPUToCMDataBuffer.statusNode.YAcc_sense = RawToRealSign(y, g_AcclScale);
@@ -206,15 +160,47 @@ void readAccel()
     ACTION_DELAY;
     SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000);
     ACTION_DELAY;
-    z = SPI_readDataNonBlocking(SUS_SPI_BASE);
+    z = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
     z &= 0x3FFFU;
     ipcCPUToCMDataBuffer.statusNode.ZAcc_sense = RawToRealSign(z, g_AcclScale);
+}
+
+void readGyro()
+{
+    uint16_t x,y,z;
+    SPI_writeDataNonBlocking(SUS_SPI_BASE, XGYRO_OUT);
+    ACTION_DELAY;
+    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000);
+    ACTION_DELAY_DIV2;
+    x = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
+    x &= 0x3FFFU;
+    ipcCPUToCMDataBuffer.statusNode.XGyro_sense = RawToRealSign(x, g_GyroScale);
+    //MIN_DELAY;
+
+    SPI_writeDataNonBlocking(SUS_SPI_BASE, YGYRO_OUT);
+    ACTION_DELAY;
+    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000);
+    ACTION_DELAY_DIV2;
+    y = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
+    y &= 0x3FFFU;
+    //MIN_DELAY;
+    ipcCPUToCMDataBuffer.statusNode.YGyro_sense = RawToRealSign(y, g_GyroScale);
+
+    SPI_writeDataNonBlocking(SUS_SPI_BASE, ZGYRO_OUT);
+    ACTION_DELAY;
+    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000);
+    ACTION_DELAY_DIV2;
+    z = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
+    z &= 0x3FFFU;
+    ipcCPUToCMDataBuffer.statusNode.ZGyro_sense = RawToRealSign(z, g_GyroScale);
 }
 
 void ECAT_exchangeDataCPUandCM()
 {
 
-    readAccel();
+    //readAccel();
+    //readGyro();
+    BurstRead2();
     // CPU to CM data
     /*
     ipcCPUToCMDataBuffer.statusNode.XGyro_sense = (ipcCMToCPUDataBuffer.ctrlNode.XGyro_on)

@@ -286,30 +286,19 @@ void BurstRead2(void)
     //
     // Burst Registers' Significant Bits
     //
-    uint16_t SBits[7] = { SBITS12, SBITS14, SBITS14, SBITS14,
-                           SBITS14, SBITS14, SBITS14};
+    uint16_t SBits[11] = { SBITS12, SBITS14, SBITS14, SBITS14,
+                           SBITS14, SBITS14, SBITS14, SBITS12,
+                           SBITS12, SBITS12, SBITS12 };
 
     //
     // Raw Burst Readings' Vector
     //
-    uint16_t Burst[7] = { 0U, 0U, 0U, 0U, 0U, 0U, 0U};
+    uint16_t Burst[11] = { 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U };
 
     //
     // Loop Counter Initialization
     //
-    uint16_t i = 0x0U;
-
-    //
-    // Burst Registers' Sign Types
-    //
-    const uint16_t Sign[7] = { 0U, 1U, 1U, 1U, 1U, 1U, 1U};
-
-    //
-    // Burst Registers' Scales
-    //
-    const float RegScale[7] = { g_SupplyOutScale, g_GyroScale, g_GyroScale,
-                                 g_GyroScale, g_AcclScale, g_AcclScale,
-                                 g_AcclScale};
+    uint8_t i = 0x0U;
 
     //
     // Execute Burst Command SPI Tranfer
@@ -324,52 +313,36 @@ void BurstRead2(void)
     //
     // Acquire Burst Mode Readings
     //
-    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000U);
-    //ACTION_DELAY;
-    Burst[0] = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
-    Burst[0] &= 0xFFFU;
-    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000U);
-    //ACTION_DELAY;
-    Burst[1] = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
-    Burst[1] &= 0x3FFFU;
-    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000U);
-    //ACTION_DELAY;
-    Burst[2] = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
-    Burst[2] &= 0x3FFFU;
-    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000U);
-    //ACTION_DELAY;
-    Burst[3] = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
-    Burst[3] &= 0x3FFFU;
-    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000U);
-    //ACTION_DELAY;
-    Burst[4] = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
-    Burst[4] &= 0x3FFFU;
-    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000U);
-    //ACTION_DELAY;
-    Burst[5] = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
-    Burst[5] &= 0x3FFFU;
-    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000U);
-    //ACTION_DELAY;
-    Burst[6] = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
-    Burst[6] &= 0x3FFFU;
-    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000U);
-    //MIN_DELAY;
-    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000U);
-    //MIN_DELAY;
-    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000U);
-    //MIN_DELAY;
-    SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000U);
-
-    //
-    // Iterate the Acquired Raw Readings
-    //
-    for (i = 0U; i <= 6U; i++)
+    for (i = 0U; i <= 10U; i++)
     {
         //
-        // Translate Raw Readings to the Actual ones
+        // Dummy Transfer to update SPI's incoming register
         //
-        g_SensBurst2[i] = RawToReal(Burst[i], RegScale[i], SBits[i], Sign[i]);
+        SPI_writeDataNonBlocking(SUS_SPI_BASE, 0x0000U);
+
+        //
+        // Data Ready Delay
+        //
+        ACTION_DELAY;
+
+        //
+        // Acquire SPI incoming Register's Contents
+        //
+        Burst[i] = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
+
+        //
+        // Isolate the Register's Significant Bits
+        //
+        Burst[i] &= (0xFFFFU >> (16U - SBits[i]));
     }
+
+    ipcCPUToCMDataBuffer.statusNode.XGyro_sense = RawToRealSign(Burst[1], g_GyroScale);
+    ipcCPUToCMDataBuffer.statusNode.YGyro_sense = RawToRealSign(Burst[2], g_GyroScale);
+    ipcCPUToCMDataBuffer.statusNode.ZGyro_sense = RawToRealSign(Burst[3], g_GyroScale);
+    ipcCPUToCMDataBuffer.statusNode.XAcc_sense = RawToRealSign(Burst[4], g_AcclScale);
+    ipcCPUToCMDataBuffer.statusNode.YAcc_sense = RawToRealSign(Burst[5], g_AcclScale);
+    ipcCPUToCMDataBuffer.statusNode.ZAcc_sense = RawToRealSign(Burst[6], g_AcclScale);
+
 }   // End Of BurstRead()
 
 //*****************************************************************************
@@ -415,7 +388,7 @@ uint16_t SensorWrite(uint16_t Reg, uint16_t Value)
     //
     // Data Ready Delay
     //
-    DEVICE_DELAY_US((25U));
+    ACTION_DELAY;
 
     //
     // Write Operation Successful

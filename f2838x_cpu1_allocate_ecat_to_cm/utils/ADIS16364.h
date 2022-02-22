@@ -31,31 +31,33 @@
 #include "driverlib.h"
 #include "device.h"
 #include "SPI_init.h"
+#include "ECAT_init.h"
 
 //*****************************************************************************
 //
 // Definitions
 //
 //*****************************************************************************
-#define WRDLEN          16U      // SPI Transfer Word Size
-#define SPIOPFRQ        600000UL // 600 kHz SPI Operational Frequency
-#define SBITS14         14U      // 14 Significant Bits
-#define SBITS12         12U      // 12 Significant Bits
-#define ADIS16364_ID    0x3FEC  // ADIS16375 ID Number
-#define ADIS_SMPL       819.0f   // ADIS16375 Sampling Frequency [Hz]
-#define SUPPLY          0U       // Supply Voltage's Burst-Read Position
-#define XGYRO           1U       // X-Gyroscope Reading's Burst-Read Pos.
-#define YGYRO           2U       // Y-Gyroscope Reading's Burst-Read Pos.
-#define ZGYRO           3U       // Z-Gyroscope Reading's Burst-Read Pos.
-#define XACCEL          4U       // X-Accelerometer Reading's Burst-Read Pos.
-#define YACCEL          5U       // Y-Accelerometer Reading's Burst-Read Pos.
-#define ZACCEL          6U       // Z-Accelerometer Reading's Burst-Read Pos.
-#define XTEMP           7U       // X-Temperature Reading's Burst-Read Pos.
-#define YTEMP           8U       // Y-Temperature Reading's Burst-Read Pos.
-#define ZTEMP           9U       // Z-Temperature Reading's Burst-Read Pos.
-#define ANALOG          10U      // ADC Reading's Burst-Read Pos.3
-#define ACTION_DELAY    DEVICE_DELAY_US(30U)
-#define MIN_DELAY       DEVICE_DELAY_US(5U)
+#define WRDLEN              16U      // SPI Transfer Word Size
+#define SPIOPFRQ            600000UL // 600 kHz SPI Operational Frequency
+#define SBITS14             14U      // 14 Significant Bits
+#define SBITS12             12U      // 12 Significant Bits
+#define ADIS16364_ID        0x3FEC  // ADIS16375 ID Number
+#define ADIS_SMPL           819.0f   // ADIS16375 Sampling Frequency [Hz]
+#define SUPPLY              0U       // Supply Voltage's Burst-Read Position
+#define XGYRO               1U       // X-Gyroscope Reading's Burst-Read Pos.
+#define YGYRO               2U       // Y-Gyroscope Reading's Burst-Read Pos.
+#define ZGYRO               3U       // Z-Gyroscope Reading's Burst-Read Pos.
+#define XACCEL              4U       // X-Accelerometer Reading's Burst-Read Pos.
+#define YACCEL              5U       // Y-Accelerometer Reading's Burst-Read Pos.
+#define ZACCEL              6U       // Z-Accelerometer Reading's Burst-Read Pos.
+#define XTEMP               7U       // X-Temperature Reading's Burst-Read Pos.
+#define YTEMP               8U       // Y-Temperature Reading's Burst-Read Pos.
+#define ZTEMP               9U       // Z-Temperature Reading's Burst-Read Pos.
+#define ANALOG              10U      // ADC Reading's Burst-Read Pos.3
+#define ACTION_DELAY        DEVICE_DELAY_US(30U)
+#define ACTION_DELAY_DIV2   DEVICE_DELAY_US(30U)
+#define MIN_DELAY           DEVICE_DELAY_US(5U)
 
 
 //*****************************************************************************
@@ -65,9 +67,9 @@
 //*****************************************************************************
 #define FLASH_CNT   0x00U    // Flash memory write count
 #define SUPPLY_OUT  0x02U    // Power supply measurement
-#define XGYRO_OUT   0x04U    // X-axis gyroscope output
-#define YGYRO_OUT   0x06U    // Y-axis gyroscope output
-#define ZGYRO_OUT   0x08U    // Z-axis gyroscope output
+#define XGYRO_OUT   0x0400U    // X-axis gyroscope output
+#define YGYRO_OUT   0x0600U    // Y-axis gyroscope output
+#define ZGYRO_OUT   0x0800U    // Z-axis gyroscope output
 #define XACCL_OUT   0x0A00U    // X-axis accelerometer output
 #define YACCL_OUT   0x0C00U    // Y-axis accelerometer output
 #define ZACCL_OUT   0x0E00U    // Z-axis accelerometer output

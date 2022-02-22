@@ -34,11 +34,11 @@
 	<variableList>
 		<variable>
 			<name>C2000WARE_DLIB_ROOT</name>
-			<value>file:/C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib</value>
+			<value>$%7BCOM_TI_C2000WARE_SOFTWARE_PACKAGE_INSTALL_DIR%7D/driverlib/f2838x/driverlib</value>
 		</variable>
 		<variable>
 			<name>C2000WARE_F2838X_INC</name>
-			<value>file:/C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc</value>
+			<value>$%7BCOM_TI_C2000WARE_SOFTWARE_PACKAGE_INSTALL_DIR%7D/driverlib/f2838x/driverlib/inc</value>
 		</variable>
 	</variableList>
 </projectDescription>
