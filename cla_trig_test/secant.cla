@@ -1,0 +1,90 @@
+//
+// Included Files
+//
+#include "cla_ex1_asin_shared.h"
+
+//
+// Defines
+//
+
+//
+// Globals
+//
+// Note that the globals defined in the .cla source are global to the cla source
+// file.  i.e. they may be shared across tasks. All of the data shared between
+// the CLA and the C28x CPU must be defined in the C (or C++) code, and not the
+// CLA code.  
+//
+
+static inline void __sec(m_elem values[N])
+{
+    int i;
+
+    for(i=0; i < N; i++)
+    {
+        calcs[i] = 1/CLAcos(values[i]);
+    }
+    /*
+    m_elem x,x2,x4,A,B;
+
+    for (i=0;i<N;i++)
+    {
+
+        x = values[i];
+        x2 = x*x;
+        x4 = x2*x2;
+        A = 15120+660*x2+13*x4;
+        B = 15120-6900*x2+313*x4;
+        calcs[i] = A/B;
+    }*/
+}
+
+
+__interrupt void Cla1Task1 ( void )
+{
+    //Local Variables
+    __mdebugstop();
+    RESTART_CLOCK;
+    __sec(testValues);
+    READ_CLOCK(ulCycleCount1);
+    kk++;
+}
+
+interrupt void Cla1Task2 ( void )
+{
+
+}
+
+interrupt void Cla1Task3 ( void )
+{
+
+}
+
+interrupt void Cla1Task4 ( void )
+{
+
+}
+
+interrupt void Cla1Task5 ( void )
+{
+
+}
+
+interrupt void Cla1Task6 ( void )
+{
+
+}
+
+interrupt void Cla1Task7 ( void )
+{
+
+}
+
+interrupt void Cla1Task8 ( void )
+{
+
+}
+
+//
+// End of file
+//
