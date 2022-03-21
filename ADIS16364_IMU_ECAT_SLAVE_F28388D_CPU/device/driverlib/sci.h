@@ -1359,6 +1359,7 @@ SCI_writeCharArray(uint32_t base, const uint16_t * const array,
 //! \return None.
 //
 //*****************************************************************************
+
 extern void
 SCI_readCharArray(uint32_t base, uint16_t * const array, uint16_t length);
 

@@ -922,13 +922,13 @@ DEVICE_PROFILE_TYPE: Slave device type (Object 0x1000)  */
 /** 
 DEVICE_NAME: Name of the slave device (Object 0x1008) */
 #ifndef DEVICE_NAME
-#define DEVICE_NAME                               "F2838x CPU1 EtherCAT Slave"
+#define DEVICE_NAME                               "ADIS16364_F28388D_IMU_SLAVE_CPU1"
 #endif
 
 /** 
 DEVICE_NAME_LEN: Length of 'DEVICE_NAME' without '\0' */
 #ifndef DEVICE_NAME_LEN
-#define DEVICE_NAME_LEN                           0x1A
+#define DEVICE_NAME_LEN                           0x20
 #endif
 
 /** 

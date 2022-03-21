@@ -1,6 +1,6 @@
 eclipse.preferences.version=1
-encoding//RAM/Src_CPU1/subdir_rules.mk=UTF-8
-encoding//RAM/Src_CPU1/subdir_vars.mk=UTF-8
+encoding//RAM/Src/subdir_rules.mk=UTF-8
+encoding//RAM/Src/subdir_vars.mk=UTF-8
 encoding//RAM/device/subdir_rules.mk=UTF-8
 encoding//RAM/device/subdir_vars.mk=UTF-8
 encoding//RAM/makefile=UTF-8

@@ -24,6 +24,7 @@
 #include "ecat_def.h"
 
 #include "applInterface.h"
+#include "device.h"
 
 #define _ADIS16364__F28388_D__IMU__SLAVE__CPU1_ 1
 #include "ADIS16364_F28388D_IMU_SLAVE_CPU1.h"
@@ -305,7 +306,6 @@ void APPL_InputMapping(UINT16 *pData)
     pTmpData += 2U;
     memcpy(pTmpData, &SUS_SENSE0x6000.ZLinVel_calc, SIZEOF(SUS_SENSE0x6000.ZLinVel_calc));
 }
-
 /////////////////////////////////////////////////////////////////////////////////////////
 /**
 \param      pData  pointer to output process data
@@ -316,76 +316,50 @@ void APPL_InputMapping(UINT16 *pData)
 void APPL_OutputMapping(UINT16 *pData)
 {
     uint16_t *pTmpData = pData;
-    //TODO CHANGE TO BOOLS AND TEST- kanoo
-    SUS_CONTROL0x7000.XGyro_on = *(volatile UINT16 *)pTmpData;
-    pTmpData += 1U;
-    SUS_CONTROL0x7000.YGyro_on = *(volatile UINT16 *)pTmpData;
-    pTmpData += 1U;
-    SUS_CONTROL0x7000.ZGyro_on = *(volatile UINT16 *)pTmpData;
-    pTmpData += 1U;
-    SUS_CONTROL0x7000.XAcc_on = *(volatile UINT16 *)pTmpData;
-    pTmpData += 1U;
-    SUS_CONTROL0x7000.YAcc_on = *(volatile UINT16 *)pTmpData;
-    pTmpData += 1U;
-    SUS_CONTROL0x7000.ZAcc_on = *(volatile UINT16 *)pTmpData;
-    pTmpData += 1U;
-    SUS_CONTROL0x7000.XAngle_on = *(volatile UINT16 *)pTmpData;
-    pTmpData += 1U;
-    SUS_CONTROL0x7000.YAngle_on = *(volatile UINT16 *)pTmpData;
-    pTmpData += 1U;
-    SUS_CONTROL0x7000.ZAngle_on = *(volatile UINT16 *)pTmpData;
-    pTmpData += 1U;
-    SUS_CONTROL0x7000.XLinVel_on = *(volatile UINT16 *)pTmpData;
-    pTmpData += 1U;
-    SUS_CONTROL0x7000.YLinVel_on = *(volatile UINT16 *)pTmpData;
-    pTmpData += 1U;
-    SUS_CONTROL0x7000.ZLinVel_on = *(volatile UINT16 *)pTmpData;
-    pTmpData += 1U;
-    SUS_CONTROL0x7000.Temp_on = *(volatile UINT16 *)pTmpData;
-    pTmpData += 1U;
-    SUS_CONTROL0x7000.HP_on = *(volatile UINT16 *)pTmpData;
+    memcpy(&SUS_CONTROL0x7000.IMU_flags, pTmpData, SIZEOF(SUS_CONTROL0x7000.IMU_flags));
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /**
-\brief    This function will be called from the synchronisation ISR
+\brief    This function will called from the synchronisation ISR 
             or from the mainloop if no synchronisation is supported
 *////////////////////////////////////////////////////////////////////////////////////////
 void APPL_Application(void)
 {
-    // Data from EtherCAT to IMU (control checks)
-    uint16_t xg = SUS_CONTROL0x7000.XGyro_on;
-    uint16_t yg = SUS_CONTROL0x7000.YGyro_on;
-    uint16_t zg = SUS_CONTROL0x7000.ZGyro_on;
-
-    uint16_t xa = SUS_CONTROL0x7000.XAcc_on;
-    uint16_t ya = SUS_CONTROL0x7000.YAcc_on;
-    uint16_t za = SUS_CONTROL0x7000.ZAcc_on;
-
-    uint16_t xang = SUS_CONTROL0x7000.XAngle_on;
-    uint16_t yang = SUS_CONTROL0x7000.YAngle_on;
-    uint16_t zang = SUS_CONTROL0x7000.ZAngle_on;
-
-    uint16_t xvel = SUS_CONTROL0x7000.XLinVel_on;
-    uint16_t yvel = SUS_CONTROL0x7000.YLinVel_on;
-    uint16_t zvel = SUS_CONTROL0x7000.ZLinVel_on;
+    const uint16_t DC_MODE = bDcSyncActive;
 
     // Data from IMU to EtherCAT (sensing)
-    SUS_SENSE0x6000.XGyro_sense = (xg>50)?(1.0f*xg):(-1.0f*xg);
-    SUS_SENSE0x6000.YGyro_sense = (yg>50)?(1.0f*yg):(-1.0f*yg);
-    SUS_SENSE0x6000.ZGyro_sense = (zg>50)?(1.0f*zg):(-1.0f*zg);
+    switch (SUS_CONTROL0x7000.IMU_flags)
+    {
+        case 0x07:
+            SUS_SENSE0x6000.XGyro_sense = 1;
+            SUS_SENSE0x6000.YGyro_sense = 2;
+            SUS_SENSE0x6000.ZGyro_sense = 3;
+            break;
 
-    SUS_SENSE0x6000.XAcc_sense = (xa>50)?(1.0f*xa):(-1.0f*xa);
-    SUS_SENSE0x6000.YAcc_sense = (ya>50)?(1.0f*ya):(-1.0f*ya);
-    SUS_SENSE0x6000.ZAcc_sense = (za>50)?(1.0f*za):(-1.0f*za);
+        case 0x38:
+            SUS_SENSE0x6000.XAcc_sense = 1;
+            SUS_SENSE0x6000.YAcc_sense = 2;
+            SUS_SENSE0x6000.ZAcc_sense = 3;
+            break;
 
-    SUS_SENSE0x6000.XAngle_calc = (xang>50)?(1.0f*xang):(-1.0f*xang);
-    SUS_SENSE0x6000.YAngle_calc = (yang>50)?(1.0f*yang):(-1.0f*yang);
-    SUS_SENSE0x6000.ZAngle_calc = (zang>50)?(1.0f*zang):(-1.0f*zang);
+        case 0x3F:
+            SUS_SENSE0x6000.XGyro_sense = 1*2;
+            SUS_SENSE0x6000.YGyro_sense = 2*2;
+            SUS_SENSE0x6000.ZGyro_sense = 3*2;
+            SUS_SENSE0x6000.XAcc_sense = 4*2;
+            SUS_SENSE0x6000.YAcc_sense = 5*2;
+            SUS_SENSE0x6000.ZAcc_sense = 6*2;
+    }
 
-    SUS_SENSE0x6000.XLinVel_calc = (xvel>50)?(1.0f*xvel):(-1.0f*xvel);
-    SUS_SENSE0x6000.YLinVel_calc = (yvel>50)?(1.0f*yvel):(-1.0f*yvel);
-    SUS_SENSE0x6000.ZLinVel_calc = (zvel>50)?(1.0f*zvel):(-1.0f*zvel);
+    SUS_SENSE0x6000.XAngle_calc = 7;
+    SUS_SENSE0x6000.YAngle_calc = 8;
+    SUS_SENSE0x6000.ZAngle_calc = 9;
+
+    SUS_SENSE0x6000.XLinVel_calc = 10;
+    SUS_SENSE0x6000.YLinVel_calc = 11;
+    SUS_SENSE0x6000.ZLinVel_calc = 12;
+    DEVICE_DELAY_US(500);
 }
 
 #if EXPLICIT_DEVICE_ID
@@ -414,13 +388,32 @@ UINT16 APPL_GetDeviceID()
  \brief    This is the main function
 
 *////////////////////////////////////////////////////////////////////////////////////////
+#if _PIC24 && EL9800_HW
+int main(void)
+#elif _WIN32
+int main(int argc, char* argv[])
+#else
 void main(void)
+#endif
 {
     /* initialize the Hardware and the EtherCAT Slave Controller */
+#if FC1100_HW
+#if _WIN32
+    u16FcInstance = 0;
+    if (argc > 1)
+    {
+        u16FcInstance = atoi(argv[1]);
+    }
+#endif
+    if(HW_Init())
+    {
+        HW_Release();
+        return;
+    }
+#else
     HW_Init();
-
+#endif
     MainInit();
-
     bRunApplication = TRUE;
     do
     {
@@ -429,6 +422,9 @@ void main(void)
     } while (bRunApplication == TRUE);
 
     HW_Release();
+#if _PIC24
+    return 0;
+#endif
 }
 #endif //#if USE_DEFAULT_MAIN
 /** @} */

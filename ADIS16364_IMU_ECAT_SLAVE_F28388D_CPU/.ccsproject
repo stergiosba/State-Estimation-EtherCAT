@@ -12,4 +12,5 @@
 	<templateProperties value="id=f2838x_cpu1_echoback_solution.projectspec.f2838x_cpu1_echoback_solution"/>
 	<origin value="C:\ti\c2000\C2000Ware_4_00_00_00\libraries\communications\Ethercat\f2838x\examples\f2838x_cpu1_echoback_solution\ccs\f2838x_cpu1_echoback_solution.projectspec"/>
 	<filesToOpen value=""/>
+	<isTargetManual value="false"/>
 </projectOptions>
