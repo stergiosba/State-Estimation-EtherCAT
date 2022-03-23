@@ -45,6 +45,15 @@
 //
 #include "ethercat_slave_cpu1_hal.h"
 
+#define INTERRUPT_PROFILE_BUFFER_SIZE 500
+
+uint32_t gSync0_counter=0;
+uint32_t gSync1_counter=0;
+uint32_t gPDI_counter=0;
+uint32_t gSync0_times[INTERRUPT_PROFILE_BUFFER_SIZE];
+uint32_t gSync1_times[INTERRUPT_PROFILE_BUFFER_SIZE];
+uint32_t gPDI_times[INTERRUPT_PROFILE_BUFFER_SIZE];
+
 #ifdef PDI_HAL_TEST
 
 //
@@ -1371,6 +1380,8 @@ ESC_applicationLayerHandler(void)
     //
     // When stack is included and application event enabled, call stack PDI ISR
     //
+    gPDI_times[gPDI_counter] = ESC_getTimer();
+    gPDI_counter++;
     PDI_Isr();
 #endif  // AL_EVENT_ENABLED
 #endif  // ETHERCAT_STACK
@@ -1399,6 +1410,8 @@ ESC_applicationSync0Handler(void)
     //
     // When stack is included and DC is enabled, call stack Sync0 ISR
     //
+    gSync0_times[gSync0_counter] = ESC_getTimer();
+    gSync0_counter++;
     Sync0_Isr();
 #endif  // DC_SUPPORTED
 #endif  // ETHERCAT_STACK
@@ -1427,6 +1440,8 @@ ESC_applicationSync1Handler(void)
     //
     // When stack is included and DC is enabled, call stack Sync1 ISR
     //
+    gSync1_times[gSync1_counter] = ESC_getTimer();
+    gSync1_counter++;
     Sync1_Isr();
 #endif  // DC_SUPPORTED
 #endif  // ETHERCAT_STACK

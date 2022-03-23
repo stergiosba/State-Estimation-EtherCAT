@@ -345,7 +345,7 @@ void APPL_Application1(int16_t* counter)
     SUS_SENSE0x6000.YLinVel_calc = 11;
     SUS_SENSE0x6000.ZLinVel_calc = 12;
     *counter = -(*counter);
-    DEVICE_DELAY_US(370);
+    //DEVICE_DELAY_US(370);
 
 }
 
