@@ -324,33 +324,67 @@ void APPL_OutputMapping(UINT16 *pData)
 \brief    This function will called from the synchronisation ISR 
             or from the mainloop if no synchronisation is supported
 *////////////////////////////////////////////////////////////////////////////////////////
-void APPL_Application(void)
+void APPL_Application1(int16_t* counter)
 {
     const uint16_t DC_MODE = bDcSyncActive;
 
     // Data from IMU to EtherCAT (sensing)
-    switch (SUS_CONTROL0x7000.IMU_flags)
-    {
-        case 0x07:
-            SUS_SENSE0x6000.XGyro_sense = 1;
-            SUS_SENSE0x6000.YGyro_sense = 2;
-            SUS_SENSE0x6000.ZGyro_sense = 3;
-            break;
+    SUS_SENSE0x6000.XGyro_sense = (*counter>0)?(*counter):0;
+    SUS_SENSE0x6000.YGyro_sense = 2;
+    SUS_SENSE0x6000.ZGyro_sense = 3;
 
-        case 0x38:
-            SUS_SENSE0x6000.XAcc_sense = 1;
-            SUS_SENSE0x6000.YAcc_sense = 2;
-            SUS_SENSE0x6000.ZAcc_sense = 3;
-            break;
+    SUS_SENSE0x6000.XAcc_sense = 0;
+    SUS_SENSE0x6000.YAcc_sense = 0;
+    SUS_SENSE0x6000.ZAcc_sense = 0;
 
-        case 0x3F:
-            SUS_SENSE0x6000.XGyro_sense = 1*2;
-            SUS_SENSE0x6000.YGyro_sense = 2*2;
-            SUS_SENSE0x6000.ZGyro_sense = 3*2;
-            SUS_SENSE0x6000.XAcc_sense = 4*2;
-            SUS_SENSE0x6000.YAcc_sense = 5*2;
-            SUS_SENSE0x6000.ZAcc_sense = 6*2;
-    }
+    SUS_SENSE0x6000.XAngle_calc = 7;
+    SUS_SENSE0x6000.YAngle_calc = 8;
+    SUS_SENSE0x6000.ZAngle_calc = 9;
+
+    SUS_SENSE0x6000.XLinVel_calc = 10;
+    SUS_SENSE0x6000.YLinVel_calc = 11;
+    SUS_SENSE0x6000.ZLinVel_calc = 12;
+    *counter = -(*counter);
+    DEVICE_DELAY_US(370);
+
+}
+
+void APPL_Application2(void)
+{
+    const uint16_t DC_MODE = bDcSyncActive;
+
+    // Data from IMU to EtherCAT (sensing)
+    SUS_SENSE0x6000.XGyro_sense = 0;
+    SUS_SENSE0x6000.YGyro_sense = 0;
+    SUS_SENSE0x6000.ZGyro_sense = 0;
+
+    SUS_SENSE0x6000.XAcc_sense = 1;
+    SUS_SENSE0x6000.YAcc_sense = 2;
+    SUS_SENSE0x6000.ZAcc_sense = 3;
+
+    SUS_SENSE0x6000.XAngle_calc = 7;
+    SUS_SENSE0x6000.YAngle_calc = 8;
+    SUS_SENSE0x6000.ZAngle_calc = 9;
+
+    SUS_SENSE0x6000.XLinVel_calc = 10;
+    SUS_SENSE0x6000.YLinVel_calc = 11;
+    SUS_SENSE0x6000.ZLinVel_calc = 12;
+
+    DEVICE_DELAY_US(500);
+}
+
+void APPL_Application3(void)
+{
+    const uint16_t DC_MODE = bDcSyncActive;
+
+    // Data from IMU to EtherCAT (sensing)
+    SUS_SENSE0x6000.XGyro_sense = 1;
+    SUS_SENSE0x6000.YGyro_sense = 2;
+    SUS_SENSE0x6000.ZGyro_sense = 3;
+
+    SUS_SENSE0x6000.XAcc_sense = 4;
+    SUS_SENSE0x6000.YAcc_sense = 5;
+    SUS_SENSE0x6000.ZAcc_sense = 6;
 
     SUS_SENSE0x6000.XAngle_calc = 7;
     SUS_SENSE0x6000.YAngle_calc = 8;
@@ -388,31 +422,11 @@ UINT16 APPL_GetDeviceID()
  \brief    This is the main function
 
 *////////////////////////////////////////////////////////////////////////////////////////
-#if _PIC24 && EL9800_HW
-int main(void)
-#elif _WIN32
-int main(int argc, char* argv[])
-#else
 void main(void)
-#endif
 {
     /* initialize the Hardware and the EtherCAT Slave Controller */
-#if FC1100_HW
-#if _WIN32
-    u16FcInstance = 0;
-    if (argc > 1)
-    {
-        u16FcInstance = atoi(argv[1]);
-    }
-#endif
-    if(HW_Init())
-    {
-        HW_Release();
-        return;
-    }
-#else
+
     HW_Init();
-#endif
     MainInit();
     bRunApplication = TRUE;
     do
@@ -422,9 +436,6 @@ void main(void)
     } while (bRunApplication == TRUE);
 
     HW_Release();
-#if _PIC24
-    return 0;
-#endif
 }
 #endif //#if USE_DEFAULT_MAIN
 /** @} */

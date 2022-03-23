@@ -2536,8 +2536,8 @@ void ECAT_Init(void)
     bApplEsmPending = FALSE;
     bEcatWaitForAlControlRes = FALSE;
     bEcatFirstOutputsReceived = FALSE;
-     bEcatOutputUpdateRunning = FALSE;
-     bEcatInputUpdateRunning = FALSE;
+    bEcatOutputUpdateRunning = FALSE;
+    bEcatInputUpdateRunning = FALSE;
     bWdTrigger = FALSE;
     EcatWdValue = 0;
     Sync0WdCounter = 0;

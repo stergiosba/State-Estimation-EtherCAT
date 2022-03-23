@@ -71,7 +71,7 @@ ESC_getTimer(void)
     //
     // Return 1's compliment of the CPU timer
     //
-    return(~((uint32_t)CPUTimer_getTimerCount(CPUTIMER0_BASE)));
+    return(~((uint32_t)CPUTimer_getTimerCount(CPUTIMER1_BASE)));
 }
 
 //*****************************************************************************
@@ -85,12 +85,12 @@ ESC_clearTimer(void)
     //
     // Set the timer period count
     //
-    CPUTimer_setPeriod(CPUTIMER0_BASE, 0xFFFFFFFFUL);
+    CPUTimer_setPeriod(CPUTIMER1_BASE, 0xFFFFFFFFUL);
 
     //
     // Reload timer with the period count value
     //
-    CPUTimer_reloadTimerCounter(CPUTIMER0_BASE);
+    CPUTimer_reloadTimerCounter(CPUTIMER1_BASE);
 }
 
 //*****************************************************************************
@@ -1244,9 +1244,9 @@ ESC_initHW(void)
     //
     // Configure and Start timer
     //
-    CPUTimer_setPeriod(CPUTIMER0_BASE, 0xFFFFFFFFUL);
-    CPUTimer_setPreScaler(CPUTIMER0_BASE, 0U);
-    CPUTimer_startTimer(CPUTIMER0_BASE);
+    CPUTimer_setPeriod(CPUTIMER1_BASE, 0xFFFFFFFFUL);
+    CPUTimer_setPreScaler(CPUTIMER1_BASE, 0U);
+    CPUTimer_startTimer(CPUTIMER1_BASE);
 
 #ifdef PDI_HAL_TEST
     //

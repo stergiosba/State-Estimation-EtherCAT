@@ -47,8 +47,27 @@
     #define PROTO extern
 #endif
 
+/*
+ *
+ * Inertial Measurememt Unit Operation Modes
+ * Enumeration is based on SUS_CONTROL0x7000.IMU_flags bit mapping
+ *
+ */
+typedef enum
+{
+    IMU_OFFLINE_MODE    = 0x00U,    //!< Offline Mode.
+    IMU_GYRO_ONLY_MODE  = 0x07U,    //!< Gyroscope Only Mode.
+    IMU_ACCL_ONLY_MODE  = 0x38U,    //!< Accelerometer Only Mode.
+    IMU_ONLINE_MODE     = 0x3FU,    //!< Normal Operation Mode.
+    IMU_TEST_MODE       = 0xFFU,    //!< Test Operation Mode.
 
-PROTO void APPL_Application(void);
+} ADIS16364_IMU_OperationModes;
+
+
+PROTO void APPL_Application1(int16_t*);
+PROTO void APPL_Application2(void);
+PROTO void APPL_Application3(void);
+
 #if EXPLICIT_DEVICE_ID
 PROTO UINT16 APPL_GetDeviceID(void);
 #endif

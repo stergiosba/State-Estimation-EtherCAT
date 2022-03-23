@@ -142,7 +142,7 @@ V4.00 APPL 6: The main function was split in MainInit and MainLoop
 /*remove definition of _ECATAPPL_ (#ifdef is used in ecatappl.h)*/
 
 #include "coeappl.h"
-
+#include "device.h"
 
 
 #define _APPL_INTERFACE_ 1
@@ -152,7 +152,8 @@ V4.00 APPL 6: The main function was split in MainInit and MainLoop
 /*ECATCHANGE_START(V5.13) CIA402 3*/
 #include "ADIS16364_F28388D_IMU_SLAVE_CPU1.h"
 
-
+volatile uint32_t gTimer = 0;
+volatile uint16_t gCounter = 0;
 
 /*--------------------------------------------------------------------------------------
 ------
@@ -190,7 +191,7 @@ BOOL bMinCycleTimeMeasurementStarted; /** <\brief Indicates if the min cycle mea
 UINT32 u32MinCycleTimeValue; /** <\brief tmp value of the min cycle time during measurement*/
 
 
-
+INT16 gcounter = 1000;
 
 
 UINT16             aPdOutputData[(MAX_PD_OUTPUT_SIZE>>1)];
@@ -456,6 +457,7 @@ UINT32 GetSystemTimeDelay(UINT32 u32StartTime)
 /*ECATCHANGE_END(V5.13) ECAT1*/
 void PDI_Isr(void)
 {
+    volatile uint32_t time0 = ESC_getTimer();
     /*ECATCHANGE_START(V5.13) ECAT1*/
     BOOL SyncAcknowledgePending = FALSE;
 
@@ -568,12 +570,15 @@ void PDI_Isr(void)
     /*ECATCHANGE_END(V5.13) ECAT1*/
 
     COE_UpdateSyncErrorStatus();
-
+    volatile uint32_t time1 = ESC_getTimer();
+    volatile float timer2 = (time1-time0)/200.0f;
+    volatile int ilolls=1;
 }
 
 void Sync0_Isr(void)
 {
-     Sync0WdCounter = 0;
+    volatile uint32_t time0 = ESC_getTimer();
+    Sync0WdCounter = 0;
 
     if(bDcSyncActive)
     {
@@ -666,11 +671,14 @@ void Sync0_Isr(void)
     }
 
     COE_UpdateSyncErrorStatus();
-
+    volatile uint32_t time1 = ESC_getTimer();
+    volatile float timer2 = (float)(time1-time0)/200.0f;
+    volatile int ilolls=1;
 }
 
 void Sync1_Isr(void)
 {
+    volatile uint32_t time0 = ~ESC_getTimer();
     Sync1WdCounter = 0;
 
     /*ECATCHANGE_START(V5.13) ECAT 5*/
@@ -685,6 +693,9 @@ void Sync1_Isr(void)
 
         /* Reset Sync0 latch counter (to start next Sync0 latch cycle) */
         LatchInputSync0Counter = 0;
+        volatile uint32_t time1 = ~ESC_getTimer();
+        volatile float timer2 = (~(time1-time0)+1)/200.0f;
+        volatile int ilolls=1;
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 /**
@@ -976,88 +987,80 @@ void MainLoop(void)
     {
         return;
     }
-
-
-
-        /* FreeRun-Mode:  bEscIntEnabled = FALSE, bDcSyncActive = FALSE
-           Synchron-Mode: bEscIntEnabled = TRUE, bDcSyncActive = FALSE
-           DC-Mode:       bEscIntEnabled = TRUE, bDcSyncActive = TRUE */
-        if (
-            (!bEscIntEnabled || !bEcatFirstOutputsReceived)     /* SM-Synchronous, but not SM-event received */
-          && !bDcSyncActive                                               /* DC-Synchronous */
-            )
+    /* FreeRun-Mode:  bEscIntEnabled = FALSE, bDcSyncActive = FALSE
+     * Synchron-Mode: bEscIntEnabled = TRUE, bDcSyncActive = FALSE
+     * DC-Mode:       bEscIntEnabled = TRUE, bDcSyncActive = TRUE */
+    if ((!bEscIntEnabled || !bEcatFirstOutputsReceived)     /* SM-Synchronous, but not SM-event received */
+            && !bDcSyncActive /* DC-Synchronous */)
+    {
+        /* if the application is running in ECAT Synchron Mode the function ECAT_Application is called
+         * from the ESC interrupt routine,
+         * in ECAT Synchron Mode it should be additionally checked, if the SM-event is received
+         * at least once (bEcatFirstOutputsReceived = 1), otherwise no interrupt is generated
+         * and the function ECAT_Application has to be called here (with interrupts disabled,
+         * because the SM-event could be generated while executing ECAT_Application) */
+        if ( !bEscIntEnabled )
         {
-            /* if the application is running in ECAT Synchron Mode the function ECAT_Application is called
-               from the ESC interrupt routine,
-               in ECAT Synchron Mode it should be additionally checked, if the SM-event is received
-               at least once (bEcatFirstOutputsReceived = 1), otherwise no interrupt is generated
-               and the function ECAT_Application has to be called here (with interrupts disabled,
-               because the SM-event could be generated while executing ECAT_Application) */
-            if ( !bEscIntEnabled )
-            {
-                /* application is running in ECAT FreeRun Mode,
-                   first we have to check, if outputs were received */
-                UINT16 ALEvent = HW_GetALEventRegister();
-                ALEvent = SWAPWORD(ALEvent);
+            /* application is running in ECAT FreeRun Mode,
+             * first we have to check, if outputs were received */
+            UINT16 ALEvent = HW_GetALEventRegister();
+            ALEvent = SWAPWORD(ALEvent);
 
-                if ( ALEvent & PROCESS_OUTPUT_EVENT )
+            if ( ALEvent & PROCESS_OUTPUT_EVENT )
+            {
+                /* set the flag for the state machine behavior */
+                bEcatFirstOutputsReceived = TRUE;
+                if ( bEcatOutputUpdateRunning )
                 {
-                    /* set the flag for the state machine behavior */
+                    /* update the outputs */
+                    PDO_OutputMapping();
+                }
+            }
+            else if ( nPdOutputSize == 0 )
+            {
+                /* if no outputs are transmitted, the watchdog must be reset, when the inputs were read */
+                if ( ALEvent & PROCESS_INPUT_EVENT )
+                {
+                    /* Outputs were updated, set flag for watchdog monitoring */
                     bEcatFirstOutputsReceived = TRUE;
-                    if ( bEcatOutputUpdateRunning )
-                    {
-                        /* update the outputs */
-                        PDO_OutputMapping();
-                    }
-                }
-                else if ( nPdOutputSize == 0 )
-                {
-                    /* if no outputs are transmitted, the watchdog must be reset, when the inputs were read */
-                    if ( ALEvent & PROCESS_INPUT_EVENT )
-                    {
-                        /* Outputs were updated, set flag for watchdog monitoring */
-                        bEcatFirstOutputsReceived = TRUE;
-                    }
                 }
             }
-
-            DISABLE_ESC_INT();
-             ECAT_Application();
-
-/*ECATCHANGE_START(V5.13) ECAT 5*/
-             if ( (bEcatInputUpdateRunning  == TRUE) && (nPdInputSize > 0))
-/*ECATCHANGE_END(V5.13) ECAT 5*/
-             {
-                /* EtherCAT slave is at least in SAFE-OPERATIONAL, update inputs */
-                PDO_InputMapping();
-            }
-            ENABLE_ESC_INT();
         }
 
-        /* there is no interrupt routine for the hardware timer so check the timer register if the desired cycle elapsed*/
+        DISABLE_ESC_INT();
+        ECAT_Application();
+        /*ECATCHANGE_START(V5.13) ECAT 5*/
+        if ( (bEcatInputUpdateRunning  == TRUE) && (nPdInputSize > 0))
+            /*ECATCHANGE_END(V5.13) ECAT 5*/
         {
-            UINT32 CurTimer = (UINT32)HW_GetTimer();
-
-            if(CurTimer>= ECAT_TIMER_INC_P_MS)
-            {
-                ECAT_CheckTimer();
-
-                HW_ClearTimer();
-            }
+            /* EtherCAT slave is at least in SAFE-OPERATIONAL, update inputs */
+            PDO_InputMapping();
         }
+        ENABLE_ESC_INT();
+    }
+    /* there is no interrupt routine for the hardware timer so check the timer register if the desired cycle elapsed*/
+    {
+        UINT32 CurTimer = (UINT32)HW_GetTimer();
 
-        if (u32CheckForDcOverrunCnt >= CHECK_DC_OVERRUN_IN_MS)
+        if(CurTimer>= ECAT_TIMER_INC_P_MS)
         {
-            COE_SyncTimeStamp();
+            ECAT_CheckTimer();
+
+            HW_ClearTimer();
         }
+    }
 
-        /* call EtherCAT functions */
-        ECAT_Main();
+    if (u32CheckForDcOverrunCnt >= CHECK_DC_OVERRUN_IN_MS)
+    {
+        COE_SyncTimeStamp();
+    }
 
-        /* call lower prior application part */
-       COE_Main();
-       CheckIfEcatError();
+    /* call EtherCAT functions */
+    ECAT_Main();
 
+    /* call lower prior application part */
+    COE_Main();
+    CheckIfEcatError();
 
     if (pAPPL_MainLoop != NULL)
     {
@@ -1105,7 +1108,21 @@ void ECAT_Application(void)
     /*ECATCHANGE_START(V5.13) CIA402 4*/
     /*decouple CIA402 application from ESM*/
     /*ECATCHANGE_END(V5.13) CIA402 4*/
-    APPL_Application();
+    APPL_Application1(&gcounter);
+    /*
+    switch (SUS_CONTROL0x7000.IMU_flags)
+    {
+        case IMU_MODE_GYRO_ONLY:
+            APPL_Application1(&gcounter);
+            break;
+
+        case IMU_MODE_ACCL_ONLY:
+            APPL_Application2();
+            break;
+
+        case IMU_MODE_ALL:
+            APPL_Application3();
+    }*/
 
 /* PDO Input mapping is called from the specific trigger ISR */
 
