@@ -16,27 +16,52 @@
 // CLA code.  
 //
 
-static inline void __sec(m_elem values[N])
+static inline void EKF_StateTransition(m_elem p, m_elem q, m_elem r, m_elem phi, m_elem th)
 {
-    int i;
+    //pqr = gyro_measurements(t,:)';
+    //phi = IGX(t-1)*pi/180;
+    //theta = IGY(t-1)*pi/180;
+    m_elem x, y, z, dt, secth, tanth, cosphi, sinphi, A, B;
 
-    for(i=0; i < N; i++)
-    {
-        calcs[i] = 1/CLAcos(values[i]);
-    }
-    /*
-    m_elem x,x2,x4,A,B;
+am    cosphi = CLAcos(phi);
+    sinphi = CLAsin(phi);
+    secth = 1/CLAcos(th);
+    tanth = CLAsin(th)*secth;
+    A = q*cosphi-r*sinphi;
+    B = q*sinphi-r*cosphi;
 
-    for (i=0;i<N;i++)
-    {
+    m_elem F[STATE_SIZE*STATE_SIZE] = { 1,   tanth*sinphi,   tanth*cosphi,
+                                        0,   cosphi,         -sinphi,
+                                        0,   sinphi*secth,   cosphi*secth};
 
-        x = values[i];
-        x2 = x*x;
-        x4 = x2*x2;
-        A = 15120+660*x2+13*x4;
-        B = 15120-6900*x2+313*x4;
-        calcs[i] = A/B;
-    }*/
+    m_elem ang_vel[STATE_SIZE] = {  F[0]*p+F[1]*q+F[2]*r,
+                                    F[3]*p+F[4]*q+F[5]*r,
+                                    F[6]*p+F[7]*q+F[8]*r};
+
+    dt = 0.001;
+    x = 1.0f + dt*ang_vel[0];
+    y = 1.0f + dt*ang_vel[1];
+    z = 1.0f + dt*ang_vel[2];
+
+    Jfx[0][0] = tanth*A;
+    Jfx[0][1] = secth*secth*B;
+    Jfx[0][2] = 0;
+    Jfx[1][0] = -B;
+    Jfx[1][1] = 0;
+    Jfx[1][2] = 0;
+    Jfx[2][0] = secth*A;
+    Jfx[2][1] = tanth*secth*B;
+    Jfx[2][2] = 0;
+}
+
+static inline void EKF_Covariance_Propagation(m_elem Pxx_[STATE_SYM_SIZE], m_elem Jfx[][STATE_SIZE], m_elem Q[STATE_SYM_SIZE], m_elem Pxx[STATE_SYM_SIZE])
+{
+    Pxx[0] = Q[0] + Jfx[0][0]*(Pxx_[0]*Jfx[0][0]+Pxx_[1]*Jfx[0][1]+Pxx_[2]*Jfx[0][2])+Jfx[0][1]*(Pxx_[1]*Jfx[0][0]+Pxx_[3]*Jfx[0][1]+Pxx_[4]*Jfx[0][2])+Jfx[0][2]*(Pxx_[2]*Jfx[0][0]+Pxx_[4]*Jfx[0][1]+Pxx_[5]*Jfx[0][2]);
+    Pxx[1] = Q[1] + Jfx[0][0]*(Pxx_[0]*Jfx[1][0]+Pxx_[1]*Jfx[1][1]+Pxx_[2]*Jfx[1][2])+Jfx[0][1]*(Pxx_[1]*Jfx[1][0]+Pxx_[3]*Jfx[1][1]+Pxx_[4]*Jfx[1][2])+Jfx[0][2]*(Pxx_[2]*Jfx[1][0]+Pxx_[4]*Jfx[1][1]+Pxx_[5]*Jfx[1][2]);
+    Pxx[2] = Q[2] + Jfx[0][0]*(Pxx_[0]*Jfx[2][0]+Pxx_[1]*Jfx[2][1]+Pxx_[2]*Jfx[2][2])+Jfx[0][1]*(Pxx_[1]*Jfx[2][0]+Pxx_[3]*Jfx[2][1]+Pxx_[4]*Jfx[2][2])+Jfx[0][2]*(Pxx_[2]*Jfx[2][0]+Pxx_[4]*Jfx[2][1]+Pxx_[5]*Jfx[2][2]);
+    Pxx[3] = Q[3] + Jfx[1][0]*(Pxx_[0]*Jfx[1][0]+Pxx_[1]*Jfx[1][1]+Pxx_[2]*Jfx[1][2])+Jfx[1][1]*(Pxx_[1]*Jfx[1][0]+Pxx_[3]*Jfx[1][1]+Pxx_[4]*Jfx[1][2])+Jfx[1][2]*(Pxx_[2]*Jfx[1][0]+Pxx_[4]*Jfx[1][1]+Pxx_[5]*Jfx[1][2]);
+    Pxx[4] = Q[4] + Jfx[1][0]*(Pxx_[0]*Jfx[2][0]+Pxx_[1]*Jfx[2][1]+Pxx_[2]*Jfx[2][2])+Jfx[1][1]*(Pxx_[1]*Jfx[2][0]+Pxx_[3]*Jfx[2][1]+Pxx_[4]*Jfx[2][2])+Jfx[1][2]*(Pxx_[2]*Jfx[2][0]+Pxx_[4]*Jfx[2][1]+Pxx_[5]*Jfx[2][2]);
+    Pxx[5] = Q[5] + Jfx[2][0]*(Pxx_[0]*Jfx[2][0]+Pxx_[1]*Jfx[2][1]+Pxx_[2]*Jfx[2][2])+Jfx[2][1]*(Pxx_[1]*Jfx[2][0]+Pxx_[3]*Jfx[2][1]+Pxx_[4]*Jfx[2][2])+Jfx[2][2]*(Pxx_[2]*Jfx[2][0]+Pxx_[4]*Jfx[2][1]+Pxx_[5]*Jfx[2][2]);
 }
 
 
@@ -44,8 +69,14 @@ __interrupt void Cla1Task1 ( void )
 {
     //Local Variables
     __mdebugstop();
+    volatile m_elem f1 = *(test.ptr);
     RESTART_CLOCK;
-    __sec(testValues);
+    EKF_StateTransition(state.p, state.q, state.r, state.phi, state.th);
+    //EKF_StateJacobian(state.q, state.r, state.phi, state.th);
+    EKF_Covariance_Propagation(Pxx, Jfx, Q, Pxx);
+    //EKF_KalmanGain_Calculation();
+    //EKF_Innovation_Step();
+    //EKF_Covariance_Prediction();
     READ_CLOCK(ulCycleCount1);
     kk++;
 }

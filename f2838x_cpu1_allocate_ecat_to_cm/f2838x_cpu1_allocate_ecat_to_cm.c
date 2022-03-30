@@ -14,7 +14,7 @@
 // Function Prototypes
 //
 //TODO Make a IPC header file
-void ECAT_exchangeDataCPUandCM(void);
+void ECAT_exchangeDataCPUandCM();
 void readAccel(void);
 void readGyro();
 #pragma DATA_SECTION(ipcCMToCPUDataBuffer, "MSGRAM_CM_TO_CPU_ECAT")
@@ -29,7 +29,7 @@ IMU_ECAT_IPC_PutDataBuffer ipcCPUToCMDataBuffer;
 uint16_t imu_check;
 char mode;
 uint16_t selftest = 0;
-uint16_t tests;
+int count=1;
 #if DEBUG_MODE == 2
         char* buffer;
         //long Ecat_Sw1_Return;
@@ -115,7 +115,7 @@ void main(void)
     //
     // Wait Forever
     //
-    float i=1;
+    //uint16_t ii=1;
 
 
     while(1)
@@ -131,7 +131,7 @@ void main(void)
         //GPIO_writePin(CCARD_LED_2_GPIO, !ipcCMToCPUDataBuffer.ctrlNode.sw2);
         //DEVICE_DELAY_US(5000);
 #endif
-        i++;
+        //ii++;
     }
 }
 
@@ -200,7 +200,7 @@ void ECAT_exchangeDataCPUandCM()
 
     //readAccel();
     //readGyro();
-    BurstRead2();
+    //BurstRead2();
     // CPU to CM data
     /*
     ipcCPUToCMDataBuffer.statusNode.XGyro_sense = (ipcCMToCPUDataBuffer.ctrlNode.XGyro_on)
@@ -224,9 +224,11 @@ void ECAT_exchangeDataCPUandCM()
 
     ipcCPUToCMDataBuffer.statusNode.Temp_sense = (ipcCMToCPUDataBuffer.ctrlNode.Temp_on)
             ? RawToReal(SensorRead(ZACCL_OUT, SBITS14), g_AcclScale, SBITS14, 1):0.0f;
+    */
+    ipcCPUToCMDataBuffer.statusNode.XAngle_calc = count * TEST_VALUE;
 
-    ipcCPUToCMDataBuffer.statusNode.XAngle_calc = (ipcCMToCPUDataBuffer.ctrlNode.XAngle_on)
-            ? TEST_VALUE:0.0f;
+    //ipcCPUToCMDataBuffer.statusNode.XAngle_calc = (ipcCMToCPUDataBuffer.ctrlNode.XAngle_on)
+    //        ? TEST_VALUE:0.0f;
 
     ipcCPUToCMDataBuffer.statusNode.YAngle_calc = (ipcCMToCPUDataBuffer.ctrlNode.YAngle_on)
             ? TEST_VALUE:0.0f;
@@ -243,7 +245,9 @@ void ECAT_exchangeDataCPUandCM()
             ? TEST_VALUE:0.0f;
 
     ipcCPUToCMDataBuffer.statusNode.ZLinVel_calc = (ipcCMToCPUDataBuffer.ctrlNode.ZLinVel_on)
-            ? TEST_VALUE:0.0f;*/
+            ? TEST_VALUE:0.0f;
+    count = -count;
+    //DEVICE_DELAY_US(50000);
 }
 
 //

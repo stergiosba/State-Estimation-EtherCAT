@@ -234,7 +234,7 @@ void setupESCGPIOs(void)
     //
     // Allocate controlCARD LEDS to CM
     //
-    /*
+
     GPIO_setDirectionMode(CCARD_ECAT_RUN_LED_GPIO, GPIO_DIR_MODE_OUT);
     GPIO_setDirectionMode(CCARD_ECAT_ERR_LED_GPIO, GPIO_DIR_MODE_OUT);
     GPIO_setMasterCore(CCARD_ECAT_RUN_LED_GPIO, GPIO_CORE_CM);
@@ -242,7 +242,7 @@ void setupESCGPIOs(void)
     GPIO_setDirectionMode(CCARD_LED_1_GPIO, GPIO_DIR_MODE_OUT);
     GPIO_setDirectionMode(CCARD_LED_2_GPIO, GPIO_DIR_MODE_OUT);
     GPIO_setMasterCore(CCARD_LED_1_GPIO, GPIO_CORE_CM);
-    GPIO_setMasterCore(CCARD_LED_2_GPIO, GPIO_CORE_CM);*/
+    GPIO_setMasterCore(CCARD_LED_2_GPIO, GPIO_CORE_CM);
 }
 
 

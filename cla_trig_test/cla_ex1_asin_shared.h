@@ -27,12 +27,69 @@ EPwm1Regs.TBCTR = 0;\
 EPwm1Regs.TBCTL.bit.CTRMODE = TB_COUNT_UP;\
 __medis();
 
-#define N   128
-#define M   N*(N+1)/2
 typedef float m_elem;
 
-extern m_elem calcs[N];
+typedef struct
+{
+    m_elem p;
+    m_elem q;
+    m_elem r;
+    m_elem phi;
+    m_elem th;
+} State;
+
+typedef union
+{
+    m_elem     *ptr;
+    uint32_t    padd;
+}CLA_FPTR;
+
+#define N                   128
+#define STATE_SIZE          3
+#define STATE_SYM_SIZE      STATE_SIZE*(STATE_SIZE+1)/2
+#define OBSV_SIZE           2
+#define OBSV_SYM_SIZE       OBSV_SIZE*(OBSV_SIZE+1)/2
+
+extern CLA_FPTR test;
+
 extern m_elem testValues[N];
+
+/*
+ * A priori State Covariance Matrix
+ */
+extern m_elem Pxx_[STATE_SYM_SIZE];
+
+/*
+ * A posteriori State Covariance Matrix
+ */
+extern m_elem Pxx[STATE_SYM_SIZE];
+
+/*
+ * State Jacobian Matrix
+ */
+extern m_elem Jfx[STATE_SIZE][STATE_SIZE];
+
+/*
+ * Observation Jacobian Matrix
+ */
+extern m_elem Hx[OBSV_SIZE][OBSV_SIZE];
+
+/*
+ * Process Noise Covariance Matrix
+ */
+extern m_elem Q[STATE_SYM_SIZE];
+
+/*
+ * Measurement Noise Covariance Matrix
+ */
+extern m_elem R[OBSV_SYM_SIZE];
+
+/*
+ * Kalman Gain Matrix
+ */
+extern m_elem K_EKF[STATE_SIZE];
+
+extern State state;
 
 extern uint32_t ulCycleCount1;
 extern uint32_t ulCycleCount2;
@@ -79,6 +136,7 @@ extern uint32_t kk;
 //Common (C) Variables
 //
 //extern void matmul(m_elem A[][N], m_elem B[][N], m_elem C[][N]);
+//extern void __eke(m_elem r,m_elem q,m_elem phi,m_elem th);
 
 //
 // Function Prototypes

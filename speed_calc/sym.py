@@ -43,3 +43,6 @@ class sym(object):
     def __str__(self):
         return self.stri
 
+    def split(self, token):
+        return self.stri.split(token)
+

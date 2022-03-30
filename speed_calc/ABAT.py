@@ -2,7 +2,7 @@ import re
 from timeit import default_timer as timer
 import numpy as np
 from sym import sym
-print('Give Size of the test and randoms:')
+print('Give Matrices size:')
 n = input()
 n = int(n)
 
@@ -47,40 +47,41 @@ def symtranspose(symlst,size=n,offset=0):
     return trans
 
 def printsymArray(symlst,size=n):
+    sylst_name = symlst[0][0].split("[")[0]
     for i in range(size):
         for j in range(size):
-            print(f'symlist[{i}][{j}] = {symlst[i][j]}')
+            print(f'{sylst_name}[{i}][{j}] = {symlst[i][j]}')
 
-S = symmetricsymArray(n, "A", offset)
-Df = symArray(n, "B", offset)
-DfT = symtranspose(Df)
-A = symArray(n, "", offset)
-B = symArray(n, "", offset)
+Pxx_ = symmetricsymArray(n, "Pxx_", offset)
+Jfx = symArray(n, "Jfx", offset)
+JfxT = symtranspose(Jfx)
+Pxx_JfxT = symArray(n, "", offset)
+JfxPxx_JfxT = symArray(n, "", offset)
 
-printsymArray(S)
-
-for i in range(n):
-    for j in range(n):
-        temp = sym(f'')
-        for k in range(n):
-            temp+=S[i][k]*DfT[k][j]
-        A[i][j] = temp
+printsymArray(Pxx_)
 
 for i in range(n):
     for j in range(n):
         temp = sym(f'')
         for k in range(n):
-            temp+=Df[i][k]*A[k][j]
-        B[i][j] = temp
+            temp+=Pxx_[i][k]*JfxT[k][j]
+        Pxx_JfxT[i][j] = temp
+
+for i in range(n):
+    for j in range(n):
+        temp = sym(f'')
+        for k in range(n):
+            temp+=Jfx[i][k]*Pxx_JfxT[k][j]
+        JfxPxx_JfxT[i][j] = temp
 
 with open(f'matmul.c', 'w') as f:
-    f.write(f'#include "matmul.h"\n\n')
-    f.write(f'static inline void matmul(m_elem A[M], m_elem B[][N], m_elem C[M], m_elem D[M])')
+    #f.write(f'#include "matmul.h"\n\n')
+    f.write(f'static inline void matmul(m_elem Pxx_[M], m_elem Jfx[][N], m_elem Q[M], m_elem Pxx[M])')
     f.write('\n{\n')
     k=0
     for i in range(n):
         for j in range(i,n):
-            string = f'\tD[{k}] = C[{k}] + {B[i][j]};'
+            string = f'\tPxx[{k}] = Q[{k}] + {JfxPxx_JfxT[i][j]};'
             k+=1
             f.write(string)
             f.write('\n')

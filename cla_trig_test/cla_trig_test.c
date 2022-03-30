@@ -32,8 +32,23 @@ uint32_t ulCycleCount3;
 
 m_elem TaskPerformance (m_elem correct[N],m_elem z[N],m_elem E[N]);
 
-#pragma DATA_SECTION(calcs,"Cla1DataRam")
-m_elem calcs[N];
+#pragma DATA_SECTION(test,"Cla1ToCpuMsgRAM");
+CLA_FPTR test;
+
+#pragma DATA_SECTION(state,"Cla1DataRam")
+State state;
+
+#pragma DATA_SECTION(Jfx,"Cla1DataRam")
+m_elem Jfx[STATE_SIZE][STATE_SIZE];
+
+#pragma DATA_SECTION(Pxx_,"Cla1DataRam")
+m_elem Pxx_[STATE_SYM_SIZE] = {1000, 0, 0, 1000, 0, 1000};
+
+#pragma DATA_SECTION(Pxx,"Cla1DataRam")
+m_elem Pxx[STATE_SYM_SIZE];
+
+#pragma DATA_SECTION(Q,"Cla1DataRam")
+m_elem Q[STATE_SYM_SIZE] = {1, 0, 0, 1, 0, 1};
 
 m_elem E[N];
 m_elem f_mse;
@@ -176,14 +191,19 @@ void main(void)
     //
     // Run the test
     //
+    state = (State) {.p = 0.0f, .q = 1.0f, .r = 1.0f, .phi = -0.7173715, .th = -2.547906};
+    uint16_t a =5;
+    uint16_t b =5;
+    volatile uint16_t c =b+a;
+    *(test.ptr)=59.0f;
 
     for(;;)
     {
         CLA_runTest();
-        f_mse = TaskPerformance(resExpected,calcs,E);
+        //f_mse = TaskPerformance(resExpected,calcs,E);
     }
 }
-
+/*
 m_elem TaskPerformance (m_elem correct[N],m_elem calcs[N],m_elem E[N])
 {
     m_elem sum_sq_error;
@@ -197,7 +217,7 @@ m_elem TaskPerformance (m_elem correct[N],m_elem calcs[N],m_elem E[N])
         sum_sq_error+=error*error;
     }
     return (sum_sq_error/N);
-}
+}*/
 
 
 //
