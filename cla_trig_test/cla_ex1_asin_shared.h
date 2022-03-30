@@ -45,14 +45,10 @@ typedef union
 }CLA_FPTR;
 
 #define N                   128
-#define STATE_SIZE          3
+#define STATE_SIZE          10
 #define STATE_SYM_SIZE      STATE_SIZE*(STATE_SIZE+1)/2
 #define OBSV_SIZE           2
 #define OBSV_SYM_SIZE       OBSV_SIZE*(OBSV_SIZE+1)/2
-
-extern CLA_FPTR test;
-
-extern m_elem testValues[N];
 
 /*
  * A priori State Covariance Matrix
@@ -87,7 +83,12 @@ extern m_elem R[OBSV_SYM_SIZE];
 /*
  * Kalman Gain Matrix
  */
-extern m_elem K_EKF[STATE_SIZE];
+extern m_elem K_EKF[STATE_SIZE][OBSV_SIZE];
+
+extern m_elem A[STATE_SIZE*STATE_SIZE];
+extern m_elem invA[STATE_SIZE*STATE_SIZE];
+extern m_elem L[STATE_SIZE*STATE_SIZE];
+extern m_elem invL[STATE_SIZE*STATE_SIZE];
 
 extern State state;
 
@@ -95,6 +96,9 @@ extern uint32_t ulCycleCount1;
 extern uint32_t ulCycleCount2;
 extern uint32_t kk;
 
+
+//extern void cholesky();
+//extern void cholesky_inverse(const m_elem L_data[], m_elem invL_data[]);
 
 //
 // Globals

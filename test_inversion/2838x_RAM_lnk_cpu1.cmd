@@ -69,13 +69,13 @@ SECTIONS
    .switch          : > RAMM0
    .reset           : > RESET, TYPE = DSECT /* not used, */
 
-   .stack           : > RAMM1
+   .stack           : > RAMM1 | RAMLS0
 #if defined(__TI_EABI__)
    .bss             : > RAMLS5
    .bss:output      : > RAMLS3
    .init_array      : > RAMM0
    .const           : > RAMLS5 | RAMLS6
-   .data            : > RAMLS5
+   .data            : >> RAMLS5 | RAMGS0 | RAMGS1
    .sysmem          : > RAMLS4
 #else
    .pinit           : > RAMM0

@@ -7,6 +7,161 @@
 // Defines
 //
 
+/*
+ *
+ *  Efficient Cholesky Decomposition based on MATLAB chol() function.
+ *  Tested for multiple Matrix dimensions with results:
+ *      10x10: 5540 cycles on 200 MHz clock.
+ *
+ */
+static inline void cholesky(void)
+{
+    m_elem c, ssq;
+    int16_t matrix_size = STATE_SIZE;
+    int16_t idxAjj = matrix_size*matrix_size, idxA1j = matrix_size*matrix_size;
+    int16_t i, i1, j, k, yk, ix, iy,  jj, jp1j, iac, idxAjp1j;
+    bool exit_ssq_negative;
+    int16_t row, colmn;
+
+    //
+    // Isolate lower triangular part of matrix A into L
+    //
+    for (row=0;row<matrix_size;row++)
+    {
+#pragma UNROLL(STATE_SIZE)
+        for (colmn=0;colmn<matrix_size;colmn++)
+        {
+            L[row*matrix_size+colmn] = A[row*matrix_size+colmn];
+        }
+    }
+
+    jp1j = 0;
+    j = 0;
+    exit_ssq_negative = false;
+    while ((!exit_ssq_negative) && (j <= matrix_size - 1))
+    {
+        idxAjj = j*(1 + matrix_size);
+        ssq = 0.0f;
+        if (j >= 1)
+        {
+            ix = j;
+            iy = j;
+            for (k = 0; k < j; k++)
+            {
+                ssq += (L[ix] * L[iy]);
+                ix += matrix_size;
+                iy += matrix_size;
+            }
+        }
+        ssq = L[idxAjj] - ssq;
+        if (ssq > 0)
+        {
+            ssq = CLAsqrt(ssq);
+            L[idxAjj] = ssq;
+            if (j + 1 < matrix_size)
+            {
+                idxA1j = (matrix_size - j) - 1;
+                yk = j + 2;
+                idxAjp1j = idxAjj + 2;
+                if ((idxA1j) && (j))
+                {
+                    ix = j;
+                    i = (j + matrix_size * (j - 1)) + 2;
+                    for (iac = yk; matrix_size < 0 ? iac >= i : iac <= i; iac += matrix_size)
+                    {
+                        c = -L[ix];
+                        iy = idxAjj + 1;
+                        i1 = (iac + idxA1j) - 1;
+                        for (jj = iac; jj <= i1; jj++)
+                        {
+                            L[iy] += L[jj - 1] * c;
+                            iy++;
+                        }
+                        ix += matrix_size;
+                    }
+                }
+                ssq = 1/ssq;
+                i = idxAjj + idxA1j;
+                for (k = idxAjp1j; k <= i + 1; k++)
+                {
+                    L[k - 1] *= ssq;
+                }
+            }
+            j++;
+        }
+        else
+        {
+            L[idxAjj] = ssq;
+            jp1j = j + 1;
+            exit_ssq_negative = true;
+        }
+    }
+    if (!jp1j)
+    {
+        idxA1j = matrix_size;
+    }
+    else
+    {
+        idxA1j = jp1j - 1;
+    }
+}
+
+/*
+ *
+ *  Efficient Cholesky Inverse.
+ *  Tested for multiple Matrix dimensions with results:
+ *      10x10: 5540 cycles on 200 MHz clock.
+ *
+ */
+static inline void cholesky_inverse()
+{
+    m_elem sums, y;
+    int16_t matrix_size = STATE_SIZE, idxLjj = matrix_size*matrix_size, b_i, i, i1, j, k;
+    int16_t row, colmn, current;
+
+    //
+    // Copy L into its inverse at the beginning.
+    //
+    for (row=0;row<matrix_size;row++)
+    {
+        for (colmn=row;colmn<matrix_size;colmn++)
+        {
+            invL[row*matrix_size+colmn] = L[row*matrix_size+colmn];
+        }
+    }
+
+    i = matrix_size;
+    for (b_i = 0; b_i < i; b_i++)
+    {
+      y = L[b_i + matrix_size * b_i];
+      invL[b_i + matrix_size * b_i] = 1.0 / y;
+      for (j = 0; j < b_i; j++)
+      {
+          sums = 0.0;
+          i1 = b_i - j;
+          for (k = 0; k < i1; k++)
+          {
+              idxLjj = j + k;
+              sums += invL[b_i + matrix_size * idxLjj] * invL[idxLjj + matrix_size * j];
+          }
+          invL[b_i + matrix_size * j] = -sums / y;
+      }
+    }
+    for (row=0;row<matrix_size;row++)
+    {
+        for (colmn=0;colmn<matrix_size;colmn++)
+        {
+            sums = 0;
+            #pragma UNROLL(STATE_SIZE)
+            for(current=0;current<matrix_size;current++)
+            {
+                sums+= invL[current+row*matrix_size]*invL[colmn*matrix_size+current];
+            }
+            invA[row*matrix_size+colmn] = sums;
+        }
+    }
+}
+
 //
 // Globals
 //
@@ -23,7 +178,7 @@ static inline void EKF_StateTransition(m_elem p, m_elem q, m_elem r, m_elem phi,
     //theta = IGY(t-1)*pi/180;
     m_elem x, y, z, dt, secth, tanth, cosphi, sinphi, A, B;
 
-am    cosphi = CLAcos(phi);
+    cosphi = CLAcos(phi);
     sinphi = CLAsin(phi);
     secth = 1/CLAcos(th);
     tanth = CLAsin(th)*secth;
@@ -64,16 +219,17 @@ static inline void EKF_Covariance_Propagation(m_elem Pxx_[STATE_SYM_SIZE], m_ele
     Pxx[5] = Q[5] + Jfx[2][0]*(Pxx_[0]*Jfx[2][0]+Pxx_[1]*Jfx[2][1]+Pxx_[2]*Jfx[2][2])+Jfx[2][1]*(Pxx_[1]*Jfx[2][0]+Pxx_[3]*Jfx[2][1]+Pxx_[4]*Jfx[2][2])+Jfx[2][2]*(Pxx_[2]*Jfx[2][0]+Pxx_[4]*Jfx[2][1]+Pxx_[5]*Jfx[2][2]);
 }
 
-
 __interrupt void Cla1Task1 ( void )
 {
     //Local Variables
     __mdebugstop();
-    volatile m_elem f1 = *(test.ptr);
+
     RESTART_CLOCK;
-    EKF_StateTransition(state.p, state.q, state.r, state.phi, state.th);
+    cholesky(); // 5540
+    cholesky_inverse(); //45100
+    //EKF_StateTransition(state.p, state.q, state.r, state.phi, state.th);
     //EKF_StateJacobian(state.q, state.r, state.phi, state.th);
-    EKF_Covariance_Propagation(Pxx, Jfx, Q, Pxx);
+    //EKF_Covariance_Propagation(Pxx, Jfx, Q, Pxx);
     //EKF_KalmanGain_Calculation();
     //EKF_Innovation_Step();
     //EKF_Covariance_Prediction();
@@ -83,7 +239,7 @@ __interrupt void Cla1Task1 ( void )
 
 interrupt void Cla1Task2 ( void )
 {
-
+    cholesky_inverse(L, invL);
 }
 
 interrupt void Cla1Task3 ( void )

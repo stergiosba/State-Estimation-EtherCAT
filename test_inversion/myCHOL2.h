@@ -13,7 +13,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
-#define N 5
+#define N 10
 #ifdef __cplusplus
 
 extern "C" {
