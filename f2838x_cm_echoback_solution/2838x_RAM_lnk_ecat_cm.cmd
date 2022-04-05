@@ -59,7 +59,7 @@ SECTIONS
    .esysmem         : > C1RAM
    .data            : > C1RAM
    .bss             : > C1RAM
-   .const           : > C1RAM
+   .const           : >> C1RAM | C0RAM
 
     MSGRAM_CM_TO_CPU1 : > CMTOCPU1MSGRAM0, type=NOINIT
     MSGRAM_CM_TO_CPU1_ECAT : > CMTOCPU1MSGRAM0_ECAT, type=NOINIT

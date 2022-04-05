@@ -204,7 +204,7 @@ V4.00 ECAT 7: The return values for the AL-StatusCode were changed to UINT16
 
 
 
-#include "ADIS16364_IMU_SLAVE.h"
+#include "ADIS16364_F28388D_IMU_SLAVE_CM.h"
 
 /*--------------------------------------------------------------------------------------
 ------

@@ -122,7 +122,7 @@ V4.00 ECAT 1: The handling of the Sync Manager Parameter was included according 
 
 
 /*Add Application specific Objects*/
-#include "ADIS16364_IMU_SLAVE.h"
+#include "ADIS16364_F28388D_IMU_SLAVE_CM.h"
 
 
 #undef _OBJD_
