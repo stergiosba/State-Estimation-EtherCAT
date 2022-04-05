@@ -138,7 +138,7 @@ V4.00 APPL 6: The main function was split in MainInit and MainLoop
 #include "applInterface.h"
 #undef _APPL_INTERFACE_
 
-#include "ADIS16364_IMU_SLAVE.h"
+#include "ADIS16364_F28388D_IMU_SLAVE_CM.h"
 
 
 

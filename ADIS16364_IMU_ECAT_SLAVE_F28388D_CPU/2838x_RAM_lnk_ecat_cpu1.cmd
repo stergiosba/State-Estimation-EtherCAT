@@ -74,7 +74,7 @@ SECTIONS
    .bss:output      : > RAMLS0_to_LS7
    .init_array      : > RAMM0
    .const           : > RAMGS0
-   .data            : > RAMD0
+   .data            : >> RAMD0 | RAMLS0_to_LS7
    .sysmem          : > RAMD1
 #else
    .pinit           : > RAMM0

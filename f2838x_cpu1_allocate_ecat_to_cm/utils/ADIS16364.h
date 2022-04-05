@@ -55,8 +55,8 @@
 #define YTEMP               8U       // Y-Temperature Reading's Burst-Read Pos.
 #define ZTEMP               9U       // Z-Temperature Reading's Burst-Read Pos.
 #define ANALOG              10U      // ADC Reading's Burst-Read Pos.3
-#define ACTION_DELAY        DEVICE_DELAY_US(30U)
-#define ACTION_DELAY_DIV2   DEVICE_DELAY_US(30U)
+#define ACTION_DELAY        DEVICE_DELAY_US(25U)
+#define ACTION_DELAY_DIV2   DEVICE_DELAY_US(12U)
 #define MIN_DELAY           DEVICE_DELAY_US(5U)
 
 

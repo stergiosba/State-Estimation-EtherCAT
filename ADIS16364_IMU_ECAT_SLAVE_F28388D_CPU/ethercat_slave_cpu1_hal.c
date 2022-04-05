@@ -45,14 +45,42 @@
 //
 #include "ethercat_slave_cpu1_hal.h"
 
-#define INTERRUPT_PROFILE_BUFFER_SIZE 500
+#include "SPI_init.h"
 
-uint32_t gSync0_counter=0;
-uint32_t gSync1_counter=0;
-uint32_t gPDI_counter=0;
-uint32_t gSync0_times[INTERRUPT_PROFILE_BUFFER_SIZE];
-uint32_t gSync1_times[INTERRUPT_PROFILE_BUFFER_SIZE];
-uint32_t gPDI_times[INTERRUPT_PROFILE_BUFFER_SIZE];
+#define PROFILE_MODE 0
+
+#if PROFILE_MODE
+
+#define INTERRUPT_PROFILE_BUFFER_SIZE 50
+typedef struct
+{
+    uint32_t    Sync0_counter;
+    uint32_t    Sync1_counter;
+    uint32_t    PDI_counter;
+
+    uint32_t    Sync0_stimes0[INTERRUPT_PROFILE_BUFFER_SIZE];
+    uint32_t    Sync0_stimes1[INTERRUPT_PROFILE_BUFFER_SIZE];
+    uint32_t    Sync0_etimes0[INTERRUPT_PROFILE_BUFFER_SIZE];
+    uint32_t    Sync0_etimes1[INTERRUPT_PROFILE_BUFFER_SIZE];
+
+    uint32_t    Sync1_stimes0[INTERRUPT_PROFILE_BUFFER_SIZE];
+    uint32_t    Sync1_stimes1[INTERRUPT_PROFILE_BUFFER_SIZE];
+    uint32_t    Sync1_etimes0[INTERRUPT_PROFILE_BUFFER_SIZE];
+    uint32_t    Sync1_etimes1[INTERRUPT_PROFILE_BUFFER_SIZE];
+
+    uint32_t    PDI_stimes0[INTERRUPT_PROFILE_BUFFER_SIZE];
+    uint32_t    PDI_stimes1[INTERRUPT_PROFILE_BUFFER_SIZE];
+    uint32_t    PDI_etimes0[INTERRUPT_PROFILE_BUFFER_SIZE];
+    uint32_t    PDI_etimes1[INTERRUPT_PROFILE_BUFFER_SIZE];
+
+}ISR_Profiler;
+
+
+ISR_Profiler Profiler = {.Sync0_counter=0, .Sync1_counter=0, .PDI_counter=0};
+#endif
+
+uint32_t ESC_getTimer0(void);
+void ESC_clearTimer0(void);
 
 #ifdef PDI_HAL_TEST
 
@@ -83,6 +111,15 @@ ESC_getTimer(void)
     return(~((uint32_t)CPUTimer_getTimerCount(CPUTIMER1_BASE)));
 }
 
+uint32_t
+ESC_getTimer0(void)
+{
+    //
+    // Return 1's compliment of the CPU timer
+    //
+    return(~((uint32_t)CPUTimer_getTimerCount(CPUTIMER0_BASE)));
+}
+
 //*****************************************************************************
 //
 // ESC_clearTimer
@@ -100,6 +137,20 @@ ESC_clearTimer(void)
     // Reload timer with the period count value
     //
     CPUTimer_reloadTimerCounter(CPUTIMER1_BASE);
+}
+
+void
+ESC_clearTimer0(void)
+{
+    //
+    // Set the timer period count
+    //
+    CPUTimer_setPeriod(CPUTIMER0_BASE, 0xFFFFFFFFUL);
+
+    //
+    // Reload timer with the period count value
+    //
+    CPUTimer_reloadTimerCounter(CPUTIMER0_BASE);
 }
 
 //*****************************************************************************
@@ -443,457 +494,6 @@ ESC_setLed(uint16_t runLed, uint16_t errLed)
     GPIO_writePin(ESC_ERR_LED_GPIO, (uint32_t)(errLed));
 }
 
-#ifdef PDI_HAL_TEST
-//*****************************************************************************
-//
-// HAL_initWriteBlockData
-//
-//*****************************************************************************
-void HAL_initWriteBlockData(void)
-{
-    uint16_t i;
-
-    //
-    // Initialize write block data array
-    //
-    for(i = 0U; i < (ESC_HAL_TEST_BLOCK_LENGTH / 4U); i++)
-    {
-        ESC_writeBlockData[i] = 0x1234ABCDUL;
-    }
-}
-
-//*****************************************************************************
-//
-// HAL_clearReadBlockData
-//
-//*****************************************************************************
-void HAL_clearReadBlockData(void)
-{
-    uint16_t i;
-
-    //
-    // Clear read block data array
-    //
-    for(i = 0U; i < (ESC_HAL_TEST_BLOCK_LENGTH / 4U); i++)
-    {
-        ESC_readBlockData[i] = 0x0UL;
-    }
-}
-
-//*****************************************************************************
-//
-// HAL_testBlockData
-//
-//*****************************************************************************
-uint16_t HAL_testBlockData(uint16_t length)
-{
-    uint16_t i;
-    uint16_t * writeData = (uint16_t *)(&ESC_writeBlockData[0]);
-    uint16_t * readData = (uint16_t *)(&ESC_readBlockData[0]);
-
-    //
-    // Check if odd length of bytes
-    //
-    if((length & 0x1U) == 0x1U)
-    {
-        //
-        // Odd Length of Bytes
-        //
-
-        //
-        // Check that data written and data read match
-        //
-        for(i = 0U; i < ((length - 1U) / 2U); i++)
-        {
-            if(*writeData != *readData)
-            {
-                return(ESC_HAL_BLOCK_TEST_FAIL);
-            }
-
-            writeData++;
-            readData++;
-        }
-
-        //
-        // Check last byte
-        //
-        if(((*writeData) & ESC_M_LSB) != ((*readData) & ESC_M_LSB))
-        {
-            return(ESC_HAL_BLOCK_TEST_FAIL);
-        }
-    }
-    else
-    {
-        //
-        // Even Length of Bytes
-        //
-
-        //
-        // Check that data written and data read match
-        //
-        for(i = 0U; i < (length / 2U); i++)
-        {
-            if(*writeData != *readData)
-            {
-                return(ESC_HAL_BLOCK_TEST_FAIL);
-            }
-
-            writeData++;
-            readData++;
-        }
-    }
-
-    return(ESC_HAL_BLOCK_TEST_PASS);
-}
-
-//*****************************************************************************
-//
-// ESC_setupPDITestInterface
-//
-//*****************************************************************************
-void
-ESC_setupPDITestInterface(void)
-{
-    uint16_t currentAddress = 0x0U;
-    uint32_t doubleWordData = 0x0UL;
-    uint16_t wordData = 0x0U;
-
-    //
-    // Setup and add various ESC register byte addresses to monitor
-    //
-    ESC_debugInitESCRegLogs();
-    ESC_debugAddESCRegsAddress(0x0U);     // Type, Revision
-    ESC_debugAddESCRegsAddress(0x2U);     // Build
-    ESC_debugAddESCRegsAddress(0x4U);     // FMMUs, SyncManagers Supported
-    ESC_debugAddESCRegsAddress(0x8U);     // ESC Supported Features
-    ESC_debugAddESCRegsAddress(0x100U);   // DL Control
-    ESC_debugAddESCRegsAddress(0x102U);   // DL Control (Extended)
-    ESC_debugAddESCRegsAddress(0x110U);   // DL Status
-    ESC_debugAddESCRegsAddress(0x310U);   // Lost Link Counter 1
-    ESC_debugAddESCRegsAddress(0x312U);   // Lost Link Counter 2
-    ESC_debugAddESCRegsAddress(0x510U);   // MII Control/Status
-    ESC_debugAddESCRegsAddress(0x512U);   // PHY Address
-    ESC_debugAddESCRegsAddress(0x514U);   // PHY Data
-    ESC_debugAddESCRegsAddress(0x516U);   // MII ECAT Access State
-    ESC_debugAddESCRegsAddress(0x518U);   // PHY Port Status (1)
-    ESC_debugAddESCRegsAddress(0x51AU);   // PHY Port Status (2)
-    ESC_debugAddESCRegsAddress(0x1000U);  // First data word of ESC RAM
-
-    //
-    // Check that correct PDI type (ASYNC16) is configured
-    //
-    if((ESC_readWord(ESC_O_PDI_CONTROL) & ESC_PDI_CONTROL_ASYNC16) !=
-       ESC_PDI_CONTROL_ASYNC16)
-    {
-        //
-        // PDI not operational or incorrect
-        //
-        while(1)
-        {
-            //
-            // Toggle Error
-            //
-            ESC_signalFail();
-        }
-    }
-
-    //
-    // Perform PDI read and write tests for entire ESC PDI RAM range
-    //
-    for(currentAddress = ESC_PDI_RAM_START_ADDRESS_OFFSET;
-        currentAddress <= ESC_PDI_RAM_END_ADDRESS_OFFSET;
-        currentAddress += 4U)
-    {
-        //
-        // Read DWord and Write DWord API Tests
-        //
-        doubleWordData = ESC_readDWord(currentAddress);
-        ESC_writeDWord(0xABCD1234UL, currentAddress);
-        doubleWordData = ESC_readDWord(currentAddress);
-
-        if(doubleWordData != 0xABCD1234UL)
-        {
-            while(1)
-            {
-                //
-                // Toggle Error
-                //
-                ESC_signalFail();
-            }
-        }
-
-        doubleWordData = ESC_readDWordISR(currentAddress);
-        ESC_writeDWordISR(0x1A2B3C4DUL, currentAddress);
-        doubleWordData = ESC_readDWordISR(currentAddress);
-
-        if(doubleWordData != 0x1A2B3C4DUL)
-        {
-            while(1)
-            {
-                //
-                // Toggle Error
-                //
-                ESC_signalFail();
-            }
-        }
-
-        //
-        // Read Word and Write Word API Tests
-        //
-        wordData = ESC_readWord(currentAddress);
-        ESC_writeWord(0x6789U, currentAddress);
-        wordData = ESC_readWord(currentAddress);
-
-        if(wordData != 0x6789U)
-        {
-            while(1)
-            {
-                //
-                // Toggle Error
-                //
-                ESC_signalFail();
-            }
-        }
-
-        wordData = ESC_readWordISR(currentAddress);
-        ESC_writeWordISR(0x5A5AU, currentAddress);
-        wordData = ESC_readWordISR(currentAddress);
-
-        if(wordData != 0x5A5AU)
-        {
-            while(1)
-            {
-                //
-                // Toggle Error
-                //
-                ESC_signalFail();
-            }
-        }
-    }
-
-    //
-    // Setup for read/write block API Tests
-    //
-    HAL_initWriteBlockData();
-
-    //
-    // Perform even length write and read block (non-ISR) API Test
-    //
-    ESC_writeBlock((uint16_t *)(&ESC_writeBlockData[0]),
-                   ESC_PDI_RAM_START_ADDRESS_OFFSET,
-                   ESC_HAL_TEST_BLOCK_LENGTH);
-    ESC_readBlock((uint16_t *)(&ESC_readBlockData[0]),
-                  ESC_PDI_RAM_START_ADDRESS_OFFSET,
-                  ESC_HAL_TEST_BLOCK_LENGTH);
-
-    if(HAL_testBlockData(ESC_HAL_TEST_BLOCK_LENGTH) != ESC_HAL_BLOCK_TEST_PASS)
-    {
-        while(1)
-        {
-            //
-            // Toggle Error
-            //
-            ESC_signalFail();
-        }
-    }
-
-    HAL_clearReadBlockData();
-
-    //
-    // Perform even length write and read block API Test
-    //
-    ESC_writeBlockISR((uint16_t *)(&ESC_writeBlockData[0]),
-                      (ESC_PDI_RAM_START_ADDRESS_OFFSET + 0x1000U),
-                      ESC_HAL_TEST_BLOCK_LENGTH);
-    ESC_readBlockISR((uint16_t *)(&ESC_readBlockData[0]),
-                     (ESC_PDI_RAM_START_ADDRESS_OFFSET + 0x1000U),
-                     ESC_HAL_TEST_BLOCK_LENGTH);
-
-    if(HAL_testBlockData(ESC_HAL_TEST_BLOCK_LENGTH) != ESC_HAL_BLOCK_TEST_PASS)
-    {
-        while(1)
-        {
-            //
-            // Toggle Error
-            //
-            ESC_signalFail();
-        }
-    }
-
-    HAL_clearReadBlockData();
-
-    //
-    // Perform odd length write and read block (non-ISR) API Test
-    //
-    ESC_writeBlock((uint16_t *)(&ESC_writeBlockData[0]),
-                   (ESC_PDI_RAM_START_ADDRESS_OFFSET + 0x2000U),
-                   (ESC_HAL_TEST_BLOCK_LENGTH - 1U));
-    ESC_readBlock((uint16_t *)(&ESC_readBlockData[0]),
-                  (ESC_PDI_RAM_START_ADDRESS_OFFSET + 0x2000U),
-                  (ESC_HAL_TEST_BLOCK_LENGTH - 1U));
-
-    if(HAL_testBlockData((ESC_HAL_TEST_BLOCK_LENGTH - 1U)) !=
-       ESC_HAL_BLOCK_TEST_PASS)
-    {
-        while(1)
-        {
-            //
-            // Toggle Error
-            //
-            ESC_signalFail();
-        }
-    }
-
-    HAL_clearReadBlockData();
-
-    //
-    // Perform odd length write and read block API Test
-    //
-    ESC_writeBlockISR((uint16_t *)(&ESC_writeBlockData[0]),
-                      (ESC_PDI_RAM_START_ADDRESS_OFFSET + 0x3000U),
-                      (ESC_HAL_TEST_BLOCK_LENGTH - 1U));
-    ESC_readBlockISR((uint16_t *)(&ESC_readBlockData[0]),
-                     (ESC_PDI_RAM_START_ADDRESS_OFFSET + 0x3000U),
-                     (ESC_HAL_TEST_BLOCK_LENGTH - 1U));
-
-    if(HAL_testBlockData((ESC_HAL_TEST_BLOCK_LENGTH - 1U)) !=
-       ESC_HAL_BLOCK_TEST_PASS)
-    {
-        while(1)
-        {
-            //
-            // Toggle Error
-            //
-            ESC_signalFail();
-        }
-    }
-
-    //
-    // Pass
-    //
-    ESC_signalPass();
-}
-
-//*****************************************************************************
-//
-// ESC_debugUpdateESCRegLogs
-//
-//*****************************************************************************
-void
-ESC_debugUpdateESCRegLogs(void)
-{
-    uint16_t i = 0U;
-
-    //
-    // Update ESC register data into debug array
-    //
-    while(ESC_escRegs[i].address != 0xFFFFU)
-    {
-        ESC_escRegs[i].data = ESC_readWord(ESC_escRegs[i].address);
-        i++;
-    }
-}
-
-//*****************************************************************************
-//
-// ESC_debugAddESCRegsAddress
-//
-//*****************************************************************************
-void
-ESC_debugAddESCRegsAddress(uint16_t address)
-{
-    uint16_t i = 0U;
-
-    //
-    // Add ESC Register Address to debug array
-    //
-    for(i = 0U; i < ESC_HAL_TEST_DEBUG_REGS_LENGTH; i++)
-    {
-        if(ESC_escRegs[i].address == 0xFFFFU)
-        {
-            //
-            // Assign byte address to struct
-            //
-            ESC_escRegs[i].address = address;
-            return;
-        }
-    }
-}
-
-//*****************************************************************************
-//
-// ESC_debugInitESCRegLogs
-//
-//*****************************************************************************
-void
-ESC_debugInitESCRegLogs(void)
-{
-    uint16_t i = 0U;
-
-    //
-    // Initialize ESC register debug array
-    //
-    for(i = 0U; i < ESC_HAL_TEST_DEBUG_REGS_LENGTH; i++)
-    {
-        ESC_escRegs[i].address = 0xFFFFU;
-        ESC_escRegs[i].data = 0xFFFFU;
-    }
-}
-
-//*****************************************************************************
-//
-// ESC_signalPass
-//
-//*****************************************************************************
-void
-ESC_signalPass(void)
-{
-    //
-    // Turn on controlCARD LEDs
-    //
-    GPIO_writePin(CCARD_LED_1_GPIO, 0UL);
-    GPIO_writePin(CCARD_LED_2_GPIO, 0UL);
-}
-
-//*****************************************************************************
-//
-// ESC_signalFail
-//
-//*****************************************************************************
-void
-ESC_signalFail(void)
-{
-    //
-    // Toggle controlCARD LEDs and delay
-    //
-    GPIO_togglePin(CCARD_LED_1_GPIO);
-    GPIO_togglePin(CCARD_LED_2_GPIO);
-
-    DEVICE_DELAY_US((uint32_t)(500000));
-}
-
-//*****************************************************************************
-//
-// ESC_passFailSignalSetup
-//
-//*****************************************************************************
-void
-ESC_passFailSignalSetup(void)
-{
-    //
-    // Set LED GPIOs to output mode
-    //
-    GPIO_setDirectionMode(CCARD_LED_1_GPIO, GPIO_DIR_MODE_OUT);
-    GPIO_setDirectionMode(CCARD_LED_2_GPIO, GPIO_DIR_MODE_OUT);
-
-    //
-    // Turn off controlCARD LEDs
-    //
-    GPIO_writePin(CCARD_LED_1_GPIO, 1UL);
-    GPIO_writePin(CCARD_LED_2_GPIO, 1UL);
-}
-#endif // PDI_HAL_TEST
-
 //*****************************************************************************
 //
 // ESC_loadedCheckEEPROM
@@ -1022,42 +622,6 @@ ESC_initHW(void)
 #endif
 
     //
-    // Verify the XTAL crystal frequency.
-    //
-#warn "IMPORTANT: F2838x EtherCAT software is now built for XTAL source of 25MHz. Refer to the EtherCAT Software User Guide for more information"
-    if(!Device_verifyXTAL(DEVICE_OSCSRC_FREQ / 1000000))
-    {
-        //
-        // The actual XTAL frequency does not match DEVICE_OSCSRC_FREQ!!
-        // Please check the XTAL frequency used.
-        //
-        // Note that the latest F2838x controlCARDs (Rev.B and later) have been
-        // updated to use 25MHz XTAL by default. If you have an older 20MHz XTAL
-        // controlCARD (E1, E2, or Rev.A), refer to the controlCARD
-        // documentation on steps to reconfigure the controlCARD from 20MHz to
-        // 25MHz.
-        //
-        ESTOP0;
-
-        //
-        // Set LED GPIOs to output mode
-        //
-        GPIO_setDirectionMode(DEVICE_GPIO_PIN_LED1, GPIO_DIR_MODE_OUT);
-        GPIO_setDirectionMode(DEVICE_GPIO_PIN_LED2, GPIO_DIR_MODE_OUT);
-
-        while(1)
-        {
-            //
-            // Toggle controlCARD LEDs and delay
-            //
-            GPIO_togglePin(DEVICE_GPIO_PIN_LED1);
-            GPIO_togglePin(DEVICE_GPIO_PIN_LED2);
-
-            DEVICE_DELAY_US((uint32_t)(50000));
-        }
-    }
-
-    //
     // Set up device clock
     //
     SysCtl_setClock(DEVICE_SETCLOCK_CFG);
@@ -1084,7 +648,7 @@ ESC_initHW(void)
     //
     // Configure GPIOs for ECAT
     //
-
+//TODO GROUP TO STARTUP FUNCTION
     //
     // PHY CLK
     //
@@ -1226,6 +790,23 @@ ESC_initHW(void)
     GPIO_setDirectionMode(ESC_ERR_LED_GPIO, GPIO_DIR_MODE_OUT);
 
     //
+    // Configure GPIO LED for Hardware Initilialization Status Check
+    //
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_LED1, GPIO_PIN_TYPE_STD);
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_LED1, GPIO_DIR_MODE_OUT);
+
+    //
+    // Configure GPIO LED for Distributed Clocks Synchronous EtherCAT Communication Check
+    //
+    GPIO_setPadConfig(DEVICE_GPIO_PIN_LED2, GPIO_PIN_TYPE_STD);
+    GPIO_setDirectionMode(DEVICE_GPIO_PIN_LED2, GPIO_DIR_MODE_OUT);
+
+    //
+    // Initialize SPI Peripheral
+    //
+    SPI_init();
+
+    //
     // Initialize PIE and clear PIE registers. Disables CPU interrupts.
     //
     Interrupt_initModule();
@@ -1253,16 +834,13 @@ ESC_initHW(void)
     //
     // Configure and Start timer
     //
+    CPUTimer_setPeriod(CPUTIMER0_BASE, 0xFFFFFFFFUL);
+    CPUTimer_setPreScaler(CPUTIMER0_BASE, 0U);
+    CPUTimer_startTimer(CPUTIMER0_BASE);
+
     CPUTimer_setPeriod(CPUTIMER1_BASE, 0xFFFFFFFFUL);
     CPUTimer_setPreScaler(CPUTIMER1_BASE, 0U);
     CPUTimer_startTimer(CPUTIMER1_BASE);
-
-#ifdef PDI_HAL_TEST
-    //
-    // Enable Pass, fail signals
-    //
-    ESC_passFailSignalSetup();
-#endif // PDI_HAL_TEST
 
     //
     // Aux = 500MHz and use /5 to get 100MHz for ECAT IP
@@ -1281,18 +859,6 @@ ESC_initHW(void)
     // Reset ESC
     //
     ESC_resetESC();
-
-#ifdef PDI_HAL_TEST
-    //
-    // Enable the debug access
-    //
-    while((HWREGH(ESC_SS_BASE + ESCSS_O_ACCESS_CTRL) &
-           ESCSS_ACCESS_CTRL_ENABLE_DEBUG_ACCESS) !=
-          ESCSS_ACCESS_CTRL_ENABLE_DEBUG_ACCESS)
-    {
-        ESCSS_enableDebugAccess(ESC_SS_BASE);
-    }
-#endif // PDI_HAL_TEST
 
     //
     // Initialize ESCSS Memory
@@ -1350,7 +916,26 @@ ESC_initHW(void)
     // Enable interrupts to CPU
     //
     EINT;
+#if PROFILE_MODE
+    int ii;
+    for (ii=0;ii< INTERRUPT_PROFILE_BUFFER_SIZE;ii++)
+    {
+        Profiler.Sync0_stimes0[ii] = 0;
+        Profiler.Sync0_stimes1[ii] = 0;
+        Profiler.Sync0_etimes0[ii] = 0;
+        Profiler.Sync0_etimes1[ii] = 0;
 
+        Profiler.Sync1_stimes0[ii] = 0;
+        Profiler.Sync1_stimes1[ii] = 0;
+        Profiler.Sync1_etimes0[ii] = 0;
+        Profiler.Sync1_etimes1[ii] = 0;
+
+        Profiler.PDI_stimes0[ii] = 0;
+        Profiler.PDI_stimes1[ii] = 0;
+        Profiler.PDI_etimes0[ii] = 0;
+        Profiler.PDI_etimes1[ii] = 0;
+    }
+#endif
     return(ESC_HW_INIT_SUCCESS);
 }
 
@@ -1359,12 +944,13 @@ ESC_initHW(void)
 // ESC_releaseHW
 //
 //*****************************************************************************
-void
+uint16_t
 ESC_releaseHW(void)
 {
     //
     // Intentionally empty - Implementation is left to the end user
     //
+    return(ESC_HW_TERMINATE);
 }
 
 //*****************************************************************************
@@ -1375,13 +961,20 @@ ESC_releaseHW(void)
 __interrupt void
 ESC_applicationLayerHandler(void)
 {
+#if PROFILE_MODE
+
+    if (Profiler.PDI_counter<INTERRUPT_PROFILE_BUFFER_SIZE)
+    {
+        Profiler.PDI_stimes0[Profiler.PDI_counter&] = ESC_getTimer0();
+        Profiler.PDI_stimes1[Profiler.PDI_counter&] = ESC_getTimer();
+    }
+#endif
+
 #ifdef ETHERCAT_STACK
 #if AL_EVENT_ENABLED
     //
     // When stack is included and application event enabled, call stack PDI ISR
     //
-    gPDI_times[gPDI_counter] = ESC_getTimer();
-    gPDI_counter++;
     PDI_Isr();
 #endif  // AL_EVENT_ENABLED
 #endif  // ETHERCAT_STACK
@@ -1395,6 +988,16 @@ ESC_applicationLayerHandler(void)
     // Acknowledge this interrupt located in PIE group 1
     //
     Interrupt_clearACKGroup(INTERRUPT_ACK_GROUP1);
+
+#if PROFILE_MODE
+    if (Profiler.PDI_counter<INTERRUPT_PROFILE_BUFFER_SIZE)
+    {
+        Profiler.PDI_etimes0[Profiler.PDI_counter] = ESC_getTimer0();
+        Profiler.PDI_etimes1[Profiler.PDI_counter] = ESC_getTimer();
+    }
+
+    Profiler.PDI_counter++;
+#endif
 }
 
 //*****************************************************************************
@@ -1405,13 +1008,20 @@ ESC_applicationLayerHandler(void)
 __interrupt void
 ESC_applicationSync0Handler(void)
 {
+#if PROFILE_MODE
+    if (Profiler.Sync0_counter<INTERRUPT_PROFILE_BUFFER_SIZE)
+    {
+        Profiler.Sync0_stimes0[Profiler.Sync0_counter] = ESC_getTimer0();
+        Profiler.Sync0_stimes1[Profiler.Sync0_counter] = ESC_getTimer();
+    }
+
+#endif
+
 #ifdef ETHERCAT_STACK
 #if DC_SUPPORTED
     //
     // When stack is included and DC is enabled, call stack Sync0 ISR
     //
-    gSync0_times[gSync0_counter] = ESC_getTimer();
-    gSync0_counter++;
     Sync0_Isr();
 #endif  // DC_SUPPORTED
 #endif  // ETHERCAT_STACK
@@ -1425,6 +1035,16 @@ ESC_applicationSync0Handler(void)
     // Acknowledge this interrupt located in PIE group 1
     //
     Interrupt_clearACKGroup(INTERRUPT_ACK_GROUP1);
+
+#if PROFILE_MODE
+    if (Profiler.Sync0_counter<INTERRUPT_PROFILE_BUFFER_SIZE)
+    {
+        Profiler.Sync0_etimes0[Profiler.Sync0_counter] = ESC_getTimer0();
+        Profiler.Sync0_etimes1[Profiler.Sync0_counter] = ESC_getTimer();
+    }
+
+    Profiler.Sync0_counter++;
+#endif
 }
 
 //*****************************************************************************
@@ -1435,13 +1055,20 @@ ESC_applicationSync0Handler(void)
 __interrupt void
 ESC_applicationSync1Handler(void)
 {
+#if PROFILE_MODE
+    if (Profiler.Sync1_counter<INTERRUPT_PROFILE_BUFFER_SIZE)
+    {
+        Profiler.Sync1_stimes0[Profiler.Sync1_counter] = ESC_getTimer0();
+        Profiler.Sync1_stimes1[Profiler.Sync1_counter] = ESC_getTimer();
+    }
+#endif
+
+
 #ifdef ETHERCAT_STACK
 #if DC_SUPPORTED
     //
     // When stack is included and DC is enabled, call stack Sync1 ISR
     //
-    gSync1_times[gSync1_counter] = ESC_getTimer();
-    gSync1_counter++;
     Sync1_Isr();
 #endif  // DC_SUPPORTED
 #endif  // ETHERCAT_STACK
@@ -1455,6 +1082,15 @@ ESC_applicationSync1Handler(void)
     // Acknowledge this interrupt located in PIE group 5
     //
     Interrupt_clearACKGroup(INTERRUPT_ACK_GROUP5);
+
+#if PROFILE_MODE
+    if (Profiler.Sync1_counter<INTERRUPT_PROFILE_BUFFER_SIZE)
+    {
+        Profiler.Sync1_etimes0[Profiler.Sync1_counter] = ESC_getTimer0();
+        Profiler.Sync1_etimes1[Profiler.Sync1_counter] = ESC_getTimer();
+    }
+    Profiler.Sync1_counter++;
+#endif
 }
 
 //
