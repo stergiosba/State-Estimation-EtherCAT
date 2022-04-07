@@ -6,7 +6,7 @@
 * \brief This file contains the function definitions used in ADIS16364
 * EtherCAT Slave Application.
 *
-* Specifically, it is contains ADIS16364 IMU Drivers' routines.
+* Specifically, it contains ADIS16364 IMU Drivers' routines.
 *
 * Author:      Aristotelis Papatheodorou\n
 * Maintainer:  Konstantinos Machairas

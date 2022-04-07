@@ -1,10 +1,21 @@
-/*
- * SPI_init.h
- *
- *  Created on: Jan 9, 2022
- *      Author: Stergios
- *      Package: Pegasus (https://github.com/stergiosba/Pegasus)
- */
+/** \addtogroup F28388D_Drivers F28388D Drivers
+* @{
+*
+* \file SPI_init.c
+*
+* \brief This file contains a generic SPI initialization function for the TMS320F28388D MCU.
+*
+* This file should not be changed directly, the user should change definitions inside SPI_init.h
+*
+* Author:      Stergios Bachoumas\n
+* Maintainer:  Konstantinos Machairas
+*
+* Revision History\n
+* Version 00.01.00 | 2022 | Bachoumas
+*
+* (C) Copyright 2022, NTUA CSL-EP Legged Robots Team
+*
+*****************************************************************************/
 
 #include "SPI_init.h"
 
@@ -41,7 +52,8 @@ void SPI_init()
     SPI_enableModule(SUS_SPI_BASE);
     SPI_PinMuxOptions();
     EDIS;
-}
+
+} // End SPI_init()
 
 void SPI_PinMuxOptions()
 {
@@ -67,4 +79,5 @@ void SPI_PinMuxOptions()
     GPIO_setPinConfig(SUS_SPI_STEN);
     GPIO_setPadConfig(SUS_GPIO_SPI_STEN, GPIO_PIN_TYPE_PULLUP);
     GPIO_setQualificationMode(SUS_GPIO_SPI_STEN, GPIO_QUAL_ASYNC);
-}
+
+} // End SPI_PinMuxOptions()

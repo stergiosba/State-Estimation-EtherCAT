@@ -322,61 +322,86 @@ void APPL_OutputMapping(UINT16 *pData)
 *////////////////////////////////////////////////////////////////////////////////////////
 void APPL_Application_OnlineMode(void)
 {
-    const uint16_t DC_MODE = bDcSyncActive;
+    // Only working synchronously.
+    if (bDcSyncActive)
+    {
+        GPIO_writePin(DEVICE_GPIO_PIN_LED1, 0);
+        GPIO_writePin(DEVICE_GPIO_PIN_LED2, 1);
 
-    //
-    // ADIS 16364 Supports full burst mode. No need to access individual registers.
-    //
-    BurstRead();
+        //
+        // ADIS 16364 Supports full burst mode. No need to access individual registers.
+        //
+        BurstRead();
 
-    // Data from IMU to EtherCAT (sensing)
-    SUS_SENSE0x6000.XGyro_sense = g_SensBurst[1];
-    SUS_SENSE0x6000.YGyro_sense = g_SensBurst[2];
-    SUS_SENSE0x6000.ZGyro_sense = g_SensBurst[3];
+        // Data from IMU to EtherCAT (sensing)
+        SUS_SENSE0x6000.XGyro_sense = g_SensBurst[1];
+        SUS_SENSE0x6000.YGyro_sense = g_SensBurst[2];
+        SUS_SENSE0x6000.ZGyro_sense = g_SensBurst[3];
 
-    SUS_SENSE0x6000.XAcc_sense = g_SensBurst[4];
-    SUS_SENSE0x6000.YAcc_sense = g_SensBurst[5];
-    SUS_SENSE0x6000.ZAcc_sense = g_SensBurst[6];
+        SUS_SENSE0x6000.XAcc_sense = g_SensBurst[4];
+        SUS_SENSE0x6000.YAcc_sense = g_SensBurst[5];
+        SUS_SENSE0x6000.ZAcc_sense = g_SensBurst[6];
 
-    SUS_SENSE0x6000.Temp_sense = 25.0f+g_SensBurst[7];
-    SUS_SENSE0x6000.YAngle_calc = 25.0f+g_SensBurst[8];
-    SUS_SENSE0x6000.ZAngle_calc = 25.0f+g_SensBurst[9];
+        SUS_SENSE0x6000.Temp_sense = 25.0f+g_SensBurst[7];
+        SUS_SENSE0x6000.YAngle_calc = 25.0f+g_SensBurst[8];
+        SUS_SENSE0x6000.ZAngle_calc = 25.0f+g_SensBurst[9];
 
-    SUS_SENSE0x6000.XAngle_calc = 0;
+        SUS_SENSE0x6000.XAngle_calc = 0;
 
-    SUS_SENSE0x6000.XLinVel_calc = 0;
-    SUS_SENSE0x6000.YLinVel_calc = 0;
-    SUS_SENSE0x6000.ZLinVel_calc = 0;
-
+        SUS_SENSE0x6000.XLinVel_calc = 0;
+        SUS_SENSE0x6000.YLinVel_calc = 0;
+        SUS_SENSE0x6000.ZLinVel_calc = 0;
+    }
+    else
+    {
+        GPIO_writePin(DEVICE_GPIO_PIN_LED1, 1);
+        GPIO_writePin(DEVICE_GPIO_PIN_LED2, 1);
+    }
 }
 
 void APPL_Application_BiasCalibration(void)
 {
-    const uint16_t DC_MODE = bDcSyncActive;
+    // Only working synchronously.
+    if (bDcSyncActive)
+    {
+        GPIO_writePin(DEVICE_GPIO_PIN_LED1, 0);
+        GPIO_writePin(DEVICE_GPIO_PIN_LED2, 0);
 
-    // Data from IMU to EtherCAT (sensing)
-    SUS_SENSE0x6000.XGyro_sense = 0;
-    SUS_SENSE0x6000.YGyro_sense = 0;
-    SUS_SENSE0x6000.ZGyro_sense = 0;
+        //
+        // ADIS 16364 Supports bias calibration mode for the gyroscopes.
+        //
+        //IMUGyroBiasNullCalibration();
 
-    SUS_SENSE0x6000.XAcc_sense = 0;
-    SUS_SENSE0x6000.YAcc_sense = 0;
-    SUS_SENSE0x6000.ZAcc_sense = 0;
+        // During bias calibration the sensor is offline so we send zeros from IMU to EtherCAT
+        SUS_SENSE0x6000.XGyro_sense = 0;
+        SUS_SENSE0x6000.YGyro_sense = 0;
+        SUS_SENSE0x6000.ZGyro_sense = 0;
 
-    SUS_SENSE0x6000.XAngle_calc = 0;
-    SUS_SENSE0x6000.YAngle_calc = 0;
-    SUS_SENSE0x6000.ZAngle_calc = 0;
+        SUS_SENSE0x6000.XAcc_sense = 0;
+        SUS_SENSE0x6000.YAcc_sense = 0;
+        SUS_SENSE0x6000.ZAcc_sense = 0;
 
-    SUS_SENSE0x6000.XLinVel_calc = 0;
-    SUS_SENSE0x6000.YLinVel_calc = 0;
-    SUS_SENSE0x6000.ZLinVel_calc = 0;
+        SUS_SENSE0x6000.Temp_sense = 0;
+        SUS_SENSE0x6000.YAngle_calc = 0;
+        SUS_SENSE0x6000.ZAngle_calc = 0;
 
-    IMUGyroBiasNullCalibration();
+        SUS_SENSE0x6000.XAngle_calc = 0;
+
+        SUS_SENSE0x6000.XLinVel_calc = 0;
+        SUS_SENSE0x6000.YLinVel_calc = 0;
+        SUS_SENSE0x6000.ZLinVel_calc = 0;
+    }
+    else
+    {
+        GPIO_writePin(DEVICE_GPIO_PIN_LED1, 1);
+        GPIO_writePin(DEVICE_GPIO_PIN_LED2, 1);
+    }
+
 }
 
 void APPL_Application2(void)
 {
-    const uint16_t DC_MODE = bDcSyncActive;
+    //const uint16_t DC_MODE = bDcSyncActive;
 
     // Data from IMU to EtherCAT (sensing)
     SUS_SENSE0x6000.XGyro_sense = 1;
@@ -430,7 +455,7 @@ void main(void)
     uint16_t HW_Check = HW_Init();
     DEVICE_DELAY_US(5000);
     //
-    // If Hardware Initialization was successful reset LED1/LED2 for later use.
+    // If Hardware Initialization was successful, reset LED1/LED2 to use them later.
     //
     if (!HW_Check)
     {

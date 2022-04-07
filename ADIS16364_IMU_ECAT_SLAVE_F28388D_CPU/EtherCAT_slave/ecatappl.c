@@ -1094,11 +1094,10 @@ void ECAT_Application(void)
         }
     }
 
-    GPIO_writePin(DEVICE_GPIO_PIN_LED2, !bDcSyncActive);
     /*ECATCHANGE_START(V5.13) CIA402 4*/
     /*decouple CIA402 application from ESM*/
     /*ECATCHANGE_END(V5.13) CIA402 4*/
-
+    //TODO ONLY HERE TO FIND THIS EASILY
     switch (SUS_CONTROL0x7000.IMU_flags)
     {
         case IMU_GYRO_ONLY_MODE:

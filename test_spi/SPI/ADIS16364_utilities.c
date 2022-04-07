@@ -149,7 +149,7 @@ uint16_t SensorRead(uint16_t Reg, unsigned short int NumBits)
     //
     // Data Ready Delay
     //
-    DEVICE_DELAY_US((25U));
+    DEVICE_DELAY_US((30U));
 
     //
     // Dummy Transfer to update SPI's incoming register
@@ -159,7 +159,7 @@ uint16_t SensorRead(uint16_t Reg, unsigned short int NumBits)
     //
     // Data Ready Delay
     //
-    DEVICE_DELAY_US((25U));
+    DEVICE_DELAY_US((30U));
 
     //
     // Acquire SPI incoming Register's Contents
@@ -238,7 +238,7 @@ void BurstRead(void)
     //
     // Data Ready Delay
     //
-    DEVICE_DELAY_US((25U));
+    DEVICE_DELAY_US((30U));
 
     //
     // Acquire Burst Mode Readings
@@ -253,7 +253,7 @@ void BurstRead(void)
         //
         // Data Ready Delay
         //
-        DEVICE_DELAY_US((25U));
+        DEVICE_DELAY_US((30U));
 
         //
         // Acquire SPI incoming Register's Contents
@@ -322,7 +322,7 @@ unsigned short int SensorWrite(unsigned short int Reg,
     //
     // Data Ready Delay
     //
-    DEVICE_DELAY_US((25U));
+    DEVICE_DELAY_US((30U));
 
     //
     // Write Operation Successful
