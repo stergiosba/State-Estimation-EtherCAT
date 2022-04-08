@@ -68,9 +68,12 @@ const float g_AdcScale = 805.8f;
 // Sensor Burst-Mode Read Vector
 //
 //*****************************************************************************
+#pragma DATA_SECTION(g_SensBurst, "Cla1DataRam")
 float g_SensBurst[11] = { 0.0f, 0.0f, 0.0f, 0.0f,
                           0.0f, 0.0f, 0.0f, 0.0f,
                           0.0f, 0.0f, 0.0f };
+#pragma DATA_SECTION(test, "Cla1DataRam")
+float test[11];
 
 //*****************************************************************************
 //
@@ -245,7 +248,7 @@ void BurstRead(void)
         //
         // Dummy Transfer to update SPI's incoming register
         //
-        SPI_writeDataNonBlocking(SUS_SPI_BASE, ADIS16364_NULL_COMMAND);
+        SPI_writeDataBlockingNonFIFO(SUS_SPI_BASE, ADIS16364_NULL_COMMAND);
 
         //
         // Data Ready Delay
@@ -266,7 +269,6 @@ void BurstRead(void)
     //
     // Iterate the Acquired Raw Readings
     //
-//#pragma UNROLL(10)
     for (i = 0; i <= 10; i++)
     {
         //
@@ -274,6 +276,8 @@ void BurstRead(void)
         //
         *(BurstPtr + i) = RawToReal(Burst[i], RegScale[i], SBits[i], Sign[i]);
     }
+
+    CLA_forceTasks(CLA1_BASE,CLA_TASKFLAG_1);
 }   // End Of BurstRead()
 
 //*****************************************************************************
@@ -413,43 +417,6 @@ float RawToRealSign(uint16_t Raw, float RegScale)
     return Sens;
 
 }   // End Of RawToRealSign()
-
-//*****************************************************************************
-//
-//! \brief Translates a floating point value to two-complements usigned
-//! integer.
-//!
-//! \param[in] Num float Number to be translated
-//!
-//! \return Raw uint16_t Two Complements integer Value.
-//
-//*****************************************************************************
-uint16_t TwosComp(float Num)
-{
-    uint16_t Raw = 0x0000;
-
-    //
-    // Value is Negative
-    //
-    if (Num < 0)
-    {
-        Raw = ~((uint16_t)(-Num) - 1);
-    }
-
-    //
-    // Value is Positive
-    //
-    else
-    {
-        Raw = (uint16_t)Num;
-    }
-
-    //
-    // Return Two Complements Integer Value
-    //
-    return Raw;
-
-}   // End Of TwosComp
 
 //*****************************************************************************
 //

@@ -37,6 +37,10 @@
 			<value>$%7BCOM_TI_C2000WARE_SOFTWARE_PACKAGE_INSTALL_DIR%7D/device_support</value>
 		</variable>
 		<variable>
+			<name>C2000WARE_DEV_HEADERS_F28388X</name>
+			<value>$%7BCOM_TI_C2000WARE_SOFTWARE_PACKAGE_INSTALL_DIR%7D/device_support/f2838x/headers/include</value>
+		</variable>
+		<variable>
 			<name>C2000WARE_DLIB_ROOT</name>
 			<value>$%7BCOM_TI_C2000WARE_SOFTWARE_PACKAGE_INSTALL_DIR%7D/driverlib</value>
 		</variable>

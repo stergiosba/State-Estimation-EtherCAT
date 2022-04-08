@@ -28,8 +28,8 @@ EtherCAT_slave/ecatappl.obj: ../EtherCAT_slave/objdef.h
 EtherCAT_slave/ecatappl.obj: ../EtherCAT_slave/sdoserv.h
 EtherCAT_slave/ecatappl.obj: ../EtherCAT_slave/ecatcoe.h
 EtherCAT_slave/ecatappl.obj: ../EtherCAT_slave/mailbox.h
-EtherCAT_slave/ecatappl.obj: C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/device/device.h
-EtherCAT_slave/ecatappl.obj: C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/device/driverlib.h
+EtherCAT_slave/ecatappl.obj: C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/device.h
+EtherCAT_slave/ecatappl.obj: C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/driverlib.h
 EtherCAT_slave/ecatappl.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_memmap.h
 EtherCAT_slave/ecatappl.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/adc.h
 EtherCAT_slave/ecatappl.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdbool.h
@@ -127,9 +127,8 @@ EtherCAT_slave/ecatappl.obj: ../EtherCAT_slave/ecatappl.h
 EtherCAT_slave/ecatappl.obj: ../EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.h
 EtherCAT_slave/ecatappl.obj: ../EtherCAT_slave/ecatappl.h
 EtherCAT_slave/ecatappl.obj: ../EtherCAT_slave/applInterface.h
-EtherCAT_slave/ecatappl.obj: C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/device/device.h
+EtherCAT_slave/ecatappl.obj: C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/device.h
 EtherCAT_slave/ecatappl.obj: C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/SPI_ADIS16364_LIBRARY/ADIS16364.h
-EtherCAT_slave/ecatappl.obj: C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/device/device.h
 EtherCAT_slave/ecatappl.obj: ../EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1Objects.h
 
 ../EtherCAT_slave/ecatappl.c:
@@ -188,9 +187,9 @@ C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/_stdint.h:
 
 ../EtherCAT_slave/mailbox.h:
 
-C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/device/device.h:
+C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/device.h:
 
-C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/device/driverlib.h:
+C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/driverlib.h:
 
 C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_memmap.h:
 
@@ -386,11 +385,9 @@ C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdlib.h:
 
 ../EtherCAT_slave/applInterface.h:
 
-C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/device/device.h:
+C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/device.h:
 
 C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/SPI_ADIS16364_LIBRARY/ADIS16364.h:
-
-C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/device/device.h:
 
 ../EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1Objects.h:
 

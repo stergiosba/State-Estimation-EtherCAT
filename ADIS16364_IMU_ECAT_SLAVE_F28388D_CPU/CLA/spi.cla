@@ -1,0 +1,56 @@
+//
+// Included Files
+//
+#include <CLA_shared.h>
+#include "ADIS16364.h"
+
+__interrupt void Cla1Task1 ( void )
+{
+    //Local Variables
+    //RESTART_CLOCK;
+    uint16_t i;
+    for (i=0;i<11;i++)
+    {
+        test[i] = g_SensBurst[i];
+    }
+    //READ_CLOCK(ulCycleCount1);
+}
+
+interrupt void Cla1Task2 ( void )
+{
+
+}
+
+interrupt void Cla1Task3 ( void )
+{
+
+}
+
+interrupt void Cla1Task4 ( void )
+{
+
+}
+
+interrupt void Cla1Task5 ( void )
+{
+
+}
+
+interrupt void Cla1Task6 ( void )
+{
+
+}
+
+interrupt void Cla1Task7 ( void )
+{
+
+}
+
+interrupt void Cla1Task8 ( void )
+{
+
+}
+
+//
+// End of file
+//

@@ -72,6 +72,14 @@ extern "C"
 #include <stdbool.h>
 #include <string.h>
 
+//
+// User Defined Files
+//
+#include "SPI_init.h"
+#include "CLA_init.h"
+#include "CLA_shared.h"
+
+
 
 #ifdef ETHERCAT_STACK
 #include "ecat_def.h"

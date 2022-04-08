@@ -11,6 +11,8 @@ GEN_CMDS__FLAG :=
 
 ORDERED_OBJS += \
 "./f2838x_codestartbranch.obj" \
+"./CLA/CLA_init.obj" \
+"./CLA/spi.obj" \
 "./EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj" \
 "./EtherCAT_slave/coeappl.obj" \
 "./EtherCAT_slave/ecatappl.obj" \
@@ -23,7 +25,7 @@ ORDERED_OBJS += \
 "./EtherCAT_slave/sdoserv.obj" \
 "./SPI_ADIS16364_LIBRARY/ADIS16364_utilities.obj" \
 "./SPI_ADIS16364_LIBRARY/SPI_init.obj" \
-"./device/device.obj" \
+"./ethercat_f28388x_hal/device.obj" \
 "./ethercat_f28388x_hal/ethercat_gpio_setup.obj" \
 "./ethercat_f28388x_hal/ethercat_slave_cpu1_hal.obj" \
 "../2838x_RAM_lnk_ecat_cpu1.cmd" \
@@ -39,14 +41,14 @@ RMDIR := RMDIR /S/Q
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include subdir_vars.mk
+-include CLA/subdir_vars.mk
 -include EtherCAT_slave/subdir_vars.mk
 -include SPI_ADIS16364_LIBRARY/subdir_vars.mk
--include device/subdir_vars.mk
 -include ethercat_f28388x_hal/subdir_vars.mk
 -include subdir_rules.mk
+-include CLA/subdir_rules.mk
 -include EtherCAT_slave/subdir_rules.mk
 -include SPI_ADIS16364_LIBRARY/subdir_rules.mk
--include device/subdir_rules.mk
 -include ethercat_f28388x_hal/subdir_rules.mk
 -include objects.mk
 
@@ -178,8 +180,9 @@ ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "f2838x_codestartbranch.obj" "EtherCAT_slave\ADIS16364_F28388D_IMU_SLAVE_CPU1.obj" "EtherCAT_slave\coeappl.obj" "EtherCAT_slave\ecatappl.obj" "EtherCAT_slave\ecatcoe.obj" "EtherCAT_slave\ecatslv.obj" "EtherCAT_slave\f2838x_cpu1_hw.obj" "EtherCAT_slave\f2838x_cpu1_system.obj" "EtherCAT_slave\mailbox.obj" "EtherCAT_slave\objdef.obj" "EtherCAT_slave\sdoserv.obj" "SPI_ADIS16364_LIBRARY\ADIS16364_utilities.obj" "SPI_ADIS16364_LIBRARY\SPI_init.obj" "device\device.obj" "ethercat_f28388x_hal\ethercat_gpio_setup.obj" "ethercat_f28388x_hal\ethercat_slave_cpu1_hal.obj" 
-	-$(RM) "EtherCAT_slave\ADIS16364_F28388D_IMU_SLAVE_CPU1.d" "EtherCAT_slave\coeappl.d" "EtherCAT_slave\ecatappl.d" "EtherCAT_slave\ecatcoe.d" "EtherCAT_slave\ecatslv.d" "EtherCAT_slave\f2838x_cpu1_hw.d" "EtherCAT_slave\f2838x_cpu1_system.d" "EtherCAT_slave\mailbox.d" "EtherCAT_slave\objdef.d" "EtherCAT_slave\sdoserv.d" "SPI_ADIS16364_LIBRARY\ADIS16364_utilities.d" "SPI_ADIS16364_LIBRARY\SPI_init.d" "device\device.d" "ethercat_f28388x_hal\ethercat_gpio_setup.d" "ethercat_f28388x_hal\ethercat_slave_cpu1_hal.d" 
+	-$(RM) "f2838x_codestartbranch.obj" "CLA\CLA_init.obj" "CLA\spi.obj" "EtherCAT_slave\ADIS16364_F28388D_IMU_SLAVE_CPU1.obj" "EtherCAT_slave\coeappl.obj" "EtherCAT_slave\ecatappl.obj" "EtherCAT_slave\ecatcoe.obj" "EtherCAT_slave\ecatslv.obj" "EtherCAT_slave\f2838x_cpu1_hw.obj" "EtherCAT_slave\f2838x_cpu1_system.obj" "EtherCAT_slave\mailbox.obj" "EtherCAT_slave\objdef.obj" "EtherCAT_slave\sdoserv.obj" "SPI_ADIS16364_LIBRARY\ADIS16364_utilities.obj" "SPI_ADIS16364_LIBRARY\SPI_init.obj" "ethercat_f28388x_hal\device.obj" "ethercat_f28388x_hal\ethercat_gpio_setup.obj" "ethercat_f28388x_hal\ethercat_slave_cpu1_hal.obj" 
+	-$(RM) "CLA\CLA_init.d" "EtherCAT_slave\ADIS16364_F28388D_IMU_SLAVE_CPU1.d" "EtherCAT_slave\coeappl.d" "EtherCAT_slave\ecatappl.d" "EtherCAT_slave\ecatcoe.d" "EtherCAT_slave\ecatslv.d" "EtherCAT_slave\f2838x_cpu1_hw.d" "EtherCAT_slave\f2838x_cpu1_system.d" "EtherCAT_slave\mailbox.d" "EtherCAT_slave\objdef.d" "EtherCAT_slave\sdoserv.d" "SPI_ADIS16364_LIBRARY\ADIS16364_utilities.d" "SPI_ADIS16364_LIBRARY\SPI_init.d" "ethercat_f28388x_hal\device.d" "ethercat_f28388x_hal\ethercat_gpio_setup.d" "ethercat_f28388x_hal\ethercat_slave_cpu1_hal.d" 
+	-$(RM) "CLA\spi.d" 
 	-$(RM) "f2838x_codestartbranch.d" 
 	-@echo 'Finished clean'
 	-@echo ' '

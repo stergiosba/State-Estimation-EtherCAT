@@ -44,9 +44,6 @@
 // Included Files
 //
 #include "ethercat_slave_cpu1_hal.h"
-
-#include "SPI_init.h"
-
 #define PROFILE_MODE 0
 
 #if PROFILE_MODE
@@ -634,7 +631,7 @@ ESC_initHW(void)
     //
     // Turn on all peripherals and initialize GPIOs
     //
-    Device_enableAllPeripherals();
+    Device_enableNeededPeripherals();
     Device_initGPIO();
 
     //
@@ -654,6 +651,13 @@ ESC_initHW(void)
     // Initialize SPI Peripheral
     //
     SPI_init();
+
+    //
+    // Initialize CLA for CPU1
+    //
+    CLA_configClaMemory();
+    CLA_initCpu1Cla1();
+
 
     //
     // Initialize PIE and clear PIE registers. Disables CPU interrupts.
@@ -814,8 +818,8 @@ ESC_applicationLayerHandler(void)
 
     if (Profiler.PDI_counter<INTERRUPT_PROFILE_BUFFER_SIZE)
     {
-        Profiler.PDI_stimes0[Profiler.PDI_counter&] = ESC_getTimer0();
-        Profiler.PDI_stimes1[Profiler.PDI_counter&] = ESC_getTimer();
+        Profiler.PDI_stimes0[Profiler.PDI_counter] = ESC_getTimer0();
+        Profiler.PDI_stimes1[Profiler.PDI_counter] = ESC_getTimer();
     }
 #endif
 

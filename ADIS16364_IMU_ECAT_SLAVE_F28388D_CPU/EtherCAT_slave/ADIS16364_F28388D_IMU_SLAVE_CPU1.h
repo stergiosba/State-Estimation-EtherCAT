@@ -30,7 +30,6 @@
 #include "applInterface.h"
 #include "device.h"
 #include "ADIS16364.h"
-
 /*-----------------------------------------------------------------------------------------
 ------
 ------    Defines and Types
@@ -67,6 +66,7 @@ typedef enum
 
 } ADIS16364_IMU_OperationModes;
 
+extern float test[11];
 
 PROTO void APPL_Application_OnlineMode(void);
 PROTO void APPL_Application_BiasCalibration(void);

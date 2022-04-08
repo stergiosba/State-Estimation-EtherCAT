@@ -27,7 +27,6 @@
 *
 *****************************************************************************/
 #include "driverlib.h"
-#include "device.h"
 
 /*****************************************************************************
 *
@@ -119,8 +118,7 @@ extern void BurstRead(void);
 extern uint16_t SensorRead(uint16_t Reg, uint16_t NumBits);
 extern float RawToReal(uint16_t Raw, float RegScale, uint16_t NumBits, uint16_t Sign);
 extern float RawToRealSign(uint16_t Raw, float RegScale);
-uint16_t RegisterWrite(uint16_t Reg, uint16_t Value);
-extern uint16_t TwosComp(float Num);
+extern uint16_t RegisterWrite(uint16_t Reg, uint16_t Value);
 extern uint16_t ResetIMU(void);
 extern uint16_t DRngFIRCtrl(uint16_t Range);
 extern uint16_t TapFIRCtrl(uint16_t Taps);

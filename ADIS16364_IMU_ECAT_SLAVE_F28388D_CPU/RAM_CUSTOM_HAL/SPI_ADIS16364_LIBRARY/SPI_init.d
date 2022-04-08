@@ -2,8 +2,8 @@
 
 SPI_ADIS16364_LIBRARY/SPI_init.obj: ../SPI_ADIS16364_LIBRARY/SPI_init.c
 SPI_ADIS16364_LIBRARY/SPI_init.obj: ../SPI_ADIS16364_LIBRARY/SPI_init.h
-SPI_ADIS16364_LIBRARY/SPI_init.obj: C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/device/device.h
-SPI_ADIS16364_LIBRARY/SPI_init.obj: C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/device/driverlib.h
+SPI_ADIS16364_LIBRARY/SPI_init.obj: C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/device.h
+SPI_ADIS16364_LIBRARY/SPI_init.obj: C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/driverlib.h
 SPI_ADIS16364_LIBRARY/SPI_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_memmap.h
 SPI_ADIS16364_LIBRARY/SPI_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/adc.h
 SPI_ADIS16364_LIBRARY/SPI_init.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdbool.h
@@ -103,9 +103,9 @@ SPI_ADIS16364_LIBRARY/SPI_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f
 
 ../SPI_ADIS16364_LIBRARY/SPI_init.h:
 
-C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/device/device.h:
+C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/device.h:
 
-C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/device/driverlib.h:
+C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/driverlib.h:
 
 C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_memmap.h:
 

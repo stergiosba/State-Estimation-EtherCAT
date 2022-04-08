@@ -15,8 +15,6 @@
 \version 0.0.0.1
 */
 
-__interrupt void cpuTimer0ISR(void);
-int cpuTimer0IntCount;
 /*-----------------------------------------------------------------------------------------
 ------
 ------    Includes
@@ -36,6 +34,7 @@ int cpuTimer0IntCount;
 ------    local variables and constants
 ------
 -----------------------------------------------------------------------------------------*/
+
 
 /*-----------------------------------------------------------------------------------------
 ------
@@ -335,12 +334,14 @@ void APPL_Application_OnlineMode(void)
 
         // Data from IMU to EtherCAT (sensing)
         SUS_SENSE0x6000.XGyro_sense = g_SensBurst[1];
-        SUS_SENSE0x6000.YGyro_sense = g_SensBurst[2];
-        SUS_SENSE0x6000.ZGyro_sense = g_SensBurst[3];
+        SUS_SENSE0x6000.YGyro_sense = test[1];
+        //SUS_SENSE0x6000.ZGyro_sense = g_SensBurst[3];
+        SUS_SENSE0x6000.ZGyro_sense = 0;
 
         SUS_SENSE0x6000.XAcc_sense = g_SensBurst[4];
-        SUS_SENSE0x6000.YAcc_sense = g_SensBurst[5];
-        SUS_SENSE0x6000.ZAcc_sense = g_SensBurst[6];
+        SUS_SENSE0x6000.YAcc_sense = test[4];
+        SUS_SENSE0x6000.ZAcc_sense = 0;
+        //SUS_SENSE0x6000.ZAcc_sense = g_SensBurst[6];
 
         SUS_SENSE0x6000.Temp_sense = 25.0f+g_SensBurst[7];
         SUS_SENSE0x6000.YAngle_calc = 25.0f+g_SensBurst[8];
@@ -351,6 +352,7 @@ void APPL_Application_OnlineMode(void)
         SUS_SENSE0x6000.XLinVel_calc = 0;
         SUS_SENSE0x6000.YLinVel_calc = 0;
         SUS_SENSE0x6000.ZLinVel_calc = 0;
+
     }
     else
     {
@@ -453,7 +455,6 @@ void main(void)
 {
     /* initialize the Hardware and the EtherCAT Slave Controller */
     uint16_t HW_Check = HW_Init();
-    DEVICE_DELAY_US(5000);
     //
     // If Hardware Initialization was successful, reset LED1/LED2 to use them later.
     //
@@ -476,15 +477,3 @@ void main(void)
 }
 #endif //#if USE_DEFAULT_MAIN
 /** @} */
-
-__interrupt void
-cpuTimer0ISR(void)
-{
-    cpuTimer0IntCount++;
-
-    //
-    // Acknowledge this interrupt to receive more interrupts from group 1
-    //
-    Interrupt_clearACKGroup(INTERRUPT_ACK_GROUP1);
-}
-
