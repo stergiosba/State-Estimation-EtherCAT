@@ -40,9 +40,14 @@
 #define ADIS16364_ID                0x3FEC  //!< ADIS 16364 Identification Number.
 #define ADIS16364_NULL_COMMAND      0x0000  //!< ADIS 16364 Null SPI command.
 #define ADIS16364_BURST_COMMAND     0x3E00  //!< ADIS 16364 Burst-Read SPI command.
-#define ADIS16364_DATA_READY_DELAY  DEVICE_DELAY_US(20U) //!< ADIS 16364 Data Ready Delay.
-#define ADIS16364_SYS_READY_DELAY   DEVICE_DELAY_US(200*1000U) //!< ADIS 16364 Data Ready Delay.
-#define ADIS16364_BIAS_RESET_DELAY  DEVICE_DELAY_US(50*1000U) //!< ADIS 16364 Bias Reset Delay.
+#define ADIS16364_DATA_READY_DELAY  DEVICE_DELAY_US_D2(20U)     //!< ADIS 16364 Initial Data Ready Delay.
+#define ADIS16364_ACCE_DELAY        DEVICE_DELAY_US_D2(10U)     //!< ADIS 16364 Accelerometer Data Ready Delay.
+#define ADIS16364_GYRO_DELAY        20U     //!< ADIS 16364 Gyro Data Ready Delay.
+#define ADIS16364_TEMP_DELAY        20U     //!< ADIS 16364 Temperature Data Ready Delay.
+#define ADIS16364_ADC_DELAY         20U     //!< ADIS 16364 ADC Data Ready Delay.
+#define ADIS16364_VIN_DELAY         20U     //!< ADIS 16364 Supply Data Ready Delay.
+#define ADIS16364_SYS_READY_DELAY   200*1000U //!< ADIS 16364 Data Ready Delay.
+#define ADIS16364_BIAS_RESET_DELAY  50*1000U //!< ADIS 16364 Bias Reset Delay.
 #define ADIS16364_DEF_SMPL          819     //!< ADIS16364 Default Sampling Rate [Hz]
 #define SUPPLY                      0       //!< Supply Voltage's Burst-Read Position.
 #define XGYRO                       1       //!< X-Gyroscope Reading's Burst-Read Position.

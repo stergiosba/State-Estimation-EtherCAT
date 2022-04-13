@@ -13,7 +13,6 @@
 //
 #define WAITSTEP     asm(" RPT #255 || NOP")
 
-void CLA_runTest(void);
 void CLA_configClaMemory(void);
 void CLA_initCpu1Cla1(void);
 void initEPWM1(void);

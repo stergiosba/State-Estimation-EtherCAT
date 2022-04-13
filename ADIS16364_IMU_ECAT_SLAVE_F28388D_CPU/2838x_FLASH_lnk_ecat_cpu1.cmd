@@ -1,22 +1,25 @@
+CLA_SCRATCHPAD_SIZE = 0x100;
+--undef_sym=__cla_scratchpad_end
+--undef_sym=__cla_scratchpad_start
 
 MEMORY
 {
-   /* BEGIN is used for the "boot to Flash" bootloader mode   */
+   /* BEGIN is used for the "boot to SARAM" bootloader mode   */
    BEGIN            : origin = 0x080000, length = 0x000002
-   BOOT_RSVD        : origin = 0x000002, length = 0x0001AE     /* Part of M0, BOOT rom will use this for stack */
-   RAMM0            : origin = 0x0001B0, length = 0x000250
-   RAMM1            : origin = 0x000400, length = 0x000400     /* on-chip RAM block M1 */
+   BOOT_RSVD        : origin = 0x000002, length = 0x0001AF     /* Part of M0, BOOT rom will use this for stack */
+   RAMM0            : origin = 0x0001B1, length = 0x00024F
+   RAMM1            : origin = 0x000400, length = 0x0003F8     /* on-chip RAM block M1 */
+
    RAMD0            : origin = 0x00C000, length = 0x000800
    RAMD1            : origin = 0x00C800, length = 0x000800
-   RAMLS0_to_LS7    : origin = 0x008000, length = 0x004000
-/*   RAMLS0           : origin = 0x008000, length = 0x000800 */
-/*   RAMLS1           : origin = 0x008800, length = 0x000800 */
-/*   RAMLS2           : origin = 0x009000, length = 0x000800 */
-/*   RAMLS3           : origin = 0x009800, length = 0x000800 */
-/*   RAMLS4           : origin = 0x00A000, length = 0x000800 */
-/*   RAMLS5           : origin = 0x00A800, length = 0x000800 */
-/*   RAMLS6           : origin = 0x00B000, length = 0x000800 */
-/*   RAMLS7           : origin = 0x00B800, length = 0x000800 */
+   RAMLS0           : origin = 0x008000, length = 0x000800
+   RAMLS1           : origin = 0x008800, length = 0x000800
+   RAMLS2           : origin = 0x009000, length = 0x000800
+   RAMLS3           : origin = 0x009800, length = 0x000800
+   RAMLS4           : origin = 0x00A000, length = 0x000800
+   RAMLS5           : origin = 0x00A800, length = 0x000800
+   RAMLS6           : origin = 0x00B000, length = 0x000800
+   RAMLS7           : origin = 0x00B800, length = 0x000800
    RAMGS0           : origin = 0x00D000, length = 0x001000
    RAMGS1           : origin = 0x00E000, length = 0x001000
    RAMGS2           : origin = 0x00F000, length = 0x001000
@@ -32,7 +35,8 @@ MEMORY
    RAMGS12          : origin = 0x019000, length = 0x001000
    RAMGS13          : origin = 0x01A000, length = 0x001000
    RAMGS14          : origin = 0x01B000, length = 0x001000
-   RAMGS15          : origin = 0x01C000, length = 0x001000
+   RAMGS15          : origin = 0x01C000, length = 0x000FF8
+   //   RAMGS15_RSVD     : origin = 0x01CFF8, length = 0x000008     /* Reserve and do not use for code as per the errata advisory "Memory: Prefetching Beyond Valid Memory" */
 
    /* Flash sectors */
    FLASH0           : origin = 0x080002, length = 0x001FFE  /* on-chip Flash */
@@ -48,7 +52,8 @@ MEMORY
    FLASH10          : origin = 0x0B8000, length = 0x002000  /* on-chip Flash */
    FLASH11          : origin = 0x0BA000, length = 0x002000  /* on-chip Flash */
    FLASH12          : origin = 0x0BC000, length = 0x002000  /* on-chip Flash */
-   FLASH13          : origin = 0x0BE000, length = 0x002000  /* on-chip Flash */
+   FLASH13          : origin = 0x0BE000, length = 0x001FF0  /* on-chip Flash */
+   //   FLASH13_RSVD     : origin = 0x0BFFF0, length = 0x000010  /* Reserve and do not use for code as per the errata advisory "Memory: Prefetching Beyond Valid Memory" */
 
    CPU1TOCPU2RAM   : origin = 0x03A000, length = 0x000800
    CPU2TOCPU1RAM   : origin = 0x03B000, length = 0x000800
@@ -59,71 +64,131 @@ MEMORY
    CANB_MSG_RAM     : origin = 0x04B000, length = 0x000800
 
    RESET            : origin = 0x3FFFC0, length = 0x000002
+
+   CLA1_MSGRAMLOW   : origin = 0x001480,   length = 0x000080
+   CLA1_MSGRAMHIGH  : origin = 0x001500,   length = 0x000080
 }
 
 SECTIONS
 {
-   codestart           : > BEGIN, ALIGN(4)
-   .text               : >> FLASH1 | FLASH2 | FLASH3 | FLASH4, ALIGN(4)
-   .cinit              : > FLASH1 | FLASH2 | FLASH3, ALIGN(4)
-   .switch             : > FLASH1, ALIGN(4)
+   codestart           : > BEGIN, ALIGN(8)
+   .text               : >> FLASH1 | FLASH2 | FLASH3 | FLASH4, ALIGN(8)
+   .cinit              : > FLASH1 | FLASH2 | FLASH3, ALIGN(8)
+   .switch             : > FLASH1, ALIGN(8)
    .reset              : > RESET, TYPE = DSECT /* not used, */
    .stack              : > RAMGS0
 
 #if defined(__TI_EABI__)
-   .init_array      : > FLASH1, ALIGN(4)
-   .bss             : > RAMLS0_to_LS7
-   .bss:output      : > RAMLS0_to_LS7
-   .bss:cio         : > RAMLS0_to_LS7
-   .data            : > RAMLS0_to_LS7
-   .sysmem          : > RAMLS0_to_LS7
+   .init_array      : > FLASH1, ALIGN(8)
+   .bss             : > RAMLS0
+   .bss:output      : > RAMLS0
+   .bss:cio         : > RAMLS0
+   .data            : >> RAMLS2 | RAMLS3
+   .sysmem          : > RAMD1
    /* Initalized sections go in Flash */
-   .const           : > FLASH5, ALIGN(4)
+   .const           : > FLASH5, ALIGN(8)
 #else
-   .pinit           : > FLASH1, ALIGN(4)
-   .ebss            : > RAMLS0_to_LS7
-   .esysmem         : > RAMLS0_to_LS7
-   .cio             : > RAMLS0_to_LS7
+   .pinit           : > FLASH1, ALIGN(8)
+   .ebss            : > RAMLS0
+   .esysmem         : > RAMLS0
+   .cio             : > RAMLS0
    /* Initalized sections go in Flash */
-   .econst          : >> FLASH4 | FLASH5, ALIGN(4)
+   .econst          : >> FLASH4 | FLASH5, ALIGN(8)
 #endif
 
-   ramgs0 : > RAMGS0, type=NOINIT
-   ramgs1 : > RAMGS1, type=NOINIT
-   
+   ramgs0 : > RAMGS6, type=NOINIT
+   ramgs1 : > RAMGS7, type=NOINIT
+
    MSGRAM_CPU1_TO_CPU2 : > CPU1TOCPU2RAM, type=NOINIT
    MSGRAM_CPU2_TO_CPU1 : > CPU2TOCPU1RAM, type=NOINIT
    MSGRAM_CPU_TO_CM    : > CPUTOCMRAM, type=NOINIT
    MSGRAM_CM_TO_CPU    : > CMTOCPURAM, type=NOINIT
 
-   /* The following section definition are for SDFM examples */
+   dclfuncs : > FLASH9, ALIGN(8)
+
+   /* The following section definition are for SDFM examples
    Filter_RegsFile  : > RAMGS0
    Filter1_RegsFile : > RAMGS1, fill=0x1111
    Filter2_RegsFile : > RAMGS2, fill=0x2222
    Filter3_RegsFile : > RAMGS3, fill=0x3333
    Filter4_RegsFile : > RAMGS4, fill=0x4444
-   Difference_RegsFile : >RAMGS5, fill=0x3333
+   Difference_RegsFile : >RAMGS5, fill=0x3333*/
 
-   #if defined(__TI_EABI__)
-       .TI.ramfunc : {} LOAD = FLASH3,
-                        RUN = RAMLS0_to_LS7,
-                        LOAD_START(RamfuncsLoadStart),
-                        LOAD_SIZE(RamfuncsLoadSize),
-                        LOAD_END(RamfuncsLoadEnd),
-                        RUN_START(RamfuncsRunStart),
-                        RUN_SIZE(RamfuncsRunSize),
-                        RUN_END(RamfuncsRunEnd),
-                        ALIGN(4)
+    /* CLA specific sections */
+	#if defined(__TI_EABI__)
+	   Cla1Prog         :   LOAD = FLASH4,
+	                        RUN = RAMLS5,
+	                        LOAD_START(Cla1funcsLoadStart),
+	                        LOAD_END(Cla1funcsLoadEnd),
+	                        RUN_START(Cla1funcsRunStart),
+	                        LOAD_SIZE(Cla1funcsLoadSize),
+	                        ALIGN(8)
+	#else
+	   Cla1Prog         :   LOAD = FLASH4,
+	                        RUN = RAMLS5,
+	                        LOAD_START(_Cla1funcsLoadStart),
+	                        LOAD_END(_Cla1funcsLoadEnd),
+	                        RUN_START(_Cla1funcsRunStart),
+	                        LOAD_SIZE(_Cla1funcsLoadSize),
+	                        ALIGN(8)
+	#endif
+
+   CLADataLS0		: > RAMLS0
+   CLADataLS1		: > RAMLS1
+   CLADataLS2		: > RAMLS2
+   CLADataLS3		: > RAMLS3
+
+   Cla1ToCpuMsgRAM  : > CLA1_MSGRAMLOW, type=NOINIT
+   CpuToCla1MsgRAM  : > CLA1_MSGRAMHIGH, type=NOINIT
+   Cla1DataRam      : >> RAMLS0 | RAMLS1 | RAMLS2 | RAMLS3
+
+   /* CLA C compiler sections */
+   //
+   // Must be allocated to memory the CLA has write access to
+   //
+   CLAscratch       :
+                     { *.obj(CLAscratch)
+                     . += CLA_SCRATCHPAD_SIZE;
+                     *.obj(CLAscratch_end) } >  RAMLS1
+
+   .scratchpad     	: > RAMLS1
+   .bss_cla		    : > RAMLS1
+
+	#if defined(__TI_EABI__)
+	   .const_cla       :   LOAD = FLASH2,
+	                        RUN = RAMLS1,
+	                        RUN_START(Cla1ConstRunStart),
+	                        LOAD_START(Cla1ConstLoadStart),
+	                        LOAD_SIZE(Cla1ConstLoadSize)
+	#else
+	   .const_cla       :   LOAD = FLASH2,
+	                        RUN = RAMLS1,
+	                        RUN_START(_Cla1ConstRunStart),
+	                        LOAD_START(_Cla1ConstLoadStart),
+	                        LOAD_SIZE(_Cla1ConstLoadSize)
+	#endif
+
+
+	#if defined(__TI_EABI__)
+		.TI.ramfunc : {} LOAD = FLASH3,
+                    RUN = RAMM0,
+                    LOAD_START(RamfuncsLoadStart),
+                    LOAD_SIZE(RamfuncsLoadSize),
+                    LOAD_END(RamfuncsLoadEnd),
+                    RUN_START(RamfuncsRunStart),
+                    RUN_SIZE(RamfuncsRunSize),
+                    RUN_END(RamfuncsRunEnd),
+                    ALIGN(8)
    #else
-       .TI.ramfunc : {} LOAD = FLASH3,
-                        RUN = RAMLS0_to_LS7,
-                        LOAD_START(_RamfuncsLoadStart),
-                        LOAD_SIZE(_RamfuncsLoadSize),
-                        LOAD_END(_RamfuncsLoadEnd),
-                        RUN_START(_RamfuncsRunStart),
-                        RUN_SIZE(_RamfuncsRunSize),
-                        RUN_END(_RamfuncsRunEnd),
-                        ALIGN(4)
+   		.TI.ramfunc : {} LOAD = FLASH3,
+                    RUN = RAMM0,
+                    LOAD_START(_RamfuncsLoadStart),
+                    LOAD_SIZE(_RamfuncsLoadSize),
+                    LOAD_END(_RamfuncsLoadEnd),
+                    RUN_START(_RamfuncsRunStart),
+                    RUN_SIZE(_RamfuncsRunSize),
+                    RUN_END(_RamfuncsRunEnd),
+                    ALIGN(8)
    #endif
 
 }

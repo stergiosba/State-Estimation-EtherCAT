@@ -3,39 +3,39 @@
 EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: ../EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.c
 EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: ../EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.h
 EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: ../EtherCAT_slave/ecat_def.h
-EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdlib.h
-EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/_ti_config.h
-EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/linkage.h
-EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdlibf.h
-EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/cdefs.h
-EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/string.h
-EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/xlocale/_string.h
+EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdlib.h
+EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/_ti_config.h
+EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/linkage.h
+EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdlibf.h
+EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/cdefs.h
+EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/string.h
+EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/xlocale/_string.h
 EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: ../EtherCAT_slave/f2838x_cpu1_system.h
 EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: ../EtherCAT_slave/ecatappl.h
 EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: ../EtherCAT_slave/applInterface.h
-EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdlib.h
+EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdlib.h
 EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: ../EtherCAT_slave/esc.h
 EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: ../EtherCAT_slave/ecatslv.h
 EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: ../EtherCAT_slave/esc.h
 EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: ../EtherCAT_slave/f2838x_cpu1_hw.h
-EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdint.h
-EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/_stdint40.h
-EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/stdint.h
-EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/_types.h
-EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/machine/_types.h
-EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/machine/_stdint.h
-EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/_stdint.h
+EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdint.h
+EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/_stdint40.h
+EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/stdint.h
+EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/_types.h
+EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/machine/_types.h
+EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/machine/_stdint.h
+EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/_stdint.h
 EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: ../EtherCAT_slave/esc.h
 EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: ../EtherCAT_slave/objdef.h
 EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: ../EtherCAT_slave/sdoserv.h
 EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: ../EtherCAT_slave/ecatcoe.h
 EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: ../EtherCAT_slave/mailbox.h
 EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: ../EtherCAT_slave/ecatappl.h
-EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/device.h
-EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/driverlib.h
+EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/Users/Stergios/Desktop/Codeground/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/device.h
+EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/Users/Stergios/Desktop/Codeground/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/driverlib.h
 EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_memmap.h
 EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/adc.h
-EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdbool.h
+EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdbool.h
 EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_adc.h
 EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_sysctl.h
 EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_types.h
@@ -117,8 +117,11 @@ EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/ti/c2000/C2000Ware_4_00_
 EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/usb.h
 EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/mcan.h
 EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_mcanss.h
-EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/SPI_ADIS16364_LIBRARY/ADIS16364.h
+EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/Users/Stergios/Desktop/Codeground/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/SPI_ADIS16364_LIBRARY/ADIS16364.h
 EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: ../EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1Objects.h
+EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/Users/Stergios/Desktop/Codeground/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/CLA/CLA_shared.h
+EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/Users/Stergios/Desktop/Codeground/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/SPI_ADIS16364_LIBRARY/SPI_init.h
+EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: C:/Users/Stergios/Desktop/Codeground/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/device.h
 
 ../EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.c:
 
@@ -126,19 +129,19 @@ EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj: ../EtherCAT_slave/ADIS16364
 
 ../EtherCAT_slave/ecat_def.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdlib.h:
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdlib.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/_ti_config.h:
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/_ti_config.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/linkage.h:
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/linkage.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdlibf.h:
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdlibf.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/cdefs.h:
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/cdefs.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/string.h:
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/string.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/xlocale/_string.h:
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/xlocale/_string.h:
 
 ../EtherCAT_slave/f2838x_cpu1_system.h:
 
@@ -146,7 +149,7 @@ C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/xlocale/_string
 
 ../EtherCAT_slave/applInterface.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdlib.h:
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdlib.h:
 
 ../EtherCAT_slave/esc.h:
 
@@ -156,19 +159,19 @@ C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdlib.h:
 
 ../EtherCAT_slave/f2838x_cpu1_hw.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdint.h:
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdint.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/_stdint40.h:
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/_stdint40.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/stdint.h:
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/stdint.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/_types.h:
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/_types.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/machine/_types.h:
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/machine/_types.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/machine/_stdint.h:
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/machine/_stdint.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/_stdint.h:
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/_stdint.h:
 
 ../EtherCAT_slave/esc.h:
 
@@ -182,15 +185,15 @@ C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/_stdint.h:
 
 ../EtherCAT_slave/ecatappl.h:
 
-C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/device.h:
+C:/Users/Stergios/Desktop/Codeground/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/device.h:
 
-C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/driverlib.h:
+C:/Users/Stergios/Desktop/Codeground/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/driverlib.h:
 
 C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_memmap.h:
 
 C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/adc.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdbool.h:
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdbool.h:
 
 C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_adc.h:
 
@@ -354,7 +357,13 @@ C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/mcan.h:
 
 C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_mcanss.h:
 
-C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/SPI_ADIS16364_LIBRARY/ADIS16364.h:
+C:/Users/Stergios/Desktop/Codeground/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/SPI_ADIS16364_LIBRARY/ADIS16364.h:
 
 ../EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1Objects.h:
+
+C:/Users/Stergios/Desktop/Codeground/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/CLA/CLA_shared.h:
+
+C:/Users/Stergios/Desktop/Codeground/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/SPI_ADIS16364_LIBRARY/SPI_init.h:
+
+C:/Users/Stergios/Desktop/Codeground/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/device.h:
 

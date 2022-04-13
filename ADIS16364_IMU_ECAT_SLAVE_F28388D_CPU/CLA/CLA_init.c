@@ -6,6 +6,7 @@
 void CLA_configClaMemory(void)
 {
     extern uint32_t Cla1funcsRunStart, Cla1funcsLoadStart, Cla1funcsLoadSize;
+    extern uint32_t Cla1ConstRunStart, Cla1ConstLoadStart, Cla1ConstLoadSize;
     EALLOW;
 
 #ifdef _FLASH
@@ -14,6 +15,13 @@ void CLA_configClaMemory(void)
     //
     memcpy((uint32_t *)&Cla1funcsRunStart, (uint32_t *)&Cla1funcsLoadStart,
            (uint32_t)&Cla1funcsLoadSize);
+
+    //
+    // Copy over initialized CLA consts from FLASH to RAM
+    //
+    memcpy((uint32_t *)&Cla1ConstRunStart, (uint32_t *)&Cla1ConstLoadStart,
+           (uint32_t)&Cla1ConstLoadSize);
+
 #endif //_FLASH
 
     //
@@ -44,8 +52,8 @@ void CLA_configClaMemory(void)
     // First configure the CLA to be the master for LS0(1) and then
     // set the spaces to be code blocks
     //
-    //MemCfg_setLSRAMMasterSel(MEMCFG_SECT_LS0,MEMCFG_LSRAMMASTER_CPU_CLA1);
-    //MemCfg_setCLAMemType(MEMCFG_SECT_LS0, MEMCFG_CLA_MEM_DATA);
+    MemCfg_setLSRAMMasterSel(MEMCFG_SECT_LS0,MEMCFG_LSRAMMASTER_CPU_CLA1);
+    MemCfg_setCLAMemType(MEMCFG_SECT_LS0, MEMCFG_CLA_MEM_DATA);
 
     MemCfg_setLSRAMMasterSel(MEMCFG_SECT_LS1,MEMCFG_LSRAMMASTER_CPU_CLA1);
     MemCfg_setCLAMemType(MEMCFG_SECT_LS1, MEMCFG_CLA_MEM_DATA);

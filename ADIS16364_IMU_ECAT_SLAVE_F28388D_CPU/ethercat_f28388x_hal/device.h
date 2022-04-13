@@ -262,6 +262,10 @@ a single CPU should be defined."
 #define DEVICE_DELAY_US(x) SysCtl_delay(((((long double)(x)) / (1000000.0L /  \
                               (long double)DEVICE_SYSCLK_FREQ)) - 9.0L) / 5.0L)
 
+#define DEVICE_DELAY_US_D(x) SysCtl_delay((x * 200.0L - 9.0L) / 5.0L)
+
+#define DEVICE_DELAY_US_D2(x) SysCtl_delay((long double)x * 40.0L - 1.8L)
+
 //
 //  Defines for setting FSI clock speeds
 //

@@ -3,67 +3,22 @@
 CLA/CLA_init.obj: ../CLA/CLA_init.c
 CLA/CLA_init.obj: ../CLA/CLA_init.h
 CLA/CLA_init.obj: ../CLA/CLA_shared.h
-CLA/CLA_init.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdint.h
-CLA/CLA_init.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/_ti_config.h
-CLA/CLA_init.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/linkage.h
-CLA/CLA_init.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/_stdint40.h
-CLA/CLA_init.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/stdint.h
-CLA/CLA_init.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/cdefs.h
-CLA/CLA_init.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/_types.h
-CLA/CLA_init.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/machine/_types.h
-CLA/CLA_init.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/machine/_stdint.h
-CLA/CLA_init.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/_stdint.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_device.h
-CLA/CLA_init.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/assert.h
-CLA/CLA_init.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdarg.h
-CLA/CLA_init.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdbool.h
-CLA/CLA_init.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stddef.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_adc.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_analogsubsys.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_bgcrc.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_cla.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_clb.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_clbxbar.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_cmpss.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_cputimer.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_dac.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_dcsm.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_dma.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_ecap.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_ecat_ss.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_emif.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_epwm.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_epwmxbar.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_eqep.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_erad.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_flash.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_fsi.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_gpio.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_hwbist.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_i2c.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_inputxbar.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_ipc.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_mcbsp.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_memconfig.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_nmiintrupt.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_outputxbar.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_pbist.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_piectrl.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_pievect.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_pmbus.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_sci.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_sdfm.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_spi.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_sysctrl.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_wwd.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_xbar.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_xint.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_mcan.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_can.h
-CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_dcc.h
-CLA/CLA_init.obj: C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/driverlib.h
+CLA/CLA_init.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdint.h
+CLA/CLA_init.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/_ti_config.h
+CLA/CLA_init.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/linkage.h
+CLA/CLA_init.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/_stdint40.h
+CLA/CLA_init.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/stdint.h
+CLA/CLA_init.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/cdefs.h
+CLA/CLA_init.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/_types.h
+CLA/CLA_init.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/machine/_types.h
+CLA/CLA_init.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/machine/_stdint.h
+CLA/CLA_init.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/_stdint.h
+CLA/CLA_init.obj: C:/Users/Stergios/Desktop/Codeground/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/SPI_ADIS16364_LIBRARY/SPI_init.h
+CLA/CLA_init.obj: C:/Users/Stergios/Desktop/Codeground/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/device.h
+CLA/CLA_init.obj: C:/Users/Stergios/Desktop/Codeground/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/driverlib.h
 CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_memmap.h
 CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/adc.h
+CLA/CLA_init.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdbool.h
 CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_adc.h
 CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_sysctl.h
 CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_types.h
@@ -143,7 +98,9 @@ CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/in
 CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/spi.h
 CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_spi.h
 CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/usb.h
-CLA/CLA_init.obj: C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/device.h
+CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/mcan.h
+CLA/CLA_init.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_mcanss.h
+CLA/CLA_init.obj: C:/Users/Stergios/Desktop/Codeground/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/device.h
 
 ../CLA/CLA_init.c:
 
@@ -151,127 +108,37 @@ CLA/CLA_init.obj: C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLA
 
 ../CLA/CLA_shared.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdint.h:
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdint.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/_ti_config.h:
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/_ti_config.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/linkage.h:
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/linkage.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/_stdint40.h:
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/_stdint40.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/stdint.h:
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/stdint.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/cdefs.h:
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/cdefs.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/_types.h:
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/_types.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/machine/_types.h:
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/machine/_types.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/machine/_stdint.h:
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/machine/_stdint.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/_stdint.h:
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/sys/_stdint.h:
 
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_device.h:
+C:/Users/Stergios/Desktop/Codeground/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/SPI_ADIS16364_LIBRARY/SPI_init.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/assert.h:
+C:/Users/Stergios/Desktop/Codeground/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/device.h:
 
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdarg.h:
-
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdbool.h:
-
-C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stddef.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_adc.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_analogsubsys.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_bgcrc.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_cla.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_clb.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_clbxbar.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_cmpss.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_cputimer.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_dac.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_dcsm.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_dma.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_ecap.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_ecat_ss.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_emif.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_epwm.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_epwmxbar.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_eqep.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_erad.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_flash.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_fsi.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_gpio.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_hwbist.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_i2c.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_inputxbar.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_ipc.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_mcbsp.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_memconfig.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_nmiintrupt.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_outputxbar.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_pbist.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_piectrl.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_pievect.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_pmbus.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_sci.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_sdfm.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_spi.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_sysctrl.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_wwd.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_xbar.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_xint.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_mcan.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_can.h:
-
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/headers/include/f2838x_dcc.h:
-
-C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/driverlib.h:
+C:/Users/Stergios/Desktop/Codeground/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/driverlib.h:
 
 C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_memmap.h:
 
 C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/adc.h:
+
+G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdbool.h:
 
 C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_adc.h:
 
@@ -431,5 +298,9 @@ C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_spi.h:
 
 C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/usb.h:
 
-C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/device.h:
+C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/mcan.h:
+
+C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_mcanss.h:
+
+C:/Users/Stergios/Desktop/Codeground/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/device.h:
 

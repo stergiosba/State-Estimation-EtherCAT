@@ -5,9 +5,10 @@
 // Included Files
 //
 #include <stdint.h>
-#include "f2838x_device.h"
+//#include "f2838x_device.h"
+#include "SPI_init.h"
 //#include "f28x_project.h" //MAYBE NOT NEEDED
-
+/*
 #define READ_CLOCK(X) __meallow();\
 EPwm1Regs.TBCTL.bit.CTRMODE = TB_FREEZE;\
 X = EPwm1Regs.TBCTR;\
@@ -17,13 +18,10 @@ __medis();
 EPwm1Regs.TBCTL.bit.CTRMODE = TB_FREEZE;\
 EPwm1Regs.TBCTR = 0;\
 EPwm1Regs.TBCTL.bit.CTRMODE = TB_COUNT_UP;\
-__medis();
+__medis();*/
 
 extern float g_SensBurst[11];
-extern float test[11];
 extern uint32_t ulCycleCount1;
-
-
 
 __interrupt void Cla1Task1();
 __interrupt void Cla1Task2();

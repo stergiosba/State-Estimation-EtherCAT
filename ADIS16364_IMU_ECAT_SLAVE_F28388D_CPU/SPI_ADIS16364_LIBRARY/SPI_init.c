@@ -19,65 +19,136 @@
 
 #include "SPI_init.h"
 
-void SPI_init()
+void SPI_configure(SPI_Config* spi_config)
+{
+    spi_config->spi_base            = SPIA_BASE;
+    spi_config->spi_clockrate       = 1000000UL;
+    spi_config->spi_datawidth       = 16UL;
+    spi_config->spi_master_core     = GPIO_CORE_CPU1;
+    spi_config->spi_mode            = SPI_MODE_MASTER;
+    spi_config->spi_protocol        = SPI_PROT_POL1PHA0;
+    spi_config->spi_emulationmode   = SPI_EMULATION_FREE_RUN;
+    spi_config->spi_endianess       = SPI_DATA_BIG_ENDIAN;
+
+    spi_config->spi_opt_loopback    = 0x0;
+    spi_config->spi_opt_fifo        = 0x0;
+    spi_config->spi_opt_interrupts  = 0x0;
+
+    switch (spi_config->spi_base)
+    {
+        case spi_base_A:
+            spi_config->spi_simo.map    = GPIO_16_SPIA_SIMO;
+            spi_config->spi_simo.num    = 16U;
+            spi_config->spi_somi.map    = GPIO_17_SPIA_SOMI;
+            spi_config->spi_somi.num    = 17U;
+            spi_config->spi_clk.map     = GPIO_18_SPIA_CLK;
+            spi_config->spi_clk.num     = 18U;
+            spi_config->spi_sten.map    = GPIO_19_SPIA_STEN;
+            spi_config->spi_sten.num    = 19U;
+            break;
+
+        case spi_base_B:
+            spi_config->spi_simo.map    = GPIO_24_SPIB_SIMO;
+            spi_config->spi_simo.num    = 24U;
+            spi_config->spi_somi.map    = GPIO_25_SPIB_SOMI;
+            spi_config->spi_somi.num    = 25U;
+            spi_config->spi_clk.map     = GPIO_26_SPIB_CLK;
+            spi_config->spi_clk.num     = 26U;
+            spi_config->spi_sten.map    = GPIO_27_SPIB_STEN;
+            spi_config->spi_sten.num    = 27U;
+            break;
+
+        case spi_base_C:
+            spi_config->spi_simo.map    = GPIO_50_SPIC_SIMO;
+            spi_config->spi_simo.num    = 50U;
+            spi_config->spi_somi.map    = GPIO_51_SPIC_SOMI;
+            spi_config->spi_somi.num    = 51U;
+            spi_config->spi_clk.map     = GPIO_52_SPIC_CLK;
+            spi_config->spi_clk.num     = 52U;
+            spi_config->spi_sten.map    = GPIO_53_SPIC_STEN;
+            spi_config->spi_sten.num    = 53U;
+            break;
+        case spi_base_D:
+            spi_config->spi_simo.map    = GPIO_30_SPID_SIMO;
+            spi_config->spi_simo.num    = 30U;
+            spi_config->spi_somi.map    = GPIO_31_SPID_SOMI;
+            spi_config->spi_somi.num    = 31U;
+            spi_config->spi_clk.map     = GPIO_32_SPID_CLK;
+            spi_config->spi_clk.num     = 32U;
+            spi_config->spi_sten.map    = GPIO_33_SPID_STEN;
+            spi_config->spi_sten.num    = 33U;
+            break;
+    }
+}
+
+
+void SPI_init(SPI_Config* spi_config)
 {
     //
     //SPI initialization
     //
     EALLOW;
 
-    SPI_disableModule(SUS_SPI_BASE);
+    SPI_disableModule(spi_config->spi_base);
 
-    SPI_setConfig(SUS_SPI_BASE, DEVICE_LSPCLK_FREQ, SUS_SPI_TRANSFER_PROTOCOL_OPT,
-                  SUS_SPI_MODE_OPT, SUS_SPI_BITRATE, SUS_SPI_DATAWIDTH);
+    SPI_setConfig(spi_config->spi_base, DEVICE_LSPCLK_FREQ, spi_config->spi_protocol ,
+                  spi_config->spi_mode , spi_config->spi_clockrate, spi_config->spi_datawidth);
 
-    #if SUS_SPI_LOOPBACK_OPT == 1
-        SPI_enableLoopback(SUS_SPI_BASE);
-    #else
-        SPI_disableLoopback(SUS_SPI_BASE);
-    #endif
-    SPI_setEmulationMode(SUS_SPI_BASE, SUS_SPI_EMULATION_OPT);
+    if (spi_config->spi_opt_loopback)
+    {
+        SPI_enableLoopback(spi_config->spi_base);
+    }
+    else
+    {
+        SPI_disableLoopback(spi_config->spi_base);
+    }
 
-    #if SUS_SPI_INTERRUPTS_OPT == 1
-        SPI_clearInterruptStatus(SUS_SPI_BASE, SPI_INT_TXFF | SPI_INT_RXFF);
-        SPI_enableInterrupt(SUS_SPI_BASE, SPI_INT_RXFF | SPI_INT_TXFF);
-    #endif
+    SPI_setEmulationMode(spi_config->spi_base, spi_config->spi_emulationmode);
 
-    #if SUS_SPI_FIFO_OPT == 1
-        SPI_enableFIFO(SUS_SPI_BASE);
-        SPI_setFIFOInterruptLevel(SUS_SPI_BASE, SPI_FIFO_TX2, SPI_FIFO_RX2);
-    #else
-        SPI_disableFIFO(SUS_SPI_BASE);
-    #endif
-    SPI_enableModule(SUS_SPI_BASE);
-    SPI_PinMuxOptions();
+    if (spi_config->spi_opt_interrupts)
+    {
+        SPI_clearInterruptStatus(spi_config->spi_base, SPI_INT_TXFF | SPI_INT_RXFF);
+        SPI_enableInterrupt(spi_config->spi_base, SPI_INT_RXFF | SPI_INT_TXFF);
+    }
+
+    if (spi_config->spi_opt_fifo)
+    {
+        SPI_enableFIFO(spi_config->spi_base);
+        SPI_setFIFOInterruptLevel(spi_config->spi_base, SPI_FIFO_TX2, SPI_FIFO_RX2);
+    }
+    else
+    {
+        SPI_disableFIFO(spi_config->spi_base);
+    }
+
+    SPI_enableModule(spi_config->spi_base);
     EDIS;
 
 } // End SPI_init()
 
-void SPI_PinMuxOptions()
+void SPI_PinMuxOptions(SPI_Config* spi_config)
 {
     //
     // SPI Pinmux
     //
-    GPIO_setMasterCore(SUS_GPIO_SPI_SIMO, GPIO_CORE_CPU1);
-    GPIO_setPinConfig(SUS_SPI_SIMO);
-    GPIO_setPadConfig(SUS_GPIO_SPI_SIMO, GPIO_PIN_TYPE_PULLUP);
-    GPIO_setQualificationMode(SUS_GPIO_SPI_SIMO, GPIO_QUAL_ASYNC);
+    GPIO_setMasterCore(spi_config->spi_simo.num, spi_config->spi_master_core);
+    GPIO_setPinConfig(spi_config->spi_simo.map);
+    GPIO_setPadConfig(spi_config->spi_simo.num, GPIO_PIN_TYPE_PULLUP);
+    GPIO_setQualificationMode(spi_config->spi_simo.num, GPIO_QUAL_ASYNC);
 
-    GPIO_setMasterCore(SUS_GPIO_SPI_SOMI, GPIO_CORE_CPU1);
-    GPIO_setPinConfig(SUS_SPI_SOMI);
-    GPIO_setPadConfig(SUS_GPIO_SPI_SOMI, GPIO_PIN_TYPE_PULLUP);
-    GPIO_setQualificationMode(SUS_GPIO_SPI_SOMI, GPIO_QUAL_ASYNC);
+    GPIO_setMasterCore(spi_config->spi_somi.num, spi_config->spi_master_core);
+    GPIO_setPinConfig(spi_config->spi_somi.map);
+    GPIO_setPadConfig(spi_config->spi_somi.num, GPIO_PIN_TYPE_PULLUP);
+    GPIO_setQualificationMode(spi_config->spi_somi.num, GPIO_QUAL_ASYNC);
 
-    GPIO_setMasterCore(SUS_GPIO_SPI_CLK, GPIO_CORE_CPU1);
-    GPIO_setPinConfig(SUS_SPI_CLK);
-    GPIO_setPadConfig(SUS_GPIO_SPI_CLK, GPIO_PIN_TYPE_PULLUP);
-    GPIO_setQualificationMode(SUS_GPIO_SPI_CLK, GPIO_QUAL_ASYNC);
+    GPIO_setMasterCore(spi_config->spi_clk.num, spi_config->spi_master_core);
+    GPIO_setPinConfig(spi_config->spi_clk.map);
+    GPIO_setPadConfig(spi_config->spi_clk.num, GPIO_PIN_TYPE_PULLUP);
+    GPIO_setQualificationMode(spi_config->spi_clk.num, GPIO_QUAL_ASYNC);
 
-    GPIO_setMasterCore(SUS_GPIO_SPI_STEN, GPIO_CORE_CPU1);
-    GPIO_setPinConfig(SUS_SPI_STEN);
-    GPIO_setPadConfig(SUS_GPIO_SPI_STEN, GPIO_PIN_TYPE_PULLUP);
-    GPIO_setQualificationMode(SUS_GPIO_SPI_STEN, GPIO_QUAL_ASYNC);
+    GPIO_setMasterCore(spi_config->spi_sten.num, spi_config->spi_master_core);
+    GPIO_setPinConfig(spi_config->spi_sten.map);
+    GPIO_setPadConfig(spi_config->spi_sten.num, GPIO_PIN_TYPE_PULLUP);
+    GPIO_setQualificationMode(spi_config->spi_sten.num, GPIO_QUAL_ASYNC);
 
 } // End SPI_PinMuxOptions()

@@ -112,7 +112,8 @@ PDE_DEPS__QUOTED :=
 # Every subdirectory with source files must be described here
 SUBDIRS := \
 . \
+CLA \
 EtherCAT_slave \
 SPI_ADIS16364_LIBRARY \
-device \
+ethercat_f28388x_hal \
 

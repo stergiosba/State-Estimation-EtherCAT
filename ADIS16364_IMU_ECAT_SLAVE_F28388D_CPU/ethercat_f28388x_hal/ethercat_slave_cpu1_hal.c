@@ -76,23 +76,11 @@ typedef struct
 ISR_Profiler Profiler = {.Sync0_counter=0, .Sync1_counter=0, .PDI_counter=0};
 #endif
 
+#pragma DATA_SECTION(SPI_config,"Cla1DataRam")
+SPI_Config SPI_config;
+
 uint32_t ESC_getTimer0(void);
 void ESC_clearTimer0(void);
-
-#ifdef PDI_HAL_TEST
-
-//
-// HAL Test Application - Register Debug Structure
-//
-ESC_DebugRegisters ESC_escRegs[ESC_HAL_TEST_DEBUG_REGS_LENGTH];
-
-//
-// HAL Block Data Arrays
-//
-static uint32_t ESC_writeBlockData[ESC_HAL_TEST_BLOCK_LENGTH / 4U];
-static uint32_t ESC_readBlockData[ESC_HAL_TEST_BLOCK_LENGTH / 4U];
-
-#endif // PDI_HAL_TEST
 
 //*****************************************************************************
 //
@@ -108,6 +96,11 @@ ESC_getTimer(void)
     return(~((uint32_t)CPUTimer_getTimerCount(CPUTIMER1_BASE)));
 }
 
+//*****************************************************************************
+//
+// ESC_getTimer0
+//
+//*****************************************************************************
 uint32_t
 ESC_getTimer0(void)
 {
@@ -136,6 +129,11 @@ ESC_clearTimer(void)
     CPUTimer_reloadTimerCounter(CPUTIMER1_BASE);
 }
 
+//*****************************************************************************
+//
+// ESC_clearTimer0
+//
+//*****************************************************************************
 void
 ESC_clearTimer0(void)
 {
@@ -629,7 +627,7 @@ ESC_initHW(void)
     SysCtl_setLowSpeedClock(SYSCTL_LSPCLK_PRESCALE_4);
 
     //
-    // Turn on all peripherals and initialize GPIOs
+    // Turn on all needed peripherals and initialize GPIOs (Do not open all peripherals for reduced power consumption)
     //
     Device_enableNeededPeripherals();
     Device_initGPIO();
@@ -650,14 +648,15 @@ ESC_initHW(void)
     //
     // Initialize SPI Peripheral
     //
-    SPI_init();
+    SPI_configure(&SPI_config);
+    SPI_init(&SPI_config);
+    SPI_PinMuxOptions(&SPI_config);
 
     //
     // Initialize CLA for CPU1
     //
     CLA_configClaMemory();
     CLA_initCpu1Cla1();
-
 
     //
     // Initialize PIE and clear PIE registers. Disables CPU interrupts.

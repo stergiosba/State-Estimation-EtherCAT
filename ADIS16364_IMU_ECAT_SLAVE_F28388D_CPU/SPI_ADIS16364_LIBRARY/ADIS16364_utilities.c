@@ -72,8 +72,6 @@ const float g_AdcScale = 805.8f;
 float g_SensBurst[11] = { 0.0f, 0.0f, 0.0f, 0.0f,
                           0.0f, 0.0f, 0.0f, 0.0f,
                           0.0f, 0.0f, 0.0f };
-#pragma DATA_SECTION(test, "Cla1DataRam")
-float test[11];
 
 //*****************************************************************************
 //
@@ -95,6 +93,14 @@ uint16_t g_ActiveTaps = 0;
 //
 //*****************************************************************************
 uint16_t g_MinTaps = 0;
+
+uint16_t g_VinDelay = 790U;
+uint16_t g_Gyro1Delay = 790U;
+uint16_t g_Gyro23Delay = 39U;
+uint16_t g_AccDelay = 39U;
+uint16_t g_TempDelay = 39U;
+uint16_t g_AdcDelay = 39U;
+
 
 //*****************************************************************************
 //
@@ -203,6 +209,13 @@ void BurstRead(void)
     uint16_t Burst[11] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
     //
+    // Custom Delays
+    //
+    //uint16_t DelayScalers[11] = { g_VinDelay, g_Gyro1Delay, g_Gyro23Delay, g_Gyro23Delay,
+    //                       g_AccDelay, g_AccDelay, g_AccDelay, g_TempDelay,
+    //                       g_TempDelay, g_TempDelay, g_AdcDelay };
+
+    //
     // Loop Counter Initialization
     //
     uint16_t i;
@@ -238,6 +251,7 @@ void BurstRead(void)
     //
     // Data Ready Delay
     //
+    //ADIS16364_ACCE_DELAY;
     ADIS16364_DATA_READY_DELAY;
 
     //
@@ -253,6 +267,8 @@ void BurstRead(void)
         //
         // Data Ready Delay
         //
+
+        //SysCtl_delay(DelayScalers[i]);
         ADIS16364_DATA_READY_DELAY;
 
         //
@@ -440,7 +456,7 @@ uint16_t ResetIMU()
     //
     // System Ready Delay
     //
-    ADIS16364_SYS_READY_DELAY;
+    DEVICE_DELAY_US(ADIS16364_SYS_READY_DELAY);
 
     //
     // Return Reset Operation Status
@@ -719,7 +735,7 @@ void IMUGyroBiasNullCalibration(void)
     //
     // IMU Bias Reset Delay
     //
-    ADIS16364_BIAS_RESET_DELAY;
+    DEVICE_DELAY_US(ADIS16364_BIAS_RESET_DELAY);
 }
 
 /** @}*/

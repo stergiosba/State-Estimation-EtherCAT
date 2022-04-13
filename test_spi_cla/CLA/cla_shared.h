@@ -22,8 +22,10 @@ __medis();
 extern float g_SensBurst[11];
 extern float test[11];
 extern uint32_t ulCycleCount1;
+extern float SENS;
 
 
+extern void cla_test_func();
 
 __interrupt void Cla1Task1();
 __interrupt void Cla1Task2();

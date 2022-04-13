@@ -1,18 +1,150 @@
 //
 // Included Files
 //
-#include <CLA_shared.h>
+#include "CLA_shared.h"
 #include "ADIS16364.h"
+
+
+extern void cla_test_func(void);
+
+static inline void cla_delay(uint16_t delay_us)
+{
+    uint16_t i;
+    for (i=0;i<delay_us;i++)
+    {
+        __asm(" MNOP");
+    }
+}
+
+static inline float RawToReal_cla(uint16_t Raw, float RegScale, uint16_t NumBits, uint16_t Sign)
+{
+    //
+    // Mask for Significant Bits
+    //
+    uint16_t Mask = 0xFFFF << (NumBits - 1);
+
+    //
+    // Signed Floating Point Unscaled Reading Initialization
+    //
+    float Sens;
+
+    //
+    // Register's Value is Signed
+    //
+    if (Sign)
+    {
+        //
+        // Make Sign Negative & Reading Floating Point
+        //
+        if (Raw & Mask)
+        {
+            Sens = -RegScale * ((uint16_t)(~(Raw | 0xFFFF << NumBits)) + 1.0f);
+        }
+        else
+        {
+            Sens = (RegScale * Raw);
+        }
+    }
+
+    //
+    // Register's Value is Unsigned
+    //
+    else
+    {
+        Sens = (float)Raw;
+    }
+
+    return Sens;
+
+}   // End Of RawToReal()
+
+static inline void BurstRead_cla()
+{
+    //
+    // Burst Registers' Significant Bits
+    //
+    uint16_t SBits[11] = { 12, 14, 14, 14,
+                           14, 14, 14, 14,
+                           12, 12, 12 };
+
+    //
+    // Raw Burst Readings' Vector
+    //
+    uint16_t Burst[11] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+    //
+    // Loop Counter Initialization
+    //
+    uint16_t i;
+
+    //
+    // Burst Registers' Sign Types
+    //
+    uint16_t Sign[11] = { 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 };
+
+    //
+    // Burst Registers' Scales
+    //
+    float RegScale[11] = { 1.0f, 0.05f, 0.05f,
+                           0.05f, 1.0f, 1.0f,
+                           1.0f, 1.0f, 1.0f,
+                           1.0f, 1.0f };
+
+    //
+    // Execute Burst Command SPI Tranfer
+    //
+    SPI_writeDataBlockingNonFIFO(SPI_config.spi_base, 0x3E00);
+
+    //
+    // Data Ready Delay
+    //
+    cla_delay(300U);
+
+    //
+    // Acquire Burst Mode Readings
+    //
+    for (i = 0; i <= 10; i++)
+    {
+        //
+        // Dummy Transfer to update SPI's incoming register
+        //
+        SPI_writeDataBlockingNonFIFO(SPI_config.spi_base, 0x0000);
+
+        //
+        // Data Ready Delay
+        //
+        cla_delay(300U);
+
+        //
+        // Acquire SPI incoming Register's Contents
+        //
+        Burst[i] = SPI_readDataBlockingNonFIFO(SPI_config.spi_base);
+
+        //
+        // Isolate the Register's Significant Bits
+        //
+        Burst[i] &= (0xFFFF >> (16 - SBits[i]));
+    }
+    //
+    // Iterate the Acquired Raw Readings
+    //
+
+    for (i = 0; i <= 10; i++)
+    {
+        //
+        // Translate Raw Readings to the Actual ones
+        //
+        g_SensBurst[i] = RawToReal_cla(Burst[i], RegScale[i], SBits[i], Sign[i]);
+    }
+}   // End Of BurstRead()
+
 
 __interrupt void Cla1Task1 ( void )
 {
     //Local Variables
     //RESTART_CLOCK;
-    uint16_t i;
-    for (i=0;i<11;i++)
-    {
-        test[i] = g_SensBurst[i];
-    }
+    BurstRead_cla();
+    //__mdebugstop();
     //READ_CLOCK(ulCycleCount1);
 }
 

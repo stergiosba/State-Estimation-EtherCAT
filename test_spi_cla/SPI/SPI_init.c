@@ -38,6 +38,7 @@ void SPI_init()
         SPI_disableFIFO(SUS_SPI_BASE);
     #endif
     SPI_enableModule(SUS_SPI_BASE);
+    SPI_disableHighSpeedMode(SUS_SPI_BASE);
     SPI_PinMuxOptions();
     EDIS;
 }

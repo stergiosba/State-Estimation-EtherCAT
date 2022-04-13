@@ -22,7 +22,7 @@ function [T,AX,AY,AZ,GX,GY,GZ,data_n] = IMUdata(file,window)
         GZ=DATA(:,12);
     else
         if max(size(window)) == 1
-            T=DATA(window:n,1)/1000;;
+            T=DATA(window:n,1)/1000;
             
             AX=DATA(window:n,2)/1000;
             AY=DATA(window:n,4)/1000;

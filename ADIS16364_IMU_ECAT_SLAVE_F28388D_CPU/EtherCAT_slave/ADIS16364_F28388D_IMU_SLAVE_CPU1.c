@@ -23,18 +23,21 @@
 #define _ADIS16364__F28388_D__IMU__SLAVE__CPU1_ 1
 #include "ADIS16364_F28388D_IMU_SLAVE_CPU1.h"
 #undef _ADIS16364__F28388_D__IMU__SLAVE__CPU1_
+#include "CLA_shared.h"
 /*--------------------------------------------------------------------------------------
 ------
 ------    local types and defines
 ------
 --------------------------------------------------------------------------------------*/
-
 /*-----------------------------------------------------------------------------------------
 ------
 ------    local variables and constants
 ------
 -----------------------------------------------------------------------------------------*/
-
+#pragma DATA_SECTION(g_SensBurst, "Cla1ToCpuMsgRAM")
+float g_SensBurst[11] = { 0.0f, 0.0f, 0.0f, 0.0f,
+                          0.0f, 0.0f, 0.0f, 0.0f,
+                          0.0f, 0.0f, 0.0f };
 
 /*-----------------------------------------------------------------------------------------
 ------
@@ -330,18 +333,16 @@ void APPL_Application_OnlineMode(void)
         //
         // ADIS 16364 Supports full burst mode. No need to access individual registers.
         //
-        BurstRead();
+        CLA_forceTasks(CLA1_BASE,CLA_TASKFLAG_1);
 
         // Data from IMU to EtherCAT (sensing)
         SUS_SENSE0x6000.XGyro_sense = g_SensBurst[1];
-        SUS_SENSE0x6000.YGyro_sense = test[1];
-        //SUS_SENSE0x6000.ZGyro_sense = g_SensBurst[3];
-        SUS_SENSE0x6000.ZGyro_sense = 0;
+        SUS_SENSE0x6000.YGyro_sense = g_SensBurst[2];
+        SUS_SENSE0x6000.ZGyro_sense = g_SensBurst[3];
 
         SUS_SENSE0x6000.XAcc_sense = g_SensBurst[4];
-        SUS_SENSE0x6000.YAcc_sense = test[4];
-        SUS_SENSE0x6000.ZAcc_sense = 0;
-        //SUS_SENSE0x6000.ZAcc_sense = g_SensBurst[6];
+        SUS_SENSE0x6000.YAcc_sense = g_SensBurst[5];
+        SUS_SENSE0x6000.ZAcc_sense = g_SensBurst[6];
 
         SUS_SENSE0x6000.Temp_sense = 25.0f+g_SensBurst[7];
         SUS_SENSE0x6000.YAngle_calc = 25.0f+g_SensBurst[8];

@@ -9,8 +9,12 @@ uint16_t imu_check;
 #pragma DATA_SECTION(ulCycleCount1,"Cla1ToCpuMsgRAM");
 uint32_t ulCycleCount1;
 
-#pragma DATA_SECTION(test,"Cla1DataRam")
+#pragma DATA_SECTION(test,"CLADataLS0")
 float test[11];
+
+#pragma DATA_SECTION(SENS,"CLADataLS0")
+float SENS;
+
 
 void initEPWM1(void);
 
@@ -36,12 +40,12 @@ int main(void)
     ERTM;
 
     //imu_check=IMUCommsCheck();
-
     while(1)
     {
-        BurstRead();
+        //BurstRead();
         CLA_forceTasks(CLA1_BASE,CLA_TASKFLAG_1);
-        DEVICE_DELAY_US(30000);
+
+        //DEVICE_DELAY_US(20);
     }
 
 }
