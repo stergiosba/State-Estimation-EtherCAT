@@ -4,7 +4,7 @@
 
 SHELL = cmd.exe
 
-CG_TOOL_ROOT := G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS
+CG_TOOL_ROOT := C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS
 
 GEN_OPTS__FLAG := 
 GEN_CMDS__FLAG := 
@@ -165,14 +165,14 @@ all: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: C2000 Linker'
-	"G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/bin/cl2000" -v28 -ml -mt --cla_support=cla1 --float_support=fpu32 -O2 --advice:performance=all --define=__TI_EABI__ --define=ETHERCAT_STACK --define=_FLASH --define=CPU1 --diag_suppress=10063 --diag_suppress=770 --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU.map" --heap_size=0x200 --stack_size=0x200 --warn_sections -i"G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/lib" -i"G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include" --reread_libs --define=_FLASH --define=__TI_EABI__ --diag_wrap=off --display_error_number --xml_link_info="ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU_linkInfo.xml" --entry_point=code_start --rom_model -o "ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU.out" $(ORDERED_OBJS)
+	"C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/bin/cl2000" -v28 -ml -mt --cla_support=cla1 --float_support=fpu32 -O2 --advice:performance=all --define=__TI_EABI__ --define=ETHERCAT_STACK --define=_FLASH --define=CPU1 --diag_suppress=10063 --diag_suppress=770 --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU.map" --heap_size=0x200 --stack_size=0x200 --warn_sections -i"C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/lib" -i"C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include" --reread_libs --define=_FLASH --define=__TI_EABI__ --diag_wrap=off --display_error_number --xml_link_info="ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU_linkInfo.xml" --entry_point=code_start --rom_model -o "ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 
 ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU.hex: $(EXE_OUTPUTS)
 	@echo 'Building secondary target: "$@"'
 	@echo 'Invoking: C2000 Hex Utility'
-	"G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/bin/hex2000" --diag_wrap=off -o "ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU.hex" $(EXE_OUTPUTS__QUOTED)
+	"C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/bin/hex2000" --diag_wrap=off -o "ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU.hex" $(EXE_OUTPUTS__QUOTED)
 	@echo 'Finished building secondary target: "$@"'
 	@echo ' '
 

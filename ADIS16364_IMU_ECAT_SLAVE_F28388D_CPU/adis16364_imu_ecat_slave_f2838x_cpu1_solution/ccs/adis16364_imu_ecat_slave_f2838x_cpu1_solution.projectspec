@@ -1,6 +1,6 @@
 <projectSpec>
   <project
-        name="f2838x_cpu1_echoback_solution"
+        name="adis16364_imu_ecat_slave_f2838x_cpu1_solution"
         device="Generic C28xx Device"
         cgtVersion="21.6.0.LTS"
         products="c2000ware_software_package"
