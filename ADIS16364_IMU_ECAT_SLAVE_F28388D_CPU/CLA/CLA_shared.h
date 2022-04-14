@@ -6,9 +6,11 @@
 //
 #include <stdint.h>
 //#include "f2838x_device.h"
+//#include "f2838x_epwm.h"
+#include "ADIS16364.h"
 #include "SPI_init.h"
-//#include "f28x_project.h" //MAYBE NOT NEEDED
-/*
+#include "f28x_project.h" //MAYBE NOT NEEDED
+
 #define READ_CLOCK(X) __meallow();\
 EPwm1Regs.TBCTL.bit.CTRMODE = TB_FREEZE;\
 X = EPwm1Regs.TBCTR;\
@@ -18,8 +20,9 @@ __medis();
 EPwm1Regs.TBCTL.bit.CTRMODE = TB_FREEZE;\
 EPwm1Regs.TBCTR = 0;\
 EPwm1Regs.TBCTL.bit.CTRMODE = TB_COUNT_UP;\
-__medis();*/
+__medis();
 
+extern IMU_Scaler IMU_scaler;
 extern float g_SensBurst[11];
 extern uint32_t ulCycleCount1;
 

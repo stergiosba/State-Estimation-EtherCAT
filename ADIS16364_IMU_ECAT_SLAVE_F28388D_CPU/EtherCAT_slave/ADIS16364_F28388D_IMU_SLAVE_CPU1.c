@@ -39,6 +39,15 @@ float g_SensBurst[11] = { 0.0f, 0.0f, 0.0f, 0.0f,
                           0.0f, 0.0f, 0.0f, 0.0f,
                           0.0f, 0.0f, 0.0f };
 
+#pragma DATA_SECTION(IMU_scaler, "Cla1DataRam")
+IMU_Scaler IMU_scaler = {
+  .SupplyOut = 2.418f,
+  .Gyro = 0.05f,
+  .Accl = 1.0f,
+  .Temp = 0.136f,
+  .Adc = 805.8f
+};
+
 /*-----------------------------------------------------------------------------------------
 ------
 ------    application specific functions
@@ -345,12 +354,12 @@ void APPL_Application_OnlineMode(void)
         SUS_SENSE0x6000.ZAcc_sense = g_SensBurst[6];
 
         SUS_SENSE0x6000.Temp_sense = 25.0f+g_SensBurst[7];
-        SUS_SENSE0x6000.YAngle_calc = 25.0f+g_SensBurst[8];
-        SUS_SENSE0x6000.ZAngle_calc = 25.0f+g_SensBurst[9];
+        SUS_SENSE0x6000.XAngle_calc = 25.0f+g_SensBurst[8];
+        SUS_SENSE0x6000.YAngle_calc = 25.0f+g_SensBurst[9];
+        SUS_SENSE0x6000.ZAngle_calc = g_SensBurst[10];
 
-        SUS_SENSE0x6000.XAngle_calc = 0;
 
-        SUS_SENSE0x6000.XLinVel_calc = 0;
+        SUS_SENSE0x6000.XLinVel_calc = g_SensBurst[0];
         SUS_SENSE0x6000.YLinVel_calc = 0;
         SUS_SENSE0x6000.ZLinVel_calc = 0;
 

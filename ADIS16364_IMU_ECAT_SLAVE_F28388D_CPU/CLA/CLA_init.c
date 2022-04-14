@@ -125,6 +125,18 @@ void CLA_initCpu1Cla1(void)
     Interrupt_enable(INT_CLA1_8);
 }
 
+void initEPWM1(void)
+{
+    EPwm1Regs.TBCTL.bit.CTRMODE = TB_COUNT_UP;
+    EPwm1Regs.TBPRD = 0xFFFF;
+    EPwm1Regs.TBCTL.bit.PHSEN = TB_DISABLE;
+    EPwm1Regs.TBPHS.bit.TBPHS = 0x0000;
+    EPwm1Regs.TBCTR = 0;
+    EPwm1Regs.TBCTL.bit.HSPCLKDIV = TB_DIV1;
+    EPwm1Regs.TBCTL.bit.CLKDIV = TB_DIV1;
+}
+
+
 //
 // cla1Isr1 - CLA1 ISR 1
 //

@@ -108,7 +108,7 @@ static inline void BurstRead_cla(void)
     //
     // Data Ready Delay
     //
-    cla_delay(120U);
+    cla_delay(300U);
 
     //
     // Acquire Burst Mode Readings
@@ -123,7 +123,7 @@ static inline void BurstRead_cla(void)
         //
         // Data Ready Delay
         //
-        cla_delay(120U);
+        cla_delay(300U);
 
         //
         // Acquire SPI incoming Register's Contents
@@ -138,7 +138,6 @@ static inline void BurstRead_cla(void)
     //
     // Iterate the Acquired Raw Readings
     //
-
     for (i = 0; i <= 10; i++)
     {
         //

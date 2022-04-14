@@ -109,7 +109,7 @@ SECTIONS
    */
 
        /* CLA specific sections */
-   Cla1Prog         : > RAMLS5
+   Cla1Prog         : >> RAMLS5 | RAMLS6
 
    CLADataLS0		: > RAMLS0
    CLADataLS1		: > RAMLS1

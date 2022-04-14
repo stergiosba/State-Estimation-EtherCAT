@@ -474,8 +474,8 @@ USHORT: Should be adapted to the unsigned16 type of the microcontroller */
 
 /** 
 INT8: Should be adapted to the integer8 type of the microcontroller */
-#ifndef INT8
-#define INT8                                      char
+#ifndef INT_8
+#define INT_8                                      char
 #endif
 
 /** 

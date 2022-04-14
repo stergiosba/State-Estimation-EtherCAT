@@ -104,6 +104,40 @@
 * Global Variable Definitions
 *
 *****************************************************************************/
+
+typedef struct IMU_Scaler
+{
+    //
+    // ADIS Sensor Register Scales
+    //
+    float SupplyOut;   //!< Power Supply Voltage [mV per LSB]
+    float Gyro;        //!< Gyroscope Registers' Scales [deg/s per LSB]
+    float Accl;        //!< Accelerometer Registers' Scales [deg/s per LSB]
+    float Temp;        //!< Temperature Register Scale [C per LSB]  -- 0x0 -> 25 C
+    float Adc;         //!< Auxialiary ADC (Analog to Digital Converter) Data Bits Scale [mV per LSB]
+
+}IMU_Scaler;
+
+
+typedef struct IMU_Config
+    {
+    //
+    // ADIS Dynamic Range and Active Filtering
+    //
+    uint16_t ActiveDRng; //!< Active Dynamic Range Option
+    uint16_t ActiveTaps; //!< Active Filtering Taps Option
+    uint16_t MinTaps; //!< Minimum Taps for each Dynamic Range Variable
+
+}IMU_Config;
+
+extern IMU_Config IMU_config;
+
+
+/*****************************************************************************
+*
+* Global Variable Definitions
+*
+*****************************************************************************/
 extern const float g_SupplyOutScale; //!< Power Supply Voltage [mV per LSB]
 extern float g_GyroScale; //!< Gyroscope Registers' Scales [deg/s per LSB]
 extern const float g_AcclScale; //!< Accelerometer Registers' Scales [deg/s per LSB]

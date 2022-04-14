@@ -79,6 +79,9 @@ ISR_Profiler Profiler = {.Sync0_counter=0, .Sync1_counter=0, .PDI_counter=0};
 #pragma DATA_SECTION(SPI_config,"Cla1DataRam")
 SPI_Config SPI_config;
 
+#pragma DATA_SECTION(ulCycleCount1,"Cla1ToCpuMsgRAM");
+uint32_t ulCycleCount1;
+
 uint32_t ESC_getTimer0(void);
 void ESC_clearTimer0(void);
 
@@ -657,6 +660,7 @@ ESC_initHW(void)
     //
     CLA_configClaMemory();
     CLA_initCpu1Cla1();
+    initEPWM1();
 
     //
     // Initialize PIE and clear PIE registers. Disables CPU interrupts.

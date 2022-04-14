@@ -42,10 +42,8 @@ int main(void)
     //imu_check=IMUCommsCheck();
     while(1)
     {
-        //BurstRead();
         CLA_forceTasks(CLA1_BASE,CLA_TASKFLAG_1);
-
-        //DEVICE_DELAY_US(20);
+        //DEVICE_DELAY_US(10000U);
     }
 
 }

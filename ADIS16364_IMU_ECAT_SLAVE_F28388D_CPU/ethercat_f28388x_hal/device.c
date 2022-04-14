@@ -376,6 +376,8 @@ void Device_enableNeededPeripherals()
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_EMIF2);
 #endif
 
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_EPWM1);
+
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_SD1);
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_SD2);
 
