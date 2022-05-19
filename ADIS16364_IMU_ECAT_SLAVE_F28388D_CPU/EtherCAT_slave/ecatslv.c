@@ -200,19 +200,25 @@ V4.00 ECAT 7: The return values for the AL-StatusCode were changed to UINT16
 -----------------------------------------------------------------------------------------*/
 
 #define    _ECATSLV_    1
-#include "ecatslv.h"
+#include <ecatslv.h>
 #undef    _ECATSLV_
 /*remove definition of _ECATSLV_ (#ifdef is used in ecatslv.h)*/
 
-#include "ecatappl.h"
-#include "mailbox.h"
-#include "ecatcoe.h"
-#include "objdef.h"
+#include <ecatappl.h>
+
+
+
+
+
+#include <mailbox.h>
+
+#include <ecatcoe.h>
+#include <objdef.h>
 
 
 
 /*ECATCHANGE_START(V5.13) CIA402 3*/
-#include "ADIS16364_F28388D_IMU_SLAVE_CPU1.h"
+#include <ADIS16364_F28388D_IMU_SLAVE_CPU1.h>
 
 /*--------------------------------------------------------------------------------------
 ------
@@ -2530,8 +2536,8 @@ void ECAT_Init(void)
     bApplEsmPending = FALSE;
     bEcatWaitForAlControlRes = FALSE;
     bEcatFirstOutputsReceived = FALSE;
-    bEcatOutputUpdateRunning = FALSE;
-    bEcatInputUpdateRunning = FALSE;
+     bEcatOutputUpdateRunning = FALSE;
+     bEcatInputUpdateRunning = FALSE;
     bWdTrigger = FALSE;
     EcatWdValue = 0;
     Sync0WdCounter = 0;

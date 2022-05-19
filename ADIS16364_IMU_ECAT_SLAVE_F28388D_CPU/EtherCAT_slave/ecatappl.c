@@ -134,27 +134,25 @@ V4.00 APPL 6: The main function was split in MainInit and MainLoop
 ------    Includes
 ------
 -----------------------------------------------------------------------------------------*/
-#include "ecatslv.h"
+#include <ecatslv.h>
 
 #define    _ECATAPPL_ 1
-#include "ecatappl.h"
+#include <ecatappl.h>
 #undef _ECATAPPL_
 /*remove definition of _ECATAPPL_ (#ifdef is used in ecatappl.h)*/
 
-#include "coeappl.h"
-#include "device.h"
+#include <coeappl.h>
 
 
 
 #define _APPL_INTERFACE_ 1
-#include "applInterface.h"
+#include <applInterface.h>
 #undef _APPL_INTERFACE_
 
 /*ECATCHANGE_START(V5.13) CIA402 3*/
-#include "ADIS16364_F28388D_IMU_SLAVE_CPU1.h"
+#include <ADIS16364_F28388D_IMU_SLAVE_CPU1.h>
 
-volatile uint32_t gTimer = 0;
-volatile uint16_t gCounter = 0;
+
 
 /*--------------------------------------------------------------------------------------
 ------
@@ -192,7 +190,7 @@ BOOL bMinCycleTimeMeasurementStarted; /** <\brief Indicates if the min cycle mea
 UINT32 u32MinCycleTimeValue; /** <\brief tmp value of the min cycle time during measurement*/
 
 
-INT16 gcounter = 1000;
+
 
 
 UINT16             aPdOutputData[(MAX_PD_OUTPUT_SIZE>>1)];
@@ -570,11 +568,12 @@ void PDI_Isr(void)
     /*ECATCHANGE_END(V5.13) ECAT1*/
 
     COE_UpdateSyncErrorStatus();
+
 }
 
 void Sync0_Isr(void)
 {
-    Sync0WdCounter = 0;
+     Sync0WdCounter = 0;
 
     if(bDcSyncActive)
     {
@@ -667,11 +666,11 @@ void Sync0_Isr(void)
     }
 
     COE_UpdateSyncErrorStatus();
+
 }
 
 void Sync1_Isr(void)
 {
-    volatile uint32_t time0 = ~ESC_getTimer();
     Sync1WdCounter = 0;
 
     /*ECATCHANGE_START(V5.13) ECAT 5*/
@@ -977,80 +976,88 @@ void MainLoop(void)
     {
         return;
     }
-    /* FreeRun-Mode:  bEscIntEnabled = FALSE, bDcSyncActive = FALSE
-     * Synchron-Mode: bEscIntEnabled = TRUE, bDcSyncActive = FALSE
-     * DC-Mode:       bEscIntEnabled = TRUE, bDcSyncActive = TRUE */
-    if ((!bEscIntEnabled || !bEcatFirstOutputsReceived)     /* SM-Synchronous, but not SM-event received */
-            && !bDcSyncActive /* DC-Synchronous */)
-    {
-        /* if the application is running in ECAT Synchron Mode the function ECAT_Application is called
-         * from the ESC interrupt routine,
-         * in ECAT Synchron Mode it should be additionally checked, if the SM-event is received
-         * at least once (bEcatFirstOutputsReceived = 1), otherwise no interrupt is generated
-         * and the function ECAT_Application has to be called here (with interrupts disabled,
-         * because the SM-event could be generated while executing ECAT_Application) */
-        if ( !bEscIntEnabled )
-        {
-            /* application is running in ECAT FreeRun Mode,
-             * first we have to check, if outputs were received */
-            UINT16 ALEvent = HW_GetALEventRegister();
-            ALEvent = SWAPWORD(ALEvent);
 
-            if ( ALEvent & PROCESS_OUTPUT_EVENT )
+
+
+        /* FreeRun-Mode:  bEscIntEnabled = FALSE, bDcSyncActive = FALSE
+           Synchron-Mode: bEscIntEnabled = TRUE, bDcSyncActive = FALSE
+           DC-Mode:       bEscIntEnabled = TRUE, bDcSyncActive = TRUE */
+        if (
+            (!bEscIntEnabled || !bEcatFirstOutputsReceived)     /* SM-Synchronous, but not SM-event received */
+          && !bDcSyncActive                                               /* DC-Synchronous */
+            )
+        {
+            /* if the application is running in ECAT Synchron Mode the function ECAT_Application is called
+               from the ESC interrupt routine,
+               in ECAT Synchron Mode it should be additionally checked, if the SM-event is received
+               at least once (bEcatFirstOutputsReceived = 1), otherwise no interrupt is generated
+               and the function ECAT_Application has to be called here (with interrupts disabled,
+               because the SM-event could be generated while executing ECAT_Application) */
+            if ( !bEscIntEnabled )
             {
-                /* set the flag for the state machine behavior */
-                bEcatFirstOutputsReceived = TRUE;
-                if ( bEcatOutputUpdateRunning )
+                /* application is running in ECAT FreeRun Mode,
+                   first we have to check, if outputs were received */
+                UINT16 ALEvent = HW_GetALEventRegister();
+                ALEvent = SWAPWORD(ALEvent);
+
+                if ( ALEvent & PROCESS_OUTPUT_EVENT )
                 {
-                    /* update the outputs */
-                    PDO_OutputMapping();
-                }
-            }
-            else if ( nPdOutputSize == 0 )
-            {
-                /* if no outputs are transmitted, the watchdog must be reset, when the inputs were read */
-                if ( ALEvent & PROCESS_INPUT_EVENT )
-                {
-                    /* Outputs were updated, set flag for watchdog monitoring */
+                    /* set the flag for the state machine behavior */
                     bEcatFirstOutputsReceived = TRUE;
+                    if ( bEcatOutputUpdateRunning )
+                    {
+                        /* update the outputs */
+                        PDO_OutputMapping();
+                    }
                 }
+                else if ( nPdOutputSize == 0 )
+                {
+                    /* if no outputs are transmitted, the watchdog must be reset, when the inputs were read */
+                    if ( ALEvent & PROCESS_INPUT_EVENT )
+                    {
+                        /* Outputs were updated, set flag for watchdog monitoring */
+                        bEcatFirstOutputsReceived = TRUE;
+                    }
+                }
+            }
+
+            DISABLE_ESC_INT();
+             ECAT_Application();
+
+/*ECATCHANGE_START(V5.13) ECAT 5*/
+             if ( (bEcatInputUpdateRunning  == TRUE) && (nPdInputSize > 0))
+/*ECATCHANGE_END(V5.13) ECAT 5*/
+             {
+                /* EtherCAT slave is at least in SAFE-OPERATIONAL, update inputs */
+                PDO_InputMapping();
+            }
+            ENABLE_ESC_INT();
+        }
+
+        /* there is no interrupt routine for the hardware timer so check the timer register if the desired cycle elapsed*/
+        {
+            UINT32 CurTimer = (UINT32)HW_GetTimer();
+
+            if(CurTimer>= ECAT_TIMER_INC_P_MS)
+            {
+                ECAT_CheckTimer();
+
+                HW_ClearTimer();
             }
         }
 
-        DISABLE_ESC_INT();
-        ECAT_Application();
-        /*ECATCHANGE_START(V5.13) ECAT 5*/
-        if ( (bEcatInputUpdateRunning  == TRUE) && (nPdInputSize > 0))
-            /*ECATCHANGE_END(V5.13) ECAT 5*/
+        if (u32CheckForDcOverrunCnt >= CHECK_DC_OVERRUN_IN_MS)
         {
-            /* EtherCAT slave is at least in SAFE-OPERATIONAL, update inputs */
-            PDO_InputMapping();
+            COE_SyncTimeStamp();
         }
-        ENABLE_ESC_INT();
-    }
-    /* there is no interrupt routine for the hardware timer so check the timer register if the desired cycle elapsed*/
-    {
-        UINT32 CurTimer = (UINT32)HW_GetTimer();
 
-        if(CurTimer>= ECAT_TIMER_INC_P_MS)
-        {
-            ECAT_CheckTimer();
+        /* call EtherCAT functions */
+        ECAT_Main();
 
-            HW_ClearTimer();
-        }
-    }
+        /* call lower prior application part */
+       COE_Main();
+       CheckIfEcatError();
 
-    if (u32CheckForDcOverrunCnt >= CHECK_DC_OVERRUN_IN_MS)
-    {
-        COE_SyncTimeStamp();
-    }
-
-    /* call EtherCAT functions */
-    ECAT_Main();
-
-    /* call lower prior application part */
-    COE_Main();
-    CheckIfEcatError();
 
     if (pAPPL_MainLoop != NULL)
     {
@@ -1094,23 +1101,11 @@ void ECAT_Application(void)
         }
     }
 
+
     /*ECATCHANGE_START(V5.13) CIA402 4*/
     /*decouple CIA402 application from ESM*/
     /*ECATCHANGE_END(V5.13) CIA402 4*/
-    //TODO ONLY HERE TO FIND THIS EASILY
-    switch (SUS_CONTROL0x7000.IMU_flags)
-    {
-        case IMU_GYRO_ONLY_MODE:
-            APPL_Application2();
-            break;
-
-        case IMU_BIAS_CALIBRATION_MODE:
-            APPL_Application_BiasCalibration();
-            break;
-
-        case IMU_ONLINE_MODE:
-            APPL_Application_OnlineMode();
-    }
+    APPL_Application();
 
 /* PDO Input mapping is called from the specific trigger ISR */
 

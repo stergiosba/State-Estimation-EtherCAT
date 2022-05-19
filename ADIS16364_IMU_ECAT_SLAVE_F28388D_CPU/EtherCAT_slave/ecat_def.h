@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "f2838x_cpu1_system.h"
+#include "../EtherCAT_slave/f2838x_cpu1_system.h"
 /*-----------------------------------------------------------------------------------------
 ------	
 ------	Slave Sample Code Configuration Defines
@@ -1035,7 +1035,7 @@ MAX_PD_OUTPUT_SIZE: Maximum size of the process output data (Sync Manager 2) for
 MIN_PD_CYCLE_TIME: Minimum cycle time in ns the slave is supporting (entry 0x1C3x:05).<br>
 In case that the value is set to 0 the value of 0x1C3x:5 is calculated if 0x1C3x.8 is 1 */
 #ifndef MIN_PD_CYCLE_TIME
-#define MIN_PD_CYCLE_TIME                         0x7A120
+#define MIN_PD_CYCLE_TIME                         0x61A80
 #endif
 
 /** 

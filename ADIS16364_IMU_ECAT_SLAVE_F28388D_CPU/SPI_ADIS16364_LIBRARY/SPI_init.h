@@ -36,15 +36,6 @@ typedef struct SPI_Pin
     uint16_t num;
 }SPI_Pin;
 
-typedef enum
-{
-    spi_base_A = SPIA_BASE,
-    spi_base_B = SPIB_BASE,
-    spi_base_C = SPIC_BASE,
-    spi_base_D = SPID_BASE
-}SPI_base;
-
-
 typedef struct SPI_Config
 {
     //
@@ -53,6 +44,7 @@ typedef struct SPI_Config
     uint32_t spi_base;
     uint32_t spi_clockrate;
     uint32_t spi_datawidth;
+    SysCtl_PeripheralPCLOCKCR spi_periph_clk;
     GPIO_CoreSelect spi_master_core;
     SPI_TransferProtocol spi_protocol;
     SPI_Mode spi_mode;
@@ -80,7 +72,7 @@ typedef struct SPI_Config
 //
 extern SPI_Config SPI_config;
 
-void SPI_configure(SPI_Config *spi_config);
+void SPI_configure(uint32_t base,uint32_t clockrate, uint32_t datawidth, SPI_Config *spi_config);
 void SPI_init(SPI_Config* spi_config);
 void SPI_PinMuxOptions(SPI_Config* spi_config);
 

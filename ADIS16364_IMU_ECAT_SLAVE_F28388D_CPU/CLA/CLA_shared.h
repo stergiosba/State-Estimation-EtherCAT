@@ -21,6 +21,7 @@ EPwm1Regs.TBCTL.bit.CTRMODE = TB_COUNT_UP;\
 __medis();*/
 
 extern float g_SensBurst[11];
+extern float g_Attitude[3];
 extern uint32_t ulCycleCount1;
 
 __interrupt void Cla1Task1();

@@ -25,9 +25,9 @@
 ------    Includes
 ------
 -----------------------------------------------------------------------------------------*/
-#include "ecat_def.h"
-#include "ecatappl.h"
-#include "applInterface.h"
+#include "../EtherCAT_slave/ecat_def.h"
+#include "../EtherCAT_slave/ecatappl.h"
+#include "../EtherCAT_slave/applInterface.h"
 #include "device.h"
 #include "ADIS16364.h"
 /*-----------------------------------------------------------------------------------------
@@ -39,7 +39,7 @@
 #endif //_ADIS16364__F28388_D__IMU__SLAVE__CPU1_H_
 
 //include custom application object dictionary 
-#include "ADIS16364_F28388D_IMU_SLAVE_CPU1Objects.h"
+#include "../EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1Objects.h"
 
 
 #if defined(_ADIS16364__F28388_D__IMU__SLAVE__CPU1_) && (_ADIS16364__F28388_D__IMU__SLAVE__CPU1_ == 1)
@@ -57,20 +57,15 @@
 typedef enum
 {
     IMU_OFFLINE_MODE                = 0x0000U,  //!< Offline Mode.
-    IMU_GYRO_ONLY_MODE              = 0x0007U,  //!< Gyroscope Only Mode.
-    IMU_ACCL_ONLY_MODE              = 0x0038U,  //!< Accelerometer Only Mode.
-    IMU_ONLINE_MODE                 = 0xDAC0U,  //!< Normal Operation Mode.
-    IMU_TEST_MODE                   = 0xDAC1U,  //!< Test Operation Mode.
-    IMU_BIAS_CALIBRATION_MODE       = 0xBE01U,  //!< Bias Calibration Mode.
-    IMU_BIAS_NULL_CALIBRATION_MODE  = 0xBE10U   //!< Bias Null Calibration Mode.
-
+    IMU_BIAS_CALIBRATION_MODE       = 0xCA01U,  //!< Bias Calibration Mode.
+    IMU_GYRO_ONLY_MODE              = 0xDA07U,  //!< Gyroscope Only Mode.
+    IMU_ACCL_ONLY_MODE              = 0xDA38U,  //!< Accelerometer Only Mode.
+    IMU_ONLINE_MODE                 = 0xDAFFU,  //!< Normal Operation Mode.
 } ADIS16364_IMU_OperationModes;
 
 extern float test[11];
 
-PROTO void APPL_Application_OnlineMode(void);
-PROTO void APPL_Application_BiasCalibration(void);
-PROTO void APPL_Application2(void);
+PROTO void APPL_Application(void);
 
 #if EXPLICIT_DEVICE_ID
 PROTO UINT16 APPL_GetDeviceID(void);

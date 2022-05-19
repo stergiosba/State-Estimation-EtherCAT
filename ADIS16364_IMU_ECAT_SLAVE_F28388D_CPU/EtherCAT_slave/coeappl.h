@@ -31,8 +31,8 @@ V5.01 : Start file change log
 ------    Includes
 ------
 -----------------------------------------------------------------------------------------*/
-#include "ecatappl.h"
-#include "objdef.h"
+#include "../EtherCAT_slave/ecatappl.h"
+#include "../EtherCAT_slave/objdef.h"
 
 #ifndef _COEAPPL_H_
 #define _COEAPPL_H_

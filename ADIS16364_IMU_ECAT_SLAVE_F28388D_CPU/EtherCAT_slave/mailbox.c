@@ -135,18 +135,18 @@ V4.07 ECAT 1: The sources for SPI and MCI were merged (in ecat_def.h<br>
 ------
 ---------------------------------------------------------------------------------------*/
 
-#include "ecat_def.h"
-#include "ecatslv.h"
+#include <ecat_def.h>
+#include <ecatslv.h>
 
 
 
 #define    _MAILBOX_    1
-#include "mailbox.h"
+#include <mailbox.h>
 #undef _MAILBOX_
 /*remove definition of _MAILBOX_ (#ifdef is used in mailbox.h)*/
 
-#include "ecatcoe.h"
-#include "sdoserv.h"
+#include <ecatcoe.h>
+#include <sdoserv.h>
 
 
 /*--------------------------------------------------------------------------------------

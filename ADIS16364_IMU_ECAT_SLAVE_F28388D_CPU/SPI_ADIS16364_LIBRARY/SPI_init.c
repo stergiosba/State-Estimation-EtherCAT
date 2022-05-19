@@ -19,11 +19,11 @@
 
 #include "SPI_init.h"
 
-void SPI_configure(SPI_Config* spi_config)
+void SPI_configure(uint32_t base,uint32_t clockrate, uint32_t datawidth, SPI_Config *spi_config)
 {
-    spi_config->spi_base            = SPIA_BASE;
-    spi_config->spi_clockrate       = 1000000UL;
-    spi_config->spi_datawidth       = 16UL;
+    spi_config->spi_base            = base;
+    spi_config->spi_clockrate       = clockrate;
+    spi_config->spi_datawidth       = datawidth;
     spi_config->spi_master_core     = GPIO_CORE_CPU1;
     spi_config->spi_mode            = SPI_MODE_MASTER;
     spi_config->spi_protocol        = SPI_PROT_POL1PHA0;
@@ -36,7 +36,8 @@ void SPI_configure(SPI_Config* spi_config)
 
     switch (spi_config->spi_base)
     {
-        case spi_base_A:
+        case SPIA_BASE:
+            spi_config->spi_periph_clk  = SYSCTL_PERIPH_CLK_SPIA;
             spi_config->spi_simo.map    = GPIO_16_SPIA_SIMO;
             spi_config->spi_simo.num    = 16U;
             spi_config->spi_somi.map    = GPIO_17_SPIA_SOMI;
@@ -47,7 +48,8 @@ void SPI_configure(SPI_Config* spi_config)
             spi_config->spi_sten.num    = 19U;
             break;
 
-        case spi_base_B:
+        case SPIB_BASE:
+            spi_config->spi_periph_clk  = SYSCTL_PERIPH_CLK_SPIB;
             spi_config->spi_simo.map    = GPIO_24_SPIB_SIMO;
             spi_config->spi_simo.num    = 24U;
             spi_config->spi_somi.map    = GPIO_25_SPIB_SOMI;
@@ -58,7 +60,8 @@ void SPI_configure(SPI_Config* spi_config)
             spi_config->spi_sten.num    = 27U;
             break;
 
-        case spi_base_C:
+        case SPIC_BASE:
+            spi_config->spi_periph_clk  = SYSCTL_PERIPH_CLK_SPIC;
             spi_config->spi_simo.map    = GPIO_50_SPIC_SIMO;
             spi_config->spi_simo.num    = 50U;
             spi_config->spi_somi.map    = GPIO_51_SPIC_SOMI;
@@ -68,7 +71,8 @@ void SPI_configure(SPI_Config* spi_config)
             spi_config->spi_sten.map    = GPIO_53_SPIC_STEN;
             spi_config->spi_sten.num    = 53U;
             break;
-        case spi_base_D:
+        case SPID_BASE:
+            spi_config->spi_periph_clk  = SYSCTL_PERIPH_CLK_SPID;
             spi_config->spi_simo.map    = GPIO_30_SPID_SIMO;
             spi_config->spi_simo.num    = 30U;
             spi_config->spi_somi.map    = GPIO_31_SPID_SOMI;
@@ -87,6 +91,7 @@ void SPI_init(SPI_Config* spi_config)
     //
     //SPI initialization
     //
+    SysCtl_enablePeripheral(spi_config->spi_periph_clk);
     EALLOW;
 
     SPI_disableModule(spi_config->spi_base);

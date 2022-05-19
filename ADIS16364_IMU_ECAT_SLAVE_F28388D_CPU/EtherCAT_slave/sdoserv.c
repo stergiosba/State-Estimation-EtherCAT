@@ -108,12 +108,12 @@ V4.00 SDO 4: SDOs with size greater than 65535 were not handled correctly, that 
 ------
 ---------------------------------------------------------------------------------------*/
 
-#include "ecat_def.h"
-#include "ecatslv.h"
+#include <ecat_def.h>
+#include <ecatslv.h>
 
 
 #define _SDOSERV_ 1
-#include "objdef.h"
+#include <objdef.h>
 #undef  _SDOSERV_
 /*remove definition of _SDOSERV_ (#ifdef is used in objdef.h)*/
 

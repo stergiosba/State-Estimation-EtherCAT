@@ -24,5 +24,6 @@ __interrupt void cla1Isr5();
 __interrupt void cla1Isr6();
 __interrupt void cla1Isr7();
 __interrupt void cla1Isr8();
+__attribute__((interrupt))  void Cla1BackgroundTask();
 
 #endif /* CLA_CLA_INIT_H_ */

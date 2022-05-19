@@ -37,7 +37,7 @@ V5.01 : Start file change log
 ------    Includes
 ------
 -----------------------------------------------------------------------------------------*/
-#include "sdoserv.h"
+#include "../EtherCAT_slave/sdoserv.h"
 
 
 #ifndef _OBJDEF_H_

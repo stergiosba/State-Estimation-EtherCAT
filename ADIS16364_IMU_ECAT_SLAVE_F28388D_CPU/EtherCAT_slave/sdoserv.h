@@ -35,7 +35,7 @@ V5.01 : Start file change log
 ------    Includes
 ------
 -----------------------------------------------------------------------------------------*/
-#include "ecatcoe.h"
+#include "../EtherCAT_slave/ecatcoe.h"
 
 
 #ifndef _SDOSERV_H_

@@ -44,7 +44,7 @@ V5.01 : Start file change log
 ------
 -----------------------------------------------------------------------------------------*/
 
-#include "ecat_def.h"
+#include "../EtherCAT_slave/ecat_def.h"
 
 
 #ifndef _ECATAPPL_H_

@@ -37,13 +37,13 @@ V5.10.1 : Start file change log
 #ifndef _APPL_INTERFACE_H_
 #define _APPL_INTERFACE_H_
 
-#include "ecat_def.h"
+#include "../EtherCAT_slave/ecat_def.h"
 #include <stdlib.h>
 #include <string.h>
-#include "esc.h"
-#include "ecatslv.h"
-#include "objdef.h"
-#include "ecatappl.h"
+#include "../EtherCAT_slave/esc.h"
+#include "../EtherCAT_slave/ecatslv.h"
+#include "../EtherCAT_slave/objdef.h"
+#include "../EtherCAT_slave/ecatappl.h"
 
 
 

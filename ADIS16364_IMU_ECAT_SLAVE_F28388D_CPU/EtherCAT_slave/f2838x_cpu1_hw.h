@@ -21,7 +21,7 @@
 //
 #include <stdint.h>
 #include <string.h>
-#include "esc.h"
+#include "../EtherCAT_slave/esc.h"
 
 
 //
@@ -78,7 +78,7 @@
 // Function Prototypes
 //
 extern uint16_t ESC_initHW(void);
-extern uint16_t ESC_releaseHW(void);
+extern void ESC_releaseHW(void);
 extern void ESC_setLed(uint16_t RunLed, uint16_t ErrLed);
 
 extern uint32_t ESC_getTimer(void);

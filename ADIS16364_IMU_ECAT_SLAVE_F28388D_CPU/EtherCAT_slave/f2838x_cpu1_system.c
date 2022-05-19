@@ -17,7 +17,7 @@
 //
 // Included Files
 //
-#include "f2838x_cpu1_system.h"
+#include <f2838x_cpu1_system.h>
 
 //
 // F2838XCPU1_strcpy - String copy wrapper for compatibility with EtherCAT stack

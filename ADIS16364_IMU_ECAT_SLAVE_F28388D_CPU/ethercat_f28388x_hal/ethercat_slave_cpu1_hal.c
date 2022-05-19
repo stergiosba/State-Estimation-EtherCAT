@@ -627,9 +627,9 @@ ESC_initHW(void)
     SysCtl_setLowSpeedClock(SYSCTL_LSPCLK_PRESCALE_4);
 
     //
-    // Turn on all needed peripherals and initialize GPIOs (Do not open all peripherals for reduced power consumption)
+    // Turn on all needed peripherals and initialize GPIOs (Done for reduced current consumption)
     //
-    Device_enableNeededPeripherals();
+    Device_enablePeripherals();
     Device_initGPIO();
 
     //
@@ -648,7 +648,7 @@ ESC_initHW(void)
     //
     // Initialize SPI Peripheral
     //
-    SPI_configure(&SPI_config);
+    SPI_configure(SPIA_BASE, 1000000UL, 16U, &SPI_config);
     SPI_init(&SPI_config);
     SPI_PinMuxOptions(&SPI_config);
 

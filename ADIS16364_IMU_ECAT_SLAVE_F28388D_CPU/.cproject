@@ -213,7 +213,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="CLA/f2838x_globalvariabledefs.c|SPI_ADIS16364_LIBRARY/ADIS16364_utilities.c|2838x_RAM_lnk_ecat_cpu1.cmd" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="SPI_ADIS16364_LIBRARY/ADIS16364_utilities.c|2838x_RAM_lnk_ecat_cpu1.cmd|CLA/f2838x_globalvariabledefs.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -320,7 +320,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="2838x_FLASH_lnk_ecat_cpu1.cmd|CLA/f2838x_globalvariabledefs.c|SPI_ADIS16364_LIBRARY/ADIS16364_utilities.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="2838x_FLASH_lnk_ecat_cpu1.cmd|SPI_ADIS16364_LIBRARY/ADIS16364_utilities.c|CLA/f2838x_globalvariabledefs.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

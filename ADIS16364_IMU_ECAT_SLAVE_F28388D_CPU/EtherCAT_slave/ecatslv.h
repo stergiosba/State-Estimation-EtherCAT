@@ -43,9 +43,9 @@ V5.01 : Start file change log
 ------
 -----------------------------------------------------------------------------------------*/
 
-#include "ecat_def.h"
-#include "esc.h"
-#include "f2838x_cpu1_hw.h"
+#include "../EtherCAT_slave/ecat_def.h"
+#include "../EtherCAT_slave/esc.h"
+#include "../EtherCAT_slave/f2838x_cpu1_hw.h"
 
 #ifndef _ECATSLV_H_
 #define _ECATSLV_H_

@@ -126,19 +126,19 @@ V4.00 COEAPPL 2: The handling of backup parameters was included according to<br>
 ------
 ---------------------------------------------------------------------------------------*/
 
-#include "ecat_def.h"
+#include <ecat_def.h>
 
 
-#include "ecatslv.h"
-#include "coeappl.h"
+#include <ecatslv.h>
+#include <coeappl.h>
 
 
 #define  _OBJDEF_    1
-#include "objdef.h"
+#include <objdef.h>
 #undef    _OBJDEF_
 /*remove definition of _OBJDEF_ (#ifdef is used in objdef.h)*/
 
-#include "applInterface.h"
+#include <applInterface.h>
 
 
 

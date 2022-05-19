@@ -31,7 +31,7 @@ V5.01 : Start file change log
 ------    Includes
 ------
 -----------------------------------------------------------------------------------------*/
-#include "ecat_def.h"
+#include "../EtherCAT_slave/ecat_def.h"
 
 
 #ifndef _MAILBOX_H_

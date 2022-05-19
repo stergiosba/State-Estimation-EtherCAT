@@ -39,10 +39,10 @@ V4.08 MBX 1: If the switch MAILBOX_QUEUE was set, we have to put all SDO Info Re
 ------
 ---------------------------------------------------------------------------------------*/
 
-#include "ecat_def.h"
-#include "sdoserv.h"
+#include <ecat_def.h>
+#include <sdoserv.h>
 #define    _ECATCOE_    1
-#include "ecatcoe.h"
+#include <ecatcoe.h>
 #undef      _ECATCOE_
 /*remove definition of _ECATCOE_ (#ifdef is used in ecatcoe.h)*/
 

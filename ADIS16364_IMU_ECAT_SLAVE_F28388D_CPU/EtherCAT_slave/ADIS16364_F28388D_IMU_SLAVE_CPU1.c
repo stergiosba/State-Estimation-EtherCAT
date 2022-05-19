@@ -21,7 +21,7 @@
 ------
 -----------------------------------------------------------------------------------------*/
 #define _ADIS16364__F28388_D__IMU__SLAVE__CPU1_ 1
-#include "ADIS16364_F28388D_IMU_SLAVE_CPU1.h"
+#include <ADIS16364_F28388D_IMU_SLAVE_CPU1.h>
 #undef _ADIS16364__F28388_D__IMU__SLAVE__CPU1_
 #include "CLA_shared.h"
 /*--------------------------------------------------------------------------------------
@@ -38,6 +38,9 @@
 float g_SensBurst[11] = { 0.0f, 0.0f, 0.0f, 0.0f,
                           0.0f, 0.0f, 0.0f, 0.0f,
                           0.0f, 0.0f, 0.0f };
+
+#pragma DATA_SECTION(g_Attitude, "Cla1ToCpuMsgRAM")
+float g_Attitude[3] = { 0.0f, 0.0f, 0.0f };
 
 /*-----------------------------------------------------------------------------------------
 ------
@@ -269,40 +272,38 @@ UINT16 APPL_GenerateMapping(UINT16 *pInputSize,UINT16 *pOutputSize)
 void APPL_InputMapping(UINT16 *pData)
 {
     uint16_t *pTmpData = pData;
-    //Gyroscope Sense
-    memcpy(pTmpData, &SUS_SENSE0x6000.XGyro_sense, SIZEOF(SUS_SENSE0x6000.XGyro_sense));
+    //Gyroscopes Sense
+    memcpy(pTmpData, &LAE_SENSE0x6000.XGyro, SIZEOF(LAE_SENSE0x6000.XGyro));
     pTmpData += 2U;
-    memcpy(pTmpData, &SUS_SENSE0x6000.YGyro_sense, SIZEOF(SUS_SENSE0x6000.YGyro_sense));
+    memcpy(pTmpData, &LAE_SENSE0x6000.YGyro, SIZEOF(LAE_SENSE0x6000.YGyro));
     pTmpData += 2U;
-    memcpy(pTmpData, &SUS_SENSE0x6000.ZGyro_sense, SIZEOF(SUS_SENSE0x6000.ZGyro_sense));
-    pTmpData += 2U;
-
-    //Accelerometer Sense
-    memcpy(pTmpData, &SUS_SENSE0x6000.XAcc_sense, SIZEOF(SUS_SENSE0x6000.XAcc_sense));
-    pTmpData += 2U;
-    memcpy(pTmpData, &SUS_SENSE0x6000.YAcc_sense, SIZEOF(SUS_SENSE0x6000.YAcc_sense));
-    pTmpData += 2U;
-    memcpy(pTmpData, &SUS_SENSE0x6000.ZAcc_sense, SIZEOF(SUS_SENSE0x6000.ZAcc_sense));
+    memcpy(pTmpData, &LAE_SENSE0x6000.ZGyro, SIZEOF(LAE_SENSE0x6000.ZGyro));
     pTmpData += 2U;
 
-    //Temperature Sense
-    memcpy(pTmpData, &SUS_SENSE0x6000.Temp_sense, SIZEOF(SUS_SENSE0x6000.Temp_sense));
+    //Accelerometers Sense
+    memcpy(pTmpData, &LAE_SENSE0x6000.XAcc, SIZEOF(LAE_SENSE0x6000.XAcc));
+    pTmpData += 2U;
+    memcpy(pTmpData, &LAE_SENSE0x6000.YAcc, SIZEOF(LAE_SENSE0x6000.YAcc));
+    pTmpData += 2U;
+    memcpy(pTmpData, &LAE_SENSE0x6000.ZAcc, SIZEOF(LAE_SENSE0x6000.ZAcc));
     pTmpData += 2U;
 
-    //Angle Calculation
-    memcpy(pTmpData, &SUS_SENSE0x6000.XAngle_calc, SIZEOF(SUS_SENSE0x6000.XAngle_calc));
+    //Temperatures Sense
+    memcpy(pTmpData, &LAE_SENSE0x6000.XTemp, SIZEOF(LAE_SENSE0x6000.XTemp));
     pTmpData += 2U;
-    memcpy(pTmpData, &SUS_SENSE0x6000.YAngle_calc, SIZEOF(SUS_SENSE0x6000.YAngle_calc));
+    memcpy(pTmpData, &LAE_SENSE0x6000.YTemp, SIZEOF(LAE_SENSE0x6000.YTemp));
     pTmpData += 2U;
-    memcpy(pTmpData, &SUS_SENSE0x6000.ZAngle_calc, SIZEOF(SUS_SENSE0x6000.ZAngle_calc));
+    memcpy(pTmpData, &LAE_SENSE0x6000.ZTemp, SIZEOF(LAE_SENSE0x6000.ZTemp));
     pTmpData += 2U;
 
-    //Linear Velocity Calculation
-    memcpy(pTmpData, &SUS_SENSE0x6000.XLinVel_calc, SIZEOF(SUS_SENSE0x6000.XLinVel_calc));
+
+    //Angles Estimate
+    memcpy(pTmpData, &LAE_ESTIMATE0x6002.XAngle, SIZEOF(LAE_ESTIMATE0x6002.XAngle));
     pTmpData += 2U;
-    memcpy(pTmpData, &SUS_SENSE0x6000.YLinVel_calc, SIZEOF(SUS_SENSE0x6000.YLinVel_calc));
+    memcpy(pTmpData, &LAE_ESTIMATE0x6002.YAngle, SIZEOF(LAE_ESTIMATE0x6002.YAngle));
     pTmpData += 2U;
-    memcpy(pTmpData, &SUS_SENSE0x6000.ZLinVel_calc, SIZEOF(SUS_SENSE0x6000.ZLinVel_calc));
+    memcpy(pTmpData, &LAE_ESTIMATE0x6002.ZAngle, SIZEOF(LAE_ESTIMATE0x6002.ZAngle));
+    pTmpData += 2U;
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 /**
@@ -314,7 +315,7 @@ void APPL_InputMapping(UINT16 *pData)
 void APPL_OutputMapping(UINT16 *pData)
 {
     uint16_t *pTmpData = pData;
-    memcpy(&SUS_CONTROL0x7000.IMU_flags, pTmpData, SIZEOF(SUS_CONTROL0x7000.IMU_flags));
+    memcpy(&LAE_CONTROL0x7000.IMU_flags, pTmpData, SIZEOF(LAE_CONTROL0x7000.IMU_flags));
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -322,107 +323,94 @@ void APPL_OutputMapping(UINT16 *pData)
 \brief    This function will called from the synchronisation ISR 
             or from the mainloop if no synchronisation is supported
 *////////////////////////////////////////////////////////////////////////////////////////
-void APPL_Application_OnlineMode(void)
+void APPL_Application(void)
 {
     // Only working synchronously.
     if (bDcSyncActive)
     {
-        GPIO_writePin(DEVICE_GPIO_PIN_LED1, 0);
-        GPIO_writePin(DEVICE_GPIO_PIN_LED2, 1);
+        switch (LAE_CONTROL0x7000.IMU_flags)
+        {
+            case IMU_GYRO_ONLY_MODE:
+                    GPIO_writePin(DEVICE_GPIO_PIN_LED1, 0);
+                    GPIO_writePin(DEVICE_GPIO_PIN_LED2, 0);
+                    //
+                    // ADIS 16364 Supports full burst mode. No need to access individual registers.
+                    // CLA Task 1 carries the MCU-IMU SPI communication and calls Task 2 for attitude estimation internally.
+                    //
+                    CLA_forceTasks(CLA1_BASE,CLA_TASKFLAG_1);
 
-        //
-        // ADIS 16364 Supports full burst mode. No need to access individual registers.
-        //
-        CLA_forceTasks(CLA1_BASE,CLA_TASKFLAG_1);
+                    // Data from IMU to EtherCAT (sensing)
+                    LAE_SENSE0x6000.XGyro = g_SensBurst[1];
+                    LAE_SENSE0x6000.YGyro = g_SensBurst[2];
+                    LAE_SENSE0x6000.ZGyro = g_SensBurst[3];
 
-        // Data from IMU to EtherCAT (sensing)
-        SUS_SENSE0x6000.XGyro_sense = g_SensBurst[1];
-        SUS_SENSE0x6000.YGyro_sense = g_SensBurst[2];
-        SUS_SENSE0x6000.ZGyro_sense = g_SensBurst[3];
+                    LAE_SENSE0x6000.XAcc = 0;
+                    LAE_SENSE0x6000.YAcc = 0;
+                    LAE_SENSE0x6000.ZAcc = 0;
 
-        SUS_SENSE0x6000.XAcc_sense = g_SensBurst[4];
-        SUS_SENSE0x6000.YAcc_sense = g_SensBurst[5];
-        SUS_SENSE0x6000.ZAcc_sense = g_SensBurst[6];
+                    LAE_SENSE0x6000.XTemp = 0;
+                    LAE_SENSE0x6000.YTemp = 0;
+                    LAE_SENSE0x6000.ZTemp = 0;
 
-        SUS_SENSE0x6000.Temp_sense = 25.0f+g_SensBurst[7];
-        SUS_SENSE0x6000.YAngle_calc = 25.0f+g_SensBurst[8];
-        SUS_SENSE0x6000.ZAngle_calc = 25.0f+g_SensBurst[9];
+                    LAE_ESTIMATE0x6002.XAngle = 0;
+                    LAE_ESTIMATE0x6002.YAngle = 0;
+                    LAE_ESTIMATE0x6002.ZAngle = 0;
+                break;
 
-        SUS_SENSE0x6000.XAngle_calc = 0;
+            case IMU_BIAS_CALIBRATION_MODE:
+                //
+                // ADIS 16364 Supports bias calibration mode for the gyroscopes.
+                //
+                //IMUGyroBiasNullCalibration();
 
-        SUS_SENSE0x6000.XLinVel_calc = 0;
-        SUS_SENSE0x6000.YLinVel_calc = 0;
-        SUS_SENSE0x6000.ZLinVel_calc = 0;
+                // During bias calibration the sensor is offline so we send zeros from IMU to EtherCAT
+                LAE_SENSE0x6000.XGyro = 0;
+                LAE_SENSE0x6000.YGyro = 0;
+                LAE_SENSE0x6000.ZGyro = 0;
 
+                LAE_SENSE0x6000.XAcc = 0;
+                LAE_SENSE0x6000.YAcc = 0;
+                LAE_SENSE0x6000.ZAcc = 0;
+
+                LAE_SENSE0x6000.XTemp = 0;
+                LAE_SENSE0x6000.YTemp = 0;
+                LAE_SENSE0x6000.ZTemp = 0;
+
+                LAE_ESTIMATE0x6002.XAngle = 0;
+                LAE_ESTIMATE0x6002.YAngle = 0;
+                LAE_ESTIMATE0x6002.ZAngle = 0;
+                break;
+
+            case IMU_ONLINE_MODE:
+                //
+                // ADIS 16364 Supports full burst mode. No need to access individual registers.
+                // CLA Task 1 carries the MCU-IMU SPI communication and calls Task 2 for attitude estimation internally.
+                //
+                CLA_forceTasks(CLA1_BASE,CLA_TASKFLAG_1);
+
+                LAE_SENSE0x6000.XGyro = g_SensBurst[1];
+                LAE_SENSE0x6000.YGyro = g_SensBurst[2];
+                LAE_SENSE0x6000.ZGyro = g_SensBurst[3];
+
+                LAE_SENSE0x6000.XAcc = g_SensBurst[4];
+                LAE_SENSE0x6000.YAcc = g_SensBurst[5];
+                LAE_SENSE0x6000.ZAcc = g_SensBurst[6];
+
+                LAE_SENSE0x6000.XTemp = 25.0f+g_SensBurst[7];
+                LAE_SENSE0x6000.YTemp = 25.0f+g_SensBurst[8];
+                LAE_SENSE0x6000.ZTemp = 25.0f+g_SensBurst[9];
+
+                LAE_ESTIMATE0x6002.XAngle = g_Attitude[0];
+                LAE_ESTIMATE0x6002.YAngle = g_Attitude[1];
+                LAE_ESTIMATE0x6002.ZAngle = g_Attitude[2];
+                break;
+        }
     }
     else
     {
         GPIO_writePin(DEVICE_GPIO_PIN_LED1, 1);
         GPIO_writePin(DEVICE_GPIO_PIN_LED2, 1);
     }
-}
-
-void APPL_Application_BiasCalibration(void)
-{
-    // Only working synchronously.
-    if (bDcSyncActive)
-    {
-        GPIO_writePin(DEVICE_GPIO_PIN_LED1, 0);
-        GPIO_writePin(DEVICE_GPIO_PIN_LED2, 0);
-
-        //
-        // ADIS 16364 Supports bias calibration mode for the gyroscopes.
-        //
-        //IMUGyroBiasNullCalibration();
-
-        // During bias calibration the sensor is offline so we send zeros from IMU to EtherCAT
-        SUS_SENSE0x6000.XGyro_sense = 0;
-        SUS_SENSE0x6000.YGyro_sense = 0;
-        SUS_SENSE0x6000.ZGyro_sense = 0;
-
-        SUS_SENSE0x6000.XAcc_sense = 0;
-        SUS_SENSE0x6000.YAcc_sense = 0;
-        SUS_SENSE0x6000.ZAcc_sense = 0;
-
-        SUS_SENSE0x6000.Temp_sense = 0;
-        SUS_SENSE0x6000.YAngle_calc = 0;
-        SUS_SENSE0x6000.ZAngle_calc = 0;
-
-        SUS_SENSE0x6000.XAngle_calc = 0;
-
-        SUS_SENSE0x6000.XLinVel_calc = 0;
-        SUS_SENSE0x6000.YLinVel_calc = 0;
-        SUS_SENSE0x6000.ZLinVel_calc = 0;
-    }
-    else
-    {
-        GPIO_writePin(DEVICE_GPIO_PIN_LED1, 1);
-        GPIO_writePin(DEVICE_GPIO_PIN_LED2, 1);
-    }
-
-}
-
-void APPL_Application2(void)
-{
-    //const uint16_t DC_MODE = bDcSyncActive;
-
-    // Data from IMU to EtherCAT (sensing)
-    SUS_SENSE0x6000.XGyro_sense = 1;
-    SUS_SENSE0x6000.YGyro_sense = 2;
-    SUS_SENSE0x6000.ZGyro_sense = 3;
-
-    SUS_SENSE0x6000.XAcc_sense = 4;
-    SUS_SENSE0x6000.YAcc_sense = 5;
-    SUS_SENSE0x6000.ZAcc_sense = 6;
-
-    SUS_SENSE0x6000.XAngle_calc = 7;
-    SUS_SENSE0x6000.YAngle_calc = 8;
-    SUS_SENSE0x6000.ZAngle_calc = 9;
-
-    SUS_SENSE0x6000.XLinVel_calc = 10;
-    SUS_SENSE0x6000.YLinVel_calc = 11;
-    SUS_SENSE0x6000.ZLinVel_calc = 12;
-    DEVICE_DELAY_US(500);
 }
 
 #if EXPLICIT_DEVICE_ID

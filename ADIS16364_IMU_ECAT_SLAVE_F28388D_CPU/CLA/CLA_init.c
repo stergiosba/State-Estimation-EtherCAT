@@ -139,7 +139,7 @@ __interrupt void cla1Isr1 ()
     //
     // Uncomment to halt debugger and stop here
     //
-    // asm(" ESTOP0");
+    //asm(" ESTOP0");
 }
 
 //
@@ -147,7 +147,9 @@ __interrupt void cla1Isr1 ()
 //
 __interrupt void cla1Isr2 ()
 {
-    asm(" ESTOP0");
+    Interrupt_clearACKGroup(INTERRUPT_ACK_GROUP11);
+
+    //asm(" ESTOP0");
 }
 
 //
@@ -199,8 +201,4 @@ __interrupt void cla1Isr8 ()
     // Acknowledge the end-of-task interrupt for task 8
     //
     Interrupt_clearACKGroup(INTERRUPT_ACK_GROUP11);
-    //
-    // Uncomment to halt debugger and stop here
-    //
-//    asm(" ESTOP0");
 }

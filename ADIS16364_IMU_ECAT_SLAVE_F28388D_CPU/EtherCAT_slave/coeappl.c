@@ -116,11 +116,11 @@ V4.00 ECAT 1: The handling of the Sync Manager Parameter was included according 
 ------
 -----------------------------------------------------------------------------------------*/
 
-#include "ecat_def.h"
-#include "ecatslv.h"
+#include <ecat_def.h>
+#include <ecatslv.h>
 
 #define _COEAPPL_    1
-#include "coeappl.h"
+#include <coeappl.h>
 #undef _COEAPPL_
 /*remove definition of _COEAPPL_ (#ifdef is used in coeappl.h)*/
 
@@ -129,7 +129,7 @@ V4.00 ECAT 1: The handling of the Sync Manager Parameter was included according 
 
 /*Add Application specific Objects*/
 /*ECATCHANGE_START(V5.13) CIA402 3*/
-#include "ADIS16364_F28388D_IMU_SLAVE_CPU1.h"
+#include <ADIS16364_F28388D_IMU_SLAVE_CPU1.h>
 
 
 #undef _OBJD_
