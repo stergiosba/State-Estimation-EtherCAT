@@ -25,9 +25,9 @@
 ------    Includes
 ------
 -----------------------------------------------------------------------------------------*/
-#include "../EtherCAT_slave/ecat_def.h"
-#include "../EtherCAT_slave/ecatappl.h"
-#include "../EtherCAT_slave/applInterface.h"
+#include "ecat_def.h"
+#include "ecatappl.h"
+#include "applInterface.h"
 #include "device.h"
 #include "ADIS16364.h"
 /*-----------------------------------------------------------------------------------------
@@ -39,7 +39,7 @@
 #endif //_ADIS16364__F28388_D__IMU__SLAVE__CPU1_H_
 
 //include custom application object dictionary 
-#include "../EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1Objects.h"
+#include "ADIS16364_F28388D_IMU_SLAVE_CPU1Objects.h"
 
 
 #if defined(_ADIS16364__F28388_D__IMU__SLAVE__CPU1_) && (_ADIS16364__F28388_D__IMU__SLAVE__CPU1_ == 1)
@@ -47,6 +47,8 @@
 #else
     #define PROTO extern
 #endif
+
+#define GYRO_BIAS_RESET_TIME       10U
 
 /*
  *
@@ -71,6 +73,8 @@ PROTO void APPL_Application(void);
 PROTO UINT16 APPL_GetDeviceID(void);
 #endif
 
+PROTO void   InputPDO_Reset();
+PROTO void   InputPDO_ForwardPass();
 PROTO void   APPL_AckErrorInd(UINT16 stateTrans);
 PROTO UINT16 APPL_StartMailboxHandler(void);
 PROTO UINT16 APPL_StopMailboxHandler(void);

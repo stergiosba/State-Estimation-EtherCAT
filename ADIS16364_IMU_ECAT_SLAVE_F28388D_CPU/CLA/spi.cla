@@ -163,7 +163,7 @@ __interrupt void Cla1Task1 ( void )
 
 __interrupt void Cla1Task2 ( void )
 {
-
+    SPI_writeDataBlockingNonFIFO(SPI_config.spi_base, 0xBE10);
 }
 
 interrupt void Cla1Task3 ( void )

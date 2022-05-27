@@ -42,6 +42,10 @@ float g_SensBurst[11] = { 0.0f, 0.0f, 0.0f, 0.0f,
 #pragma DATA_SECTION(g_Attitude, "Cla1ToCpuMsgRAM")
 float g_Attitude[3] = { 0.0f, 0.0f, 0.0f };
 
+uint32_t g_biascounter[1] = {0};
+uint32_t CycleTime;
+uint32_t CycleFreq;
+
 /*-----------------------------------------------------------------------------------------
 ------
 ------    application specific functions
@@ -53,6 +57,56 @@ float g_Attitude[3] = { 0.0f, 0.0f, 0.0f };
 ------    generic functions
 ------
 -----------------------------------------------------------------------------------------*/
+
+/////////////////////////////////////////////////////////////////////////////////////////
+/**
+ \brief    This function resets the input PDOs to zero.
+
+*////////////////////////////////////////////////////////////////////////////////////////
+
+void    InputPDO_Reset()
+{
+    LAE_SENSE0x6000.XGyro = 0;
+    LAE_SENSE0x6000.YGyro = 0;
+    LAE_SENSE0x6000.ZGyro = 0;
+
+    LAE_SENSE0x6000.XAcc = 0;
+    LAE_SENSE0x6000.YAcc = 0;
+    LAE_SENSE0x6000.ZAcc = 0;
+
+    LAE_SENSE0x6000.XTemp = 0;
+    LAE_SENSE0x6000.YTemp = 0;
+    LAE_SENSE0x6000.ZTemp = 0;
+
+    LAE_ESTIMATE0x6002.XAngle = 0;
+    LAE_ESTIMATE0x6002.YAngle = 0;
+    LAE_ESTIMATE0x6002.ZAngle = 0;
+} // End InputPDO_Reset()
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+/**
+ \brief    This function performs a forward pass of EtherCAT Input PDOs.
+
+*////////////////////////////////////////////////////////////////////////////////////////
+void    InputPDO_ForwardPass()
+{
+    LAE_SENSE0x6000.XGyro = g_SensBurst[1];
+    LAE_SENSE0x6000.YGyro = g_SensBurst[2];
+    LAE_SENSE0x6000.ZGyro = g_SensBurst[3];
+
+    LAE_SENSE0x6000.XAcc = g_SensBurst[4];
+    LAE_SENSE0x6000.YAcc = g_SensBurst[5];
+    LAE_SENSE0x6000.ZAcc = g_SensBurst[6];
+
+    LAE_SENSE0x6000.XTemp = 25.0f+g_SensBurst[7];
+    LAE_SENSE0x6000.YTemp = 25.0f+g_SensBurst[8];
+    LAE_SENSE0x6000.ZTemp = 25.0f+g_SensBurst[9];
+
+    LAE_ESTIMATE0x6002.XAngle = g_Attitude[0];
+    LAE_ESTIMATE0x6002.YAngle = g_Attitude[1];
+    LAE_ESTIMATE0x6002.ZAngle = g_Attitude[2];
+} // End InputPDO_ForwardPass()
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /**
@@ -325,6 +379,8 @@ void APPL_OutputMapping(UINT16 *pData)
 *////////////////////////////////////////////////////////////////////////////////////////
 void APPL_Application(void)
 {
+    CycleTime = sSyncManOutPar.u32Sync0CycleTime;
+    CycleFreq = 1000000000.0f / CycleTime;
     // Only working synchronously.
     if (bDcSyncActive)
     {
@@ -359,27 +415,25 @@ void APPL_Application(void)
 
             case IMU_BIAS_CALIBRATION_MODE:
                 //
-                // ADIS 16364 Supports bias calibration mode for the gyroscopes.
+                // ADIS 16364 Supports null bias calibration mode for the gyroscopes.
                 //
                 //IMUGyroBiasNullCalibration();
-                SPI_writeDataBlockingNonFIFO(SPIA_BASE, 0xBE01);
+                if (g_biascounter[0]<1*CycleFreq)
+                {
+                    if (!g_biascounter[0])
+                    {
+                        //CLA_forceTasks(CLA1_BASE,CLA_TASKFLAG_2);
+                        SPI_writeDataBlockingNonFIFO(0x00006100U, 0xBE10);
+                    }
+                    InputPDO_Reset();
+                    g_biascounter[0]++;
+                }
+                else
+                {
+                    CLA_forceTasks(CLA1_BASE,CLA_TASKFLAG_1);
+                    InputPDO_ForwardPass();
+                }
 
-                // During bias calibration the sensor is offline so we send zeros from IMU to EtherCAT
-                LAE_SENSE0x6000.XGyro = 0;
-                LAE_SENSE0x6000.YGyro = 0;
-                LAE_SENSE0x6000.ZGyro = 0;
-
-                LAE_SENSE0x6000.XAcc = 0;
-                LAE_SENSE0x6000.YAcc = 0;
-                LAE_SENSE0x6000.ZAcc = 0;
-
-                LAE_SENSE0x6000.XTemp = 0;
-                LAE_SENSE0x6000.YTemp = 0;
-                LAE_SENSE0x6000.ZTemp = 0;
-
-                LAE_ESTIMATE0x6002.XAngle = 0;
-                LAE_ESTIMATE0x6002.YAngle = 0;
-                LAE_ESTIMATE0x6002.ZAngle = 0;
                 break;
 
             case IMU_ONLINE_MODE:
@@ -389,21 +443,11 @@ void APPL_Application(void)
                 //
                 CLA_forceTasks(CLA1_BASE,CLA_TASKFLAG_1);
 
-                LAE_SENSE0x6000.XGyro = g_SensBurst[1];
-                LAE_SENSE0x6000.YGyro = g_SensBurst[2];
-                LAE_SENSE0x6000.ZGyro = g_SensBurst[3];
+                InputPDO_ForwardPass();
+                break;
 
-                LAE_SENSE0x6000.XAcc = g_SensBurst[4];
-                LAE_SENSE0x6000.YAcc = g_SensBurst[5];
-                LAE_SENSE0x6000.ZAcc = g_SensBurst[6];
-
-                LAE_SENSE0x6000.XTemp = 25.0f+g_SensBurst[7];
-                LAE_SENSE0x6000.YTemp = 25.0f+g_SensBurst[8];
-                LAE_SENSE0x6000.ZTemp = 25.0f+g_SensBurst[9];
-
-                LAE_ESTIMATE0x6002.XAngle = g_Attitude[0];
-                LAE_ESTIMATE0x6002.YAngle = g_Attitude[1];
-                LAE_ESTIMATE0x6002.ZAngle = g_Attitude[2];
+            case IMU_OFFLINE_MODE:
+                InputPDO_Reset();
                 break;
         }
     }

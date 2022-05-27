@@ -83,7 +83,7 @@ void SPI_configure(uint32_t base,uint32_t clockrate, uint32_t datawidth, SPI_Con
             spi_config->spi_sten.num    = 33U;
             break;
     }
-}
+} // End SPI_configure()
 
 
 void SPI_init(SPI_Config* spi_config)
