@@ -23,16 +23,18 @@ int main(void)
 
     imu_check=IMUCommsCheck();
     //SPI_writeDataBlockingNonFIFO(SUS_SPI_BASE, 0xBE01);
+    SPI_writeDataBlockingNonFIFO(SUS_SPI_BASE, 0xBE10);
 
     while(1)
     {
+/*
 
         //xg = RawToReal(SensorRead(XACCL_OUT, SBITS14), g_AcclScale,SBITS14, 1);
         //yg = RawToReal(SensorRead(YACCL_OUT, SBITS14), g_AcclScale,SBITS14, 1);
         yg = RawToReal(SensorRead(YGYRO_OUT, SBITS14), g_GyroScale, SBITS14, 1);
         //sprintf(buffer,"%d\r\n",(int16_t)xg);
         //SCI_writeCharArray(SCIA_BASE, (uint16_t*)buffer, 128);
-
+*/
     }
 
 }
