@@ -24,6 +24,7 @@
 #include <ADIS16364_F28388D_IMU_SLAVE_CPU1.h>
 #undef _ADIS16364__F28388_D__IMU__SLAVE__CPU1_
 #include "CLA_shared.h"
+#include "math.h"
 /*--------------------------------------------------------------------------------------
 ------
 ------    local types and defines
