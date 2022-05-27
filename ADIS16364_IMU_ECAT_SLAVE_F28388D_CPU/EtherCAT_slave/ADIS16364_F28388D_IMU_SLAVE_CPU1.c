@@ -331,30 +331,30 @@ void APPL_Application(void)
         switch (LAE_CONTROL0x7000.IMU_flags)
         {
             case IMU_GYRO_ONLY_MODE:
-                    GPIO_writePin(DEVICE_GPIO_PIN_LED1, 0);
-                    GPIO_writePin(DEVICE_GPIO_PIN_LED2, 0);
-                    //
-                    // ADIS 16364 Supports full burst mode. No need to access individual registers.
-                    // CLA Task 1 carries the MCU-IMU SPI communication and calls Task 2 for attitude estimation internally.
-                    //
-                    CLA_forceTasks(CLA1_BASE,CLA_TASKFLAG_1);
+                GPIO_writePin(DEVICE_GPIO_PIN_LED1, 0);
+                GPIO_writePin(DEVICE_GPIO_PIN_LED2, 0);
+                //
+                // ADIS 16364 Supports full burst mode. No need to access individual registers.
+                // CLA Task 1 carries the MCU-IMU SPI communication and calls Task 2 for attitude estimation internally.
+                //
+                CLA_forceTasks(CLA1_BASE,CLA_TASKFLAG_1);
 
-                    // Data from IMU to EtherCAT (sensing)
-                    LAE_SENSE0x6000.XGyro = g_SensBurst[1];
-                    LAE_SENSE0x6000.YGyro = g_SensBurst[2];
-                    LAE_SENSE0x6000.ZGyro = g_SensBurst[3];
+                // Data from IMU to EtherCAT (sensing)
+                LAE_SENSE0x6000.XGyro = g_SensBurst[1];
+                LAE_SENSE0x6000.YGyro = g_SensBurst[2];
+                LAE_SENSE0x6000.ZGyro = g_SensBurst[3];
 
-                    LAE_SENSE0x6000.XAcc = 0;
-                    LAE_SENSE0x6000.YAcc = 0;
-                    LAE_SENSE0x6000.ZAcc = 0;
+                LAE_SENSE0x6000.XAcc = 0;
+                LAE_SENSE0x6000.YAcc = 0;
+                LAE_SENSE0x6000.ZAcc = 0;
 
-                    LAE_SENSE0x6000.XTemp = 0;
-                    LAE_SENSE0x6000.YTemp = 0;
-                    LAE_SENSE0x6000.ZTemp = 0;
+                LAE_SENSE0x6000.XTemp = 0;
+                LAE_SENSE0x6000.YTemp = 0;
+                LAE_SENSE0x6000.ZTemp = 0;
 
-                    LAE_ESTIMATE0x6002.XAngle = 0;
-                    LAE_ESTIMATE0x6002.YAngle = 0;
-                    LAE_ESTIMATE0x6002.ZAngle = 0;
+                LAE_ESTIMATE0x6002.XAngle = 0;
+                LAE_ESTIMATE0x6002.YAngle = 0;
+                LAE_ESTIMATE0x6002.ZAngle = 0;
                 break;
 
             case IMU_BIAS_CALIBRATION_MODE:
@@ -362,6 +362,7 @@ void APPL_Application(void)
                 // ADIS 16364 Supports bias calibration mode for the gyroscopes.
                 //
                 //IMUGyroBiasNullCalibration();
+                SPI_writeDataBlockingNonFIFO(SPIA_BASE, 0xBE01);
 
                 // During bias calibration the sensor is offline so we send zeros from IMU to EtherCAT
                 LAE_SENSE0x6000.XGyro = 0;
