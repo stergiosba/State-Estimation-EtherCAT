@@ -1,7 +1,7 @@
 # FIXED
 
 EtherCAT_slave/f2838x_cpu1_system.obj: ../EtherCAT_slave/f2838x_cpu1_system.c
-EtherCAT_slave/f2838x_cpu1_system.obj: ../EtherCAT_slave/f2838x_cpu1_system.h
+EtherCAT_slave/f2838x_cpu1_system.obj: C:/Users/Stergios/Desktop/Codeground/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/EtherCAT_slave/f2838x_cpu1_system.h
 EtherCAT_slave/f2838x_cpu1_system.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/string.h
 EtherCAT_slave/f2838x_cpu1_system.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/_ti_config.h
 EtherCAT_slave/f2838x_cpu1_system.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/linkage.h
@@ -10,7 +10,7 @@ EtherCAT_slave/f2838x_cpu1_system.obj: G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c
 
 ../EtherCAT_slave/f2838x_cpu1_system.c:
 
-../EtherCAT_slave/f2838x_cpu1_system.h:
+C:/Users/Stergios/Desktop/Codeground/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/EtherCAT_slave/f2838x_cpu1_system.h:
 
 G:/ti/ccs1110/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/string.h:
 
