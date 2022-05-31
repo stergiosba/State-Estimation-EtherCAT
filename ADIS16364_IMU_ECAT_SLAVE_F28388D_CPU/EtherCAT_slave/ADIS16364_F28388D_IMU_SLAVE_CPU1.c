@@ -380,58 +380,48 @@ void APPL_OutputMapping(UINT16 *pData)
 *////////////////////////////////////////////////////////////////////////////////////////
 void APPL_Application(void)
 {
+    // Calculating current EtherCAT cycle time and frequency
     CycleTime = sSyncManOutPar.u32Sync0CycleTime;
     CycleFreq = 1000000000.0f / CycleTime;
+
     // Only working synchronously.
     if (bDcSyncActive)
     {
+        //
+        // Case switch statement base on the user command
+        //
         switch (LAE_CONTROL0x7000.IMU_flags)
         {
-            case IMU_GYRO_ONLY_MODE:
-                GPIO_writePin(DEVICE_GPIO_PIN_LED1, 0);
-                GPIO_writePin(DEVICE_GPIO_PIN_LED2, 0);
-                //
-                // ADIS 16364 Supports full burst mode. No need to access individual registers.
-                // CLA Task 1 carries the MCU-IMU SPI communication and calls Task 2 for attitude estimation internally.
-                //
-                CLA_forceTasks(CLA1_BASE,CLA_TASKFLAG_1);
-
-                // Data from IMU to EtherCAT (sensing)
-                LAE_SENSE0x6000.XGyro = g_SensBurst[1];
-                LAE_SENSE0x6000.YGyro = g_SensBurst[2];
-                LAE_SENSE0x6000.ZGyro = g_SensBurst[3];
-
-                LAE_SENSE0x6000.XAcc = 0;
-                LAE_SENSE0x6000.YAcc = 0;
-                LAE_SENSE0x6000.ZAcc = 0;
-
-                LAE_SENSE0x6000.XTemp = 0;
-                LAE_SENSE0x6000.YTemp = 0;
-                LAE_SENSE0x6000.ZTemp = 0;
-
-                LAE_ESTIMATE0x6002.XAngle = 0;
-                LAE_ESTIMATE0x6002.YAngle = 0;
-                LAE_ESTIMATE0x6002.ZAngle = 0;
-                break;
-
+            //
+            // For the first 30 seconds (counter<=75000) ADIS 16364 performs
+            // the internal null bias calibration of the gyroscopes.
+            //
             case IMU_BIAS_CALIBRATION_MODE:
                 //
-                // ADIS 16364 Supports null bias calibration mode for the gyroscopes.
+                // Checking to perform SPI transaction only once.
+                // 0xBE10 is the null bias calibration SPI code for the IMU.
                 //
-                //IMUGyroBiasNullCalibration();
-                if (g_biascounter[0]<1*CycleFreq)
+                if (g_biascounter[0]<ADIS16364_BIAS_RESET_DELAY*CycleFreq)
                 {
                     if (!g_biascounter[0])
                     {
-                        //CLA_forceTasks(CLA1_BASE,CLA_TASKFLAG_2);
-                        SPI_writeDataBlockingNonFIFO(0x00006100U, 0xBE10);
+                        SPI_writeDataBlockingNonFIFO(SPI_config.spi_base, ADIS16364_NULL_BIAS_COMMAND);
                     }
+                    // Send zero for all registers.
                     InputPDO_Reset();
+
+                    // Increment bias calibration state counter.
                     g_biascounter[0]++;
                 }
                 else
                 {
+                    //
+                    // After the first 30 seconds have passed CLA Task 1 carries the MCU-IMU SPI communication
+                    // and attitude estimation internally.
+                    //
                     CLA_forceTasks(CLA1_BASE,CLA_TASKFLAG_1);
+
+                    // Send all read registers via EtherCAT
                     InputPDO_ForwardPass();
                 }
 
@@ -439,15 +429,19 @@ void APPL_Application(void)
 
             case IMU_ONLINE_MODE:
                 //
-                // ADIS 16364 Supports full burst mode. No need to access individual registers.
-                // CLA Task 1 carries the MCU-IMU SPI communication and calls Task 2 for attitude estimation internally.
+                // ADIS 16364 Supports full burst mode. CLA Task 1 carries the MCU-IMU SPI communication
+                // and attitude estimation internally.
                 //
                 CLA_forceTasks(CLA1_BASE,CLA_TASKFLAG_1);
 
+                // Send all read registers via EtherCAT
                 InputPDO_ForwardPass();
                 break;
 
             case IMU_OFFLINE_MODE:
+                //
+                // When offline do not perform any SPI transactions just send zeros.
+                //
                 InputPDO_Reset();
                 break;
         }

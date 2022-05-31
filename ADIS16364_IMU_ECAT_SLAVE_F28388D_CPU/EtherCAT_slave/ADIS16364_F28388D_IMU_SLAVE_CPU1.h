@@ -48,8 +48,6 @@
     #define PROTO extern
 #endif
 
-#define GYRO_BIAS_RESET_TIME       10U
-
 /*
  *
  * Inertial Measurememt Unit Operation Modes
@@ -59,10 +57,8 @@
 typedef enum
 {
     IMU_OFFLINE_MODE                = 0x0000U,  //!< Offline Mode.
-    IMU_BIAS_CALIBRATION_MODE       = 0xCA01U,  //!< Bias Calibration Mode.
-    IMU_GYRO_ONLY_MODE              = 0xDA07U,  //!< Gyroscope Only Mode.
-    IMU_ACCL_ONLY_MODE              = 0xDA38U,  //!< Accelerometer Only Mode.
-    IMU_ONLINE_MODE                 = 0xDAFFU,  //!< Normal Operation Mode.
+    IMU_BIAS_CALIBRATION_MODE       = 0xCA44U,  //!< Bias Calibration Mode.
+    IMU_ONLINE_MODE                 = 0xDA44U,  //!< Normal Operation Mode.
 } ADIS16364_IMU_OperationModes;
 
 extern float test[11];
