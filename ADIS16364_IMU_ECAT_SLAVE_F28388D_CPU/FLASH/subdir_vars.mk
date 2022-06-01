@@ -11,6 +11,8 @@ CMD_SRCS += \
 
 LIB_SRCS += \
 ../F2838xCPU1_CLADATAROM_Symbols_fpu32.lib \
+C:/ti/c2000/C2000Ware_4_00_00_00/libraries/math/CLAmath/c28/lib/cla2_math_library_datarom_fpu32_eabi.lib \
+C:/ti/c2000/C2000Ware_4_00_00_00/libraries/math/CLAmath/c28/lib/cla2_math_library_fpu32_eabi.lib \
 C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/ccs/Debug/driverlib.lib 
 
 ASM_SRCS += \

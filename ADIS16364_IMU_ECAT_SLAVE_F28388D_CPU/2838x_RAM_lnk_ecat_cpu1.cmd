@@ -108,6 +108,8 @@ SECTIONS
    Difference_RegsFile : >RAMGS5, fill=0x3333*/
 
    /* CLA specific sections */
+
+   CLA1mathTables    : > RAMLS3
    Cla1Prog         : > RAMLS5
 
    CLADataLS0		: > RAMLS0

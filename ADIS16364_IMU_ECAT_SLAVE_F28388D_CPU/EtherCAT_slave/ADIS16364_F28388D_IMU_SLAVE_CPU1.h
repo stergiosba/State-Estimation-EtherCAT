@@ -69,6 +69,7 @@ PROTO void APPL_Application(void);
 PROTO UINT16 APPL_GetDeviceID(void);
 #endif
 
+PROTO void   Internal_Reset();
 PROTO void   InputPDO_Reset();
 PROTO void   InputPDO_ForwardPass();
 PROTO void   APPL_AckErrorInd(UINT16 stateTrans);

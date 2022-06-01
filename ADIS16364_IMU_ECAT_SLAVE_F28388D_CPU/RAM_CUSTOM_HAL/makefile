@@ -28,7 +28,11 @@ ORDERED_OBJS += \
 "./ethercat_f28388x_hal/ethercat_gpio_setup.obj" \
 "./ethercat_f28388x_hal/ethercat_slave_cpu1_hal.obj" \
 "../2838x_RAM_lnk_ecat_cpu1.cmd" \
+"../F2838xCPU1_CLADATAROM_Symbols_fpu32.lib" \
+"C:/ti/c2000/C2000Ware_4_00_00_00/libraries/math/CLAmath/c28/lib/cla2_math_library_datarom_fpu32_eabi.lib" \
+"C:/ti/c2000/C2000Ware_4_00_00_00/libraries/math/CLAmath/c28/lib/cla2_math_library_fpu32_eabi.lib" \
 "C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/ccs/Debug/driverlib.lib" \
+"../f2838x_headers_nonBIOS_cpu1.cmd" \
 $(GEN_CMDS__FLAG) \
 -llibc.a \
 
@@ -165,7 +169,7 @@ all: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: C2000 Linker'
-	"C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/bin/cl2000" -v28 -ml -mt --cla_support=cla1 --float_support=fpu32 -Ooff --advice:performance=all --define=ETHERCAT_STACK --define=RAM --define=CPU1 --diag_suppress=10063 --diag_suppress=770 --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU.map" --heap_size=0x200 --stack_size=0x200 --warn_sections -i"C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/lib" -i"C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include" --reread_libs --define=RAM --diag_wrap=off --display_error_number --xml_link_info="ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU_linkInfo.xml" --entry_point=code_start --rom_model -o "ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU.out" $(ORDERED_OBJS)
+	"C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/bin/cl2000" -v28 -ml -mt --cla_support=cla1 --float_support=fpu32 -Ooff --advice:performance=all --define=CLA_MATH_TABLES_IN_ROM=1 --define=ETHERCAT_STACK --define=RAM --define=CPU1 --diag_suppress=10063 --diag_suppress=770 --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU.map" --heap_size=0x200 --stack_size=0x200 --warn_sections -i"C:/ti/c2000/C2000Ware_4_00_00_00/libraries/math/CLAmath/c28/lib" -i"C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/lib" -i"C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include" --reread_libs --define=RAM --diag_wrap=off --display_error_number --xml_link_info="ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU_linkInfo.xml" --entry_point=code_start --rom_model -o "ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 

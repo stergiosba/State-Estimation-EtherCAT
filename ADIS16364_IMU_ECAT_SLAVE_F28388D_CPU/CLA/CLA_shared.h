@@ -7,6 +7,7 @@
 #include <stdint.h>
 //#include "f2838x_device.h"
 #include "SPI_init.h"
+#include "CLAmath.h"
 //#include "f28x_project.h" //MAYBE NOT NEEDED
 /*
 #define READ_CLOCK(X) __meallow();\
@@ -23,6 +24,7 @@ __medis();*/
 extern float g_SensBurst[11];
 extern float g_Attitude[3];
 extern uint32_t ulCycleCount1;
+extern float ff;
 
 __interrupt void Cla1Task1();
 __interrupt void Cla1Task2();

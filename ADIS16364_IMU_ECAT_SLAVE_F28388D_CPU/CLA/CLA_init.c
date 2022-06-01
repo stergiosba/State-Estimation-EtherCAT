@@ -1,5 +1,8 @@
 #include "CLA_init.h"
 
+#pragma DATA_SECTION(ff, "Cla1ToCpuMsgRAM")
+float ff = 0;
+
 //
 // CLA_configClaMemory - Configure CLA memory sections
 //

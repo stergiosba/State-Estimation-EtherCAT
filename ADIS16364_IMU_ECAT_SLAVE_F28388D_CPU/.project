@@ -26,6 +26,16 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>cla2_math_library_datarom_fpu32_eabi.lib</name>
+			<type>1</type>
+			<locationURI>CLAMATH_ROOT/lib/cla2_math_library_datarom_fpu32_eabi.lib</locationURI>
+		</link>
+		<link>
+			<name>cla2_math_library_fpu32_eabi.lib</name>
+			<type>1</type>
+			<locationURI>CLAMATH_ROOT/lib/cla2_math_library_fpu32_eabi.lib</locationURI>
+		</link>
+		<link>
 			<name>driverlib.lib</name>
 			<type>1</type>
 			<locationURI>C2000WARE_DLIB_ROOT/f2838x/driverlib/ccs/Debug/driverlib.lib</locationURI>
@@ -43,6 +53,10 @@
 		<variable>
 			<name>C2000WARE_DLIB_ROOT</name>
 			<value>$%7BCOM_TI_C2000WARE_SOFTWARE_PACKAGE_INSTALL_DIR%7D/driverlib</value>
+		</variable>
+		<variable>
+			<name>CLAMATH_ROOT</name>
+			<value>$%7BCOM_TI_C2000WARE_SOFTWARE_PACKAGE_INSTALL_DIR%7D/libraries/math/CLAmath/c28</value>
 		</variable>
 		<variable>
 			<name>ETHERCAT_ROOT</name>

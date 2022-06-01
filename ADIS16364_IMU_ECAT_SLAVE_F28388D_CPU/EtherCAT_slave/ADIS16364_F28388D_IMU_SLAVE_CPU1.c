@@ -84,6 +84,12 @@ void    InputPDO_Reset()
     LAE_ESTIMATE0x6002.ZAngle = 0;
 } // End InputPDO_Reset()
 
+void Internal_Reset()
+{
+    g_Attitude[0] -= g_Attitude[0];
+    g_Attitude[1] -= g_Attitude[1];
+    g_Attitude[2] -= g_Attitude[2];
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /**
@@ -440,8 +446,9 @@ void APPL_Application(void)
 
             case IMU_OFFLINE_MODE:
                 //
-                // When offline do not perform any SPI transactions just send zeros.
+                // When offline do not perform any SPI transactions just send zeros and perform internal reset.
                 //
+                CLA_forceTasks(CLA1_BASE,CLA_TASKFLAG_2);
                 InputPDO_Reset();
                 break;
         }

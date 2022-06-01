@@ -1,7 +1,7 @@
 ******************************************************************************
              TMS320C2000 Linker PC v21.6.0                     
 ******************************************************************************
->> Linked Tue May 31 02:36:56 2022
+>> Linked Wed Jun  1 18:22:31 2022
 
 OUTPUT FILE NAME:   <ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU.out>
 ENTRY POINT SYMBOL: "code_start"  address: 00080000
@@ -336,6 +336,9 @@ codestart
                   00090a94    00000006     coeappl.obj (.const:asEntryDesc0x1C13)
                   00090a9a    00000006     coeappl.obj (.const:asEntryDesc0x7000)
 
+CLA1mathTables 
+*          0    0000a000    00000000     UNINITIALIZED
+
 MSGRAM_CM_TO_CPU 
 *          0    00038000    00000088     UNINITIALIZED
                   00038000    00000088     driverlib.lib : ipc.obj (MSGRAM_CM_TO_CPU)
@@ -583,7 +586,7 @@ MODULE SUMMARY
     +--+--------------------------------------+-------+---------+---------+
        Total:                                 4201    1115      544    
                                                                        
-    G:\ti\ccs1110\ccs\tools\compiler\ti-cgt-c2000_21.6.0.LTS\lib\rts2800_fpu64_eabi.lib
+    C:\ti\ccs1100\ccs\tools\compiler\ti-cgt-c2000_21.6.0.LTS\lib\rts2800_fpu64_eabi.lib
        memory.c.obj                           664     0         3      
        fs_div28.asm.obj                       136     0         0      
        cla_memset.cla.obj                     100     0         2      
@@ -879,6 +882,9 @@ page  address   name
 0     000090f0  ApplicationObjDic                        
 0     00082421  BackToInitTransition                     
 0     000855e1  C$$EXIT                                  
+abs   00000000  CLA1mathTablesLoadSize                   
+0     0000a000  CLA1mathTablesLoadStart                  
+0     0000a000  CLA1mathTablesRunStart                   
 abs   00000100  CLA_SCRATCHPAD_SIZE                      
 0     00084bab  CLA_configClaMemory                      
 0     00084b2e  CLA_initCpu1Cla1                         
@@ -1438,6 +1444,8 @@ page  address   name
 0     00009282  __TI_cleanup_ptr                         
 0     00009284  __TI_dtors_ptr                           
 0     00009287  bSdoInWork                               
+0     0000a000  CLA1mathTablesLoadStart                  
+0     0000a000  CLA1mathTablesRunStart                   
 0     0000a800  Cla1Task1                                
 0     0000a800  Cla1funcsRunStart                        
 0     0000aafa  Cla1Task2                                
@@ -1715,6 +1723,7 @@ page  address   name
 0     00090a8e  asEntryDesc0x1C12                        
 0     00090a94  asEntryDesc0x1C13                        
 0     00090a9a  asEntryDesc0x7000                        
+abs   00000000  CLA1mathTablesLoadSize                   
 abs   0000002c  Cla1ConstLoadSize                        
 abs   00000100  CLA_SCRATCHPAD_SIZE                      
 abs   0000012d  RamfuncsLoadSize                         
@@ -1727,4 +1736,4 @@ abs   ffffffff  __TI_prof_data_size
 abs   ffffffff  __TI_prof_data_start                     
 n/a   UNDEFED   __c_args__                               
 
-[429 symbols]
+[432 symbols]

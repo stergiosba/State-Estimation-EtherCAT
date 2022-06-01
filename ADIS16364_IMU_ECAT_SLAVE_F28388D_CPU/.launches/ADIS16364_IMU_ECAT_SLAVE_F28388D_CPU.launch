@@ -12,7 +12,7 @@
     <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_PROJECT.TMS320F28388D.ccxml.Texas Instruments XDS100v2 USB Debug Probe_0/C28xx_CPU1" value="ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU"/>
     <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_TARGET_CONFIG" value="${target_config_active_default:ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU}"/>
     <stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.TMS320F28388D.ccxml.Texas Instruments XDS100v2 USB Debug Probe_0/C28xx_CPU1" value="${build_artifact:ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU}"/>
-    <stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.TMS320F28388D.ccxml.Texas Instruments XDS100v2 USB Debug Probe_0/CPU1_CLA1" value="C:\Users\Lupus\Desktop\NEW_ECAT\Pegasus\ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU\RAM\ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU.out"/>
+    <stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.TMS320F28388D.ccxml.Texas Instruments XDS100v2 USB Debug Probe_0/CPU1_CLA1" value="C:\Users\Lupus\Desktop\NEW_ECAT\Pegasus\ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU\RAM_CUSTOM_HAL\ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU.out"/>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
         <listEntry value="/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU"/>
     </listAttribute>
