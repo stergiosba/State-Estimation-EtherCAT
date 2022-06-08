@@ -68,24 +68,25 @@ const float g_AdcScale = 805.8f;
 // Sensor Burst-Mode Read Vector
 //
 //*****************************************************************************
+/*
 #pragma DATA_SECTION(g_SensBurst, "Cla1DataRam")
 float g_SensBurst[11] = { 0.0f, 0.0f, 0.0f, 0.0f,
                           0.0f, 0.0f, 0.0f, 0.0f,
                           0.0f, 0.0f, 0.0f };
-
+*/
 //*****************************************************************************
 //
 // Active Dynamic Range Option
 //
 //*****************************************************************************
-uint16_t g_ActiveDRng = 4;
+//uint16_t g_ActiveDRng = 4;
 
 //*****************************************************************************
 //
 // Active Filtering Taps Option
 //
 //*****************************************************************************
-uint16_t g_ActiveTaps = 0;
+//uint16_t g_ActiveTaps = 0;
 
 //*****************************************************************************
 //
@@ -150,7 +151,7 @@ uint16_t SensorRead(uint16_t Reg, uint16_t NumBits)
     //
     // Request the specified Register's Contents
     //
-    SPI_writeDataBlockingNonFIFO(SUS_SPI_BASE, Reg);
+    SPI_writeDataBlockingNonFIFO(SPI_config.spi_base, Reg);
 
     //
     // Data Ready Delay
@@ -160,7 +161,7 @@ uint16_t SensorRead(uint16_t Reg, uint16_t NumBits)
     //
     // Dummy Transfer to update SPI's incoming register
     //
-    SPI_writeDataNonBlocking(SUS_SPI_BASE, ADIS16364_NULL_COMMAND);
+    SPI_writeDataNonBlocking(SPI_config.spi_base, ADIS16364_NULL_COMMAND);
 
     //
     // Data Ready Delay
@@ -170,7 +171,7 @@ uint16_t SensorRead(uint16_t Reg, uint16_t NumBits)
     //
     // Acquire SPI incoming Register's Contents
     //
-    Sensrd = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
+    Sensrd = SPI_readDataBlockingNonFIFO(SPI_config.spi_base);
 
     //
     // Isolate the Register's Significant Bits
@@ -246,7 +247,7 @@ void BurstRead(void)
     //
     // Execute Burst Command SPI Tranfer
     //
-    SPI_writeDataBlockingNonFIFO(SUS_SPI_BASE, ADIS16364_BURST_COMMAND);
+    SPI_writeDataBlockingNonFIFO(SPI_config.spi_base, ADIS16364_BURST_COMMAND);
 
     //
     // Data Ready Delay
@@ -262,7 +263,7 @@ void BurstRead(void)
         //
         // Dummy Transfer to update SPI's incoming register
         //
-        SPI_writeDataBlockingNonFIFO(SUS_SPI_BASE, ADIS16364_NULL_COMMAND);
+        SPI_writeDataBlockingNonFIFO(SPI_config.spi_base, ADIS16364_NULL_COMMAND);
 
         //
         // Data Ready Delay
@@ -274,7 +275,7 @@ void BurstRead(void)
         //
         // Acquire SPI incoming Register's Contents
         //
-        Burst[i] = SPI_readDataBlockingNonFIFO(SUS_SPI_BASE);
+        Burst[i] = SPI_readDataBlockingNonFIFO(SPI_config.spi_base);
 
         //
         // Isolate the Register's Significant Bits
@@ -334,7 +335,7 @@ uint16_t RegisterWrite(uint16_t Reg, uint16_t Value)
     //
     // Execute SPI Transfer
     //
-    SPI_writeDataBlockingNonFIFO(SUS_SPI_BASE, Cmd);
+    SPI_writeDataBlockingNonFIFO(SPI_config.spi_base, Cmd);
 
     //
     // Data Ready Delay
@@ -518,7 +519,7 @@ uint16_t TapFIRCtrl(uint16_t Taps)
         //
         // Update Active Taps Number
         //
-        g_ActiveTaps = Taps;
+        //g_ActiveTaps = Taps;
     }
 
     //
@@ -542,6 +543,7 @@ uint16_t TapFIRCtrl(uint16_t Taps)
 //! \return Result uint16_t Operation Status (0: Fail | 1: Success).
 //
 //*****************************************************************************
+/*
 uint16_t DRngFIRCtrl(uint16_t Range)
 {
     //
@@ -649,7 +651,7 @@ uint16_t DRngFIRCtrl(uint16_t Range)
     return Result;
 
 }   // End Of DRngFIRCtrl()
-
+*/
 //*****************************************************************************
 //
 //! \brief Checks IMU's Product ID and works as a communication test.
@@ -681,6 +683,7 @@ uint16_t IMUCommsCheck(void)
 //! \return Result uint16_t Operation Status (0: Fail | 1: Success).
 //
 //*****************************************************************************
+/*
 uint16_t ADISConfig(void)
 {
     //
@@ -725,12 +728,12 @@ uint16_t ADISConfig(void)
     return Result;
 
 }   // End Of ADISConfig()
-
+*/
 
 
 void IMUGyroBiasNullCalibration(void)
 {
-    SPI_writeDataBlockingNonFIFO(SUS_SPI_BASE, 0xBE01);
+    SPI_writeDataBlockingNonFIFO(SPI_config.spi_base, 0xBE01);
 
     //
     // IMU Bias Reset Delay

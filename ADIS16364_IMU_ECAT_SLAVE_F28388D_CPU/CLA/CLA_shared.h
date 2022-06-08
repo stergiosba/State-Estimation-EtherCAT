@@ -8,6 +8,7 @@
 //#include "f2838x_device.h"
 #include "SPI_init.h"
 #include "CLAmath.h"
+#include "ADIS16364.h"
 //#include "f28x_project.h" //MAYBE NOT NEEDED
 /*
 #define READ_CLOCK(X) __meallow();\
@@ -23,8 +24,14 @@ __medis();*/
 
 extern float g_SensBurst[11];
 extern float g_Attitude[3];
+
+extern uint16_t g_ActiveMode;
+extern uint16_t g_ActiveDRng; //!< Active Dynamic Range Option
+extern uint16_t g_ActiveTaps; //!< Active Filtering Taps Option
 extern uint32_t ulCycleCount1;
-extern float ff;
+extern uint16_t ff;
+
+//void Complimentary_Filter();
 
 __interrupt void Cla1Task1();
 __interrupt void Cla1Task2();

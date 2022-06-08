@@ -35,17 +35,24 @@
 ------    local variables and constants
 ------
 -----------------------------------------------------------------------------------------*/
-#pragma DATA_SECTION(g_SensBurst, "Cla1ToCpuMsgRAM")
+
+//#pragma DATA_SECTION(g_SensBurst, "Cla1ToCpuMsgRAM")
+
 float g_SensBurst[11] = { 0.0f, 0.0f, 0.0f, 0.0f,
                           0.0f, 0.0f, 0.0f, 0.0f,
                           0.0f, 0.0f, 0.0f };
 
-#pragma DATA_SECTION(g_Attitude, "Cla1ToCpuMsgRAM")
+//#pragma DATA_SECTION(g_Attitude, "Cla1ToCpuMsgRAM")
 float g_Attitude[3] = { 0.0f, 0.0f, 0.0f };
 
-uint32_t g_biascounter[1] = {0};
-uint32_t CycleTime;
-uint32_t CycleFreq;
+#pragma DATA_SECTION(g_ActiveMode, "Cla1ToCpuMsgRAM")
+uint16_t g_ActiveMode;
+
+#pragma DATA_SECTION(g_ActiveTaps, "CpuToCla1MsgRAM")
+uint16_t g_ActiveTaps = 0;
+
+uint16_t g_ActiveDRng = 4;
+uint32_t g_ActiveModeTimeCounter[1] = {0};
 
 /*-----------------------------------------------------------------------------------------
 ------
@@ -65,7 +72,34 @@ uint32_t CycleFreq;
 
 *////////////////////////////////////////////////////////////////////////////////////////
 
-void    InputPDO_Reset()
+//
+// Perform an Internal Reset
+//
+void Internal_Reset()
+{
+    uint16_t i;
+    for (i = 0; i <= 10; i++)
+    {
+        //
+        // Internal Reset of IMU measurements
+        //
+        g_SensBurst[i] = 0;
+    }
+    for (i = 0; i <= 2; i++)
+    {
+        //
+        // Internal Reset of attitude estimates
+        //
+        g_Attitude[i] = 0;
+    }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
+/**
+ \brief    This function sends zeros for all values in the EtherCAT Input PDOs.
+
+*////////////////////////////////////////////////////////////////////////////////////////
+void InputPDO_Zeros()
 {
     LAE_SENSE0x6000.XGyro = 0;
     LAE_SENSE0x6000.YGyro = 0;
@@ -82,21 +116,14 @@ void    InputPDO_Reset()
     LAE_ESTIMATE0x6002.XAngle = 0;
     LAE_ESTIMATE0x6002.YAngle = 0;
     LAE_ESTIMATE0x6002.ZAngle = 0;
-} // End InputPDO_Reset()
-
-void Internal_Reset()
-{
-    g_Attitude[0] -= g_Attitude[0];
-    g_Attitude[1] -= g_Attitude[1];
-    g_Attitude[2] -= g_Attitude[2];
-}
+} // End InputPDO_Zeros()
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /**
  \brief    This function performs a forward pass of EtherCAT Input PDOs.
 
 *////////////////////////////////////////////////////////////////////////////////////////
-void    InputPDO_ForwardPass()
+void InputPDO_ForwardPass()
 {
     LAE_SENSE0x6000.XGyro = g_SensBurst[1];
     LAE_SENSE0x6000.YGyro = g_SensBurst[2];
@@ -114,6 +141,54 @@ void    InputPDO_ForwardPass()
     LAE_ESTIMATE0x6002.YAngle = g_Attitude[1];
     LAE_ESTIMATE0x6002.ZAngle = g_Attitude[2];
 } // End InputPDO_ForwardPass()
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+/**
+ \brief    This function controls the response of the system, when calibration mode is selected the timer runs until 30 seconds have elapsed
+           In data acquisition mode the system responds to a change of the Dynamic range of the FIR filter taps within one EtherCAT cycle.
+
+*////////////////////////////////////////////////////////////////////////////////////////
+void Application_Delay_Control(float delay, uint32_t CycleFreq, uint16_t Taps)
+{
+    //
+    // Checking to perform SPI transaction only once.
+    //
+    if (g_ActiveModeTimeCounter[0]<delay*CycleFreq)
+    {
+        //
+        // Performing the new setup command only once.
+        //
+        if (!g_ActiveModeTimeCounter[0])
+        {
+            Internal_Reset();
+            g_ActiveTaps = Taps;
+            //
+            // CLA Task 2 performs the FIR Taps change and if the mode is set
+            // as IMU_BIAS_CALIBRATION_MODE then CLA Task 2 will also perform the
+            // null bias calibration SPI process for the IMU.
+            //
+            CLA_forceTasks(CLA1_BASE,CLA_TASKFLAG_2);
+        }
+
+        // Send zero for all registers.
+        InputPDO_Zeros();
+
+        // Increment bias calibration state counter.
+        g_ActiveModeTimeCounter[0]++;
+    }
+    else
+    {
+        //
+        // After the first 30 seconds have passed CLA Task 1 carries the MCU-IMU SPI communication
+        // and attitude estimation internally.
+        //
+        CLA_forceTasks(CLA1_BASE,CLA_TASKFLAG_1);
+
+        // Send all read registers via EtherCAT
+        InputPDO_ForwardPass();
+    }
+} // End Application_Delay_Control()
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /**
@@ -384,72 +459,59 @@ void APPL_OutputMapping(UINT16 *pData)
 \brief    This function will called from the synchronisation ISR 
             or from the mainloop if no synchronisation is supported
 *////////////////////////////////////////////////////////////////////////////////////////
+//TODO fast find
 void APPL_Application(void)
 {
     // Calculating current EtherCAT cycle time and frequency
-    CycleTime = sSyncManOutPar.u32Sync0CycleTime;
-    CycleFreq = 1000000000.0f / CycleTime;
+    uint32_t CycleTime = sSyncManOutPar.u32Sync0CycleTime;
+    uint32_t CycleFreq = 1000000000.0f / CycleTime;
 
     // Only working synchronously.
     if (bDcSyncActive)
     {
         //
+        // Extracting bits [2:0] from user command. These bits represent the FIR filter taps.
+        //
+        uint16_t Taps = (LAE_CONTROL0x7000.IMU_flags & 0x7);
+        if (Taps!=g_ActiveTaps)
+        {
+            //
+            // If taps have changed zero out counter.
+            //
+            g_ActiveModeTimeCounter[0]=0;
+        }
+        //
+        // Extracting bits [6:4] from user command. These bits represent the dynamic range.
+        //
+        g_ActiveDRng = (LAE_CONTROL0x7000.IMU_flags & 0x70)>>4;
+
+        //
+        // Extracting high byte from user command.
+        //
+        g_ActiveMode = (LAE_CONTROL0x7000.IMU_flags & 0xFF00)>>8;
+        //
         // Case switch statement base on the user command
         //
-        switch (LAE_CONTROL0x7000.IMU_flags)
+        switch (g_ActiveMode)
         {
             //
             // For the first 30 seconds (counter<=75000) ADIS 16364 performs
             // the internal null bias calibration of the gyroscopes.
             //
             case IMU_BIAS_CALIBRATION_MODE:
-                //
-                // Checking to perform SPI transaction only once.
-                // 0xBE10 is the null bias calibration SPI code for the IMU.
-                //
-                if (g_biascounter[0]<ADIS16364_BIAS_RESET_DELAY*CycleFreq)
-                {
-                    if (!g_biascounter[0])
-                    {
-                        SPI_writeDataBlockingNonFIFO(SPI_config.spi_base, ADIS16364_NULL_BIAS_COMMAND);
-                    }
-                    // Send zero for all registers.
-                    InputPDO_Reset();
-
-                    // Increment bias calibration state counter.
-                    g_biascounter[0]++;
-                }
-                else
-                {
-                    //
-                    // After the first 30 seconds have passed CLA Task 1 carries the MCU-IMU SPI communication
-                    // and attitude estimation internally.
-                    //
-                    CLA_forceTasks(CLA1_BASE,CLA_TASKFLAG_1);
-
-                    // Send all read registers via EtherCAT
-                    InputPDO_ForwardPass();
-                }
-
+                Application_Delay_Control(ADIS16364_BIAS_RESET_DELAY, CycleFreq, Taps);
                 break;
 
             case IMU_ONLINE_MODE:
-                //
-                // ADIS 16364 Supports full burst mode. CLA Task 1 carries the MCU-IMU SPI communication
-                // and attitude estimation internally.
-                //
-                CLA_forceTasks(CLA1_BASE,CLA_TASKFLAG_1);
-
-                // Send all read registers via EtherCAT
-                InputPDO_ForwardPass();
+                Application_Delay_Control(0.05, CycleFreq, Taps);
                 break;
 
             case IMU_OFFLINE_MODE:
                 //
                 // When offline do not perform any SPI transactions just send zeros and perform internal reset.
                 //
-                CLA_forceTasks(CLA1_BASE,CLA_TASKFLAG_2);
-                InputPDO_Reset();
+                Internal_Reset();
+                InputPDO_Zeros();
                 break;
         }
     }

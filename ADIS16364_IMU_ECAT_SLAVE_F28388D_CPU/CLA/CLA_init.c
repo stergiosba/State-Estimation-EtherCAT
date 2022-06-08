@@ -1,7 +1,7 @@
 #include "CLA_init.h"
 
 #pragma DATA_SECTION(ff, "Cla1ToCpuMsgRAM")
-float ff = 0;
+uint16_t ff = 0;
 
 //
 // CLA_configClaMemory - Configure CLA memory sections
@@ -47,8 +47,8 @@ void CLA_configClaMemory(void)
     MemCfg_setLSRAMMasterSel(MEMCFG_SECT_LS5,MEMCFG_LSRAMMASTER_CPU_CLA1);
     MemCfg_setCLAMemType(MEMCFG_SECT_LS5,MEMCFG_CLA_MEM_PROGRAM);
 
-    //MemCfg_setLSRAMMasterSel(MEMCFG_SECT_LS6,MEMCFG_LSRAMMASTER_CPU_CLA1);
-    //MemCfg_setCLAMemType(MEMCFG_SECT_LS6,MEMCFG_CLA_MEM_PROGRAM);
+    MemCfg_setLSRAMMasterSel(MEMCFG_SECT_LS6,MEMCFG_LSRAMMASTER_CPU_CLA1);
+    MemCfg_setCLAMemType(MEMCFG_SECT_LS6,MEMCFG_CLA_MEM_PROGRAM);
 
     //
     // Next configure LS0RAM and LS1RAM as data spaces for the CLA
@@ -138,11 +138,6 @@ __interrupt void cla1Isr1 ()
     // Acknowledge the end-of-task interrupt for task 1
     //
     Interrupt_clearACKGroup(INTERRUPT_ACK_GROUP11);
-
-    //
-    // Uncomment to halt debugger and stop here
-    //
-    //asm(" ESTOP0");
 }
 
 //
@@ -151,8 +146,6 @@ __interrupt void cla1Isr1 ()
 __interrupt void cla1Isr2 ()
 {
     Interrupt_clearACKGroup(INTERRUPT_ACK_GROUP11);
-
-    //asm(" ESTOP0");
 }
 
 //
@@ -160,7 +153,7 @@ __interrupt void cla1Isr2 ()
 //
 __interrupt void cla1Isr3 ()
 {
-    asm(" ESTOP0");
+    Interrupt_clearACKGroup(INTERRUPT_ACK_GROUP11);
 }
 
 //

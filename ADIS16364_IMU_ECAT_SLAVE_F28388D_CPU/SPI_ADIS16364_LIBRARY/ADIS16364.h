@@ -34,6 +34,19 @@
 *
 *****************************************************************************/
 
+/*
+ *
+ * Inertial Measurememt Unit Operation Modes
+ * Enumeration is based on SUS_CONTROL0x7000.IMU_flags bit mapping
+ *
+ */
+typedef enum
+{
+    IMU_OFFLINE_MODE                = 0x00U,  //!< Offline Mode.
+    IMU_BIAS_CALIBRATION_MODE       = 0xCAU,  //!< Bias Calibration Mode.
+    IMU_ONLINE_MODE                 = 0xDAU,  //!< Normal Operation Mode.
+} ADIS16364_IMU_OperationModes;
+
 #define SBITS16                     16U     //!< Full 16 Significant Bits.
 #define SBITS14                     14U     //!< 14 Lowest Significant Bits.
 #define SBITS12                     12U     //!< 12 Lowest Significant Bits.
@@ -48,7 +61,7 @@
 #define ADIS16364_ADC_DELAY         20U     //!< ADIS 16364 ADC Data Ready Delay.
 #define ADIS16364_VIN_DELAY         20U     //!< ADIS 16364 Supply Data Ready Delay.
 #define ADIS16364_SYS_READY_DELAY   200*1000U //!< ADIS 16364 Data Ready Delay.
-#define ADIS16364_BIAS_RESET_DELAY  30U     //!< ADIS 16364 Bias Reset Delay.
+#define ADIS16364_BIAS_RESET_DELAY  30U     //!< ADIS 16364 Bias Reset Delay in seconds.
 #define ADIS16364_DEF_SMPL          819     //!< ADIS16364 Default Sampling Rate [Hz]
 #define SUPPLY                      0       //!< Supply Voltage's Burst-Read Position.
 #define XGYRO                       1       //!< X-Gyroscope Reading's Burst-Read Position.
@@ -110,8 +123,8 @@ extern float g_GyroScale; //!< Gyroscope Registers' Scales [deg/s per LSB]
 extern const float g_AcclScale; //!< Accelerometer Registers' Scales [deg/s per LSB]
 extern const float g_TempScale; //!< Temperature Register Scale [C per LSB]  -- 0x0 -> 25 C
 extern const float g_AdcScale; //!< Auxialiary ADC (Analog to Digital Converter) Data Bits Scale [mV per LSB]
-extern uint16_t g_ActiveDRng; //!< Active Dynamic Range Option
-extern uint16_t g_ActiveTaps; //!< Active Filtering Taps Option
+//extern uint16_t g_ActiveDRng; //!< Active Dynamic Range Option
+//extern uint16_t g_ActiveTaps; //!< Active Filtering Taps Option
 extern uint16_t g_MinTaps; //!< Minimum Taps for each Dynamic Range Variable
 extern float g_SensBurst[11]; //!< Sensor Burst-Mode Read Vector
 

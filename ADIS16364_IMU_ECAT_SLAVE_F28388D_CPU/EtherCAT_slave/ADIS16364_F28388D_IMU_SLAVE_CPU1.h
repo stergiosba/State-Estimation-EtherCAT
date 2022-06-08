@@ -48,30 +48,16 @@
     #define PROTO extern
 #endif
 
-/*
- *
- * Inertial Measurememt Unit Operation Modes
- * Enumeration is based on SUS_CONTROL0x7000.IMU_flags bit mapping
- *
- */
-typedef enum
-{
-    IMU_OFFLINE_MODE                = 0x0000U,  //!< Offline Mode.
-    IMU_BIAS_CALIBRATION_MODE       = 0xCA44U,  //!< Bias Calibration Mode.
-    IMU_ONLINE_MODE                 = 0xDA44U,  //!< Normal Operation Mode.
-} ADIS16364_IMU_OperationModes;
-
-extern float test[11];
-
 PROTO void APPL_Application(void);
 
 #if EXPLICIT_DEVICE_ID
 PROTO UINT16 APPL_GetDeviceID(void);
 #endif
 
-PROTO void   Internal_Reset();
-PROTO void   InputPDO_Reset();
-PROTO void   InputPDO_ForwardPass();
+PROTO void   Application_Delay_Control(float delay, uint32_t CycleFreq, uint16_t Taps);
+PROTO void   Internal_Reset(void);
+PROTO void   InputPDO_Zeros(void);
+PROTO void   InputPDO_ForwardPass(void);
 PROTO void   APPL_AckErrorInd(UINT16 stateTrans);
 PROTO UINT16 APPL_StartMailboxHandler(void);
 PROTO UINT16 APPL_StopMailboxHandler(void);

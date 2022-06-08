@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="com.ti.ccstudio.debug.launchType.device.debugging">
     <mapAttribute key="ccs.memoryview.format">
+        <mapEntry key="org.eclipse.cdt.debug.ui.memory.memorybrowser.MemoryBrowser@#$Texas Instruments XDS100v2 USB Debug Probe_0/C28xx_CPU1@#$0" value="16-Bit Binary"/>
+        <mapEntry key="org.eclipse.cdt.debug.ui.memory.memorybrowser.MemoryBrowser@#$Texas Instruments XDS100v2 USB Debug Probe_0/C28xx_CPU1@#$1" value="16-Bit Binary"/>
         <mapEntry key="org.eclipse.cdt.debug.ui.memory.memorybrowser.MemoryBrowser@#$Texas Instruments XDS100v2 USB Debug Probe_0/CPU1_CLA1@#$0" value="16-Bit Hex - TI Style"/>
         <mapEntry key="org.eclipse.cdt.debug.ui.memory.memorybrowser.MemoryBrowser@#$Texas Instruments XDS100v2 USB Debug Probe_0/CPU1_CLA1@#$1" value="16-Bit Hex - TI Style"/>
     </mapAttribute>
     <mapAttribute key="ccs.memoryview.pageexpr">
+        <mapEntry key="org.eclipse.cdt.debug.ui.memory.memorybrowser.MemoryBrowser@#$Texas Instruments XDS100v2 USB Debug Probe_0/C28xx_CPU1" value="Data@@0x0000149C"/>
         <mapEntry key="org.eclipse.cdt.debug.ui.memory.memorybrowser.MemoryBrowser@#$Texas Instruments XDS100v2 USB Debug Probe_0/CPU1_CLA1" value="Program@@0x0000898B"/>
     </mapAttribute>
     <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_DEBUGGER_PROPERTIES.TMS320F28388D.ccxml.Texas Instruments XDS100v2 USB Debug Probe_0/C28xx_CPU1" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot; ?&gt;&#10;&lt;PropertyValues&gt;&#10;&#10;  &lt;property id=&quot;ConnectOnStartup&quot;&gt;&#10;    &lt;curValue&gt;1&lt;/curValue&gt;&#10;  &lt;/property&gt;&#10;&#10;  &lt;property id=&quot;EnableInstalledBreakpoint&quot;&gt;&#10;    &lt;curValue&gt;1&lt;/curValue&gt;&#10;  &lt;/property&gt;&#10;&#10;  &lt;property id=&quot;IgnoreSoftLaunchFailures&quot;&gt;&#10;    &lt;curValue&gt;0&lt;/curValue&gt;&#10;  &lt;/property&gt;&#10;&#10;&lt;/PropertyValues&gt;&#10;"/>
@@ -12,7 +15,7 @@
     <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_PROJECT.TMS320F28388D.ccxml.Texas Instruments XDS100v2 USB Debug Probe_0/C28xx_CPU1" value="ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU"/>
     <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_TARGET_CONFIG" value="${target_config_active_default:ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU}"/>
     <stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.TMS320F28388D.ccxml.Texas Instruments XDS100v2 USB Debug Probe_0/C28xx_CPU1" value="${build_artifact:ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU}"/>
-    <stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.TMS320F28388D.ccxml.Texas Instruments XDS100v2 USB Debug Probe_0/CPU1_CLA1" value="C:\Users\Lupus\Desktop\NEW_ECAT\Pegasus\ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU\RAM_CUSTOM_HAL\ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU.out"/>
+    <stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.TMS320F28388D.ccxml.Texas Instruments XDS100v2 USB Debug Probe_0/CPU1_CLA1" value="C:\Users\Lupus\Desktop\NEW_ECAT\Pegasus\ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU\RAM\ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU.out"/>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
         <listEntry value="/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU"/>
     </listAttribute>

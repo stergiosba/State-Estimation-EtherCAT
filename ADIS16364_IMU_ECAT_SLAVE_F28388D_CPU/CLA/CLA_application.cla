@@ -2,7 +2,7 @@
 // Included Files
 //
 #include "CLA_shared.h"
-#include "ADIS16364.h"
+#include "application.h"
 
 
 extern void cla_test_func(void);
@@ -15,6 +15,91 @@ static inline void cla_delay(uint16_t delay_us)
         __asm(" MNOP");
     }
 }
+
+static inline uint16_t SensorRead_cla(uint16_t Reg, uint16_t NumBits)
+{
+    //
+    // Initialize Results' Variable
+    //
+    uint16_t Sensrd = ADIS16364_NULL_COMMAND;
+
+    //
+    // Left Shift Register's Value to comply with IMU's SPI Transfer Form
+    //
+    Reg <<= 8;
+
+    //
+    // Request the specified Register's Contents
+    //
+    SPI_writeDataBlockingNonFIFO(SPI_config.spi_base, Reg);
+
+    //
+    // Data Ready Delay
+    //
+    cla_delay(300U);;
+
+    //
+    // Dummy Transfer to update SPI's incoming register
+    //
+    SPI_writeDataNonBlocking(SPI_config.spi_base, ADIS16364_NULL_COMMAND);
+
+    //
+    // Data Ready Delay
+    //
+    cla_delay(300U);;
+
+    //
+    // Acquire SPI incoming Register's Contents
+    //
+    Sensrd = SPI_readDataBlockingNonFIFO(SPI_config.spi_base);
+
+    //
+    // Isolate the Register's Significant Bits
+    //
+    Sensrd &= (0xFFFF >> (SBITS16 - NumBits));
+
+    //
+    // Acquire SPI incoming Register's Contents
+    //
+    return Sensrd;
+
+}   // End Of SensorRead()
+
+
+static inline void RegisterWrite_cla(uint16_t Reg, uint16_t Value)
+{
+    //
+    // Initialize Register's Write Command Variable
+    //
+    uint16_t Cmd = ADIS16364_NULL_COMMAND;
+
+    //
+    // Combine value & Register's address to a single Write Command
+    //
+    Cmd |= Reg;
+
+    //
+    // Left Shift Register's Value to comply with IMU's SPI Transfer Form
+    //
+    Cmd <<= 8;
+
+    //
+    // Form the Register's Write Command
+    //
+    Cmd |= (0x8000 | Value);
+
+    //
+    // Execute SPI Transfer
+    //
+    SPI_writeDataBlockingNonFIFO(SPI_config.spi_base, Cmd);
+
+    //
+    // Data Ready Delay
+    //
+    cla_delay(300U);
+
+}   // End Of RegisterWrite()
+
 
 static inline float RawToReal_cla(uint16_t Raw, float RegScale, uint16_t NumBits, uint16_t Sign)
 {
@@ -93,7 +178,7 @@ static inline void BurstRead_cla()
     //
     // Execute Burst Command SPI Transfer
     //
-    SPI_writeDataBlockingNonFIFO(SPI_config.spi_base, 0x3E00);
+    SPI_writeDataBlockingNonFIFO(SPI_config.spi_base, ADIS16364_BURST_COMMAND);
 
     //
     // Data Ready Delay
@@ -108,7 +193,7 @@ static inline void BurstRead_cla()
         //
         // Dummy Transfer to update SPI's incoming register
         //
-        SPI_writeDataBlockingNonFIFO(SPI_config.spi_base, 0x0000);
+        SPI_writeDataBlockingNonFIFO(SPI_config.spi_base, ADIS16364_NULL_COMMAND);
 
         //
         // Data Ready Delay
@@ -138,88 +223,57 @@ static inline void BurstRead_cla()
     }
 }   // End Of BurstRead_cla()
 
-
+//
+// CLA Task 1 is responsible for the MCU-IMU communication and the attitude estimation
+//
 __interrupt void Cla1Task1 ( void )
 {
     //
     // Perform a burst read
+    //
     BurstRead_cla();
-    //
 
     //
-    // Attitude estimation with Complementary Filter (CF)
+    // Data comes in with every EtherCAT cycle therefore dt=ecat_cycle=1/ecat_frequency (2.5 kHz), needed for integration
     //
-    // Data comes in with every EtherCAT cycle therefore dt=ecat_cycle=1/ecat_frequency (2.5 kHz)
     float dt = (float) 1/2500;
-    float pi = 3.14159265359f;
-
-
-    // Body rates measured by the gyroscopes
-    float p = g_SensBurst[1];
-    float q = g_SensBurst[2];
-    float r = g_SensBurst[3];
-
-    // Precalculating trigonometrics to speed up computations, CLA math needs angles in rads.
-    float sin_phi = CLAsin(g_Attitude[0]*pi/180);
-    float cos_phi = CLAcos(g_Attitude[0]*pi/180);
-    float sin_theta = CLAsin(g_Attitude[1]*pi/180);
-    float cos_theta = CLAcos(g_Attitude[1]*pi/180);
-    float tan_theta = CLAdiv(sin_theta,cos_theta);
-    float sec_theta = CLAdiv(1,cos_theta);
 
     //
-    // Euler kinematics for the body rates from the Body Frame (B) to Inertial frame (I)
-    // w_I = E*w_B *E is not a rotation matrix it is actually singular when theta (pitch angle) is 90 degrees.
-    // w_I = [phi_dot, theta_dot, psi_dot]
-    // w_B = [p, q, r]
+    // Complimentary filter weight
     //
-    float phi_dot = (p+q*sin_phi*tan_theta+r*cos_phi*tan_theta);
-    float theta_dot = (q*cos_phi-r*sin_theta);
-    float psi_dot = (p+q*sin_phi*sec_theta+r*cos_phi*sec_theta);
+    float cfk = 0.98;
 
     //
-    // Zero linear acceleration assumption (Accelerometer only measures the generalized gravity vector)
-    // G: Generalized gravity vector
-    // g: Gravity vector in the inertial frame = [0 0 -1] in g_SensBurst
-    // R_BI: Rotation matrix from Body frame (B) to Inertial frame (I)
-    // G = R_BI*g
+    // Perform a complementary filter sensor fusion, found inside application.h file.
     //
-    float rollAcc = CLAatan(CLAdiv(g_SensBurst[5], g_SensBurst[6])) * 180 / pi;
-    float pitchAcc = CLAatan(CLAdiv(-g_SensBurst[4],sin_phi*g_SensBurst[5]+cos_phi*g_SensBurst[6]))* 180 / pi;
-
-    //
-    // Simple Euler integration with Complementary filter sensor fusion.
-    // x_est = k*integral(w_I)+(1-k)x_a
-    // x_a = [rollAcc, pitchAcc] : The angles of the generalized gravity vector measured by the accelerometer with the above assumption
-    // k: Weight factor for the Low pass filter(gyro) and 1-k for the High pass filter(accelerometer).
-    //
-    float k = 0.98;
-    g_Attitude[0] = k*(g_Attitude[0]+dt*phi_dot)+(1-k)*rollAcc;
-    g_Attitude[1] = k*(g_Attitude[1]+dt*theta_dot)+(1-k)*pitchAcc;
-    g_Attitude[2] = g_Attitude[2]+dt*psi_dot;
+    Complementary_Filter(cfk, dt);
 }
 
 __interrupt void Cla1Task2 ( void )
 {
-    uint16_t i;
-    for (i = 0; i <= 10; i++)
-    {
-        //
-        // Internal Reset of IMU measurements
-        //
-        g_SensBurst[i] = 0;
-    }
+    uint16_t RegValue = SensorRead_cla(SENS_AVG, SBITS16);
+    //
+    // Create the Desired Taps' Set Command
+    //
+    uint16_t Cmd = ((RegValue & 0xFFF8) | (uint16_t)g_ActiveTaps);
 
-    for (i = 0; i <= 2; i++)
+    //
+    // Execute the requires SPI Transfers to set the Taps
+    //
+    RegisterWrite_cla(SENS_AVG, (0x00FF & Cmd));
+    RegisterWrite_cla(SENS_AVG + 0x0001, ((0xFF00 & Cmd) >> 8));
+
+    //
+    // Performing Bias Null Calibration only in Bias Calibration Mode.
+    // g_ActiveMode is controlled via LAE_CONTROL0x7000.IMU_flags by the user.
+    //
+    if (g_ActiveMode == IMU_BIAS_CALIBRATION_MODE)
     {
-        //
-        // Internal Reset of attitude estimates
-        //
-        g_Attitude[i] = 0;
+        SPI_writeDataBlockingNonFIFO(SPI_config.spi_base, ADIS16364_NULL_BIAS_COMMAND);
     }
 }
 
-interrupt void Cla1Task3 ( void )
+__interrupt void Cla1Task3 ( void )
 {
 
 }
