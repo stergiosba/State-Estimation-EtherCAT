@@ -54,7 +54,7 @@ PROTO void APPL_Application(void);
 PROTO UINT16 APPL_GetDeviceID(void);
 #endif
 
-PROTO void   Application_Delay_Control(float delay, uint32_t CycleFreq, uint16_t Taps);
+PROTO void   Application_Delay_Control(float delay, uint32_t CycleFreq, uint16_t Mode, uint16_t Taps);
 PROTO void   Internal_Reset(void);
 PROTO void   InputPDO_Zeros(void);
 PROTO void   InputPDO_ForwardPass(void);

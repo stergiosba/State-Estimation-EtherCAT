@@ -18,6 +18,11 @@ static inline void Complementary_Filter(float cfk, float dt)
     float cos_theta = CLAcos(g_Attitude[1]*pi/180);
     float tan_theta = CLAdiv(sin_theta,cos_theta);
     float sec_theta = CLAdiv(1,cos_theta);
+    //p_s = sin_phi;
+    p_c = cos_phi;
+    t_c = cos_theta;
+    t_t = tan_theta;
+    s_t = sec_theta;
 
     //
     // ZYX Euler kinematics for the body rates from the Body Frame (B) to Inertial frame (I)

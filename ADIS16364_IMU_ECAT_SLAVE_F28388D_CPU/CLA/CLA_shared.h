@@ -29,7 +29,12 @@ extern uint16_t g_ActiveMode;
 extern uint16_t g_ActiveDRng; //!< Active Dynamic Range Option
 extern uint16_t g_ActiveTaps; //!< Active Filtering Taps Option
 extern uint32_t ulCycleCount1;
-extern uint16_t ff;
+extern float p_s;
+extern float p_c;
+extern float t_c;
+extern float t_t;
+extern float s_t;
+
 
 //void Complimentary_Filter();
 

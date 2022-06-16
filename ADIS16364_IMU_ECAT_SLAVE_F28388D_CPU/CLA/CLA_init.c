@@ -1,7 +1,11 @@
 #include "CLA_init.h"
 
-#pragma DATA_SECTION(ff, "Cla1ToCpuMsgRAM")
-uint16_t ff = 0;
+//#pragma DATA_SECTION(ff, "Cla1ToCpuMsgRAM")
+float p_s = 0;
+float p_c = 0;
+float t_c = 0;
+float t_t = 0;
+float s_t = 0;
 
 //
 // CLA_configClaMemory - Configure CLA memory sections
@@ -145,6 +149,9 @@ __interrupt void cla1Isr1 ()
 //
 __interrupt void cla1Isr2 ()
 {
+    //
+    // Acknowledge the end-of-task interrupt for task 2
+    //
     Interrupt_clearACKGroup(INTERRUPT_ACK_GROUP11);
 }
 
@@ -153,6 +160,9 @@ __interrupt void cla1Isr2 ()
 //
 __interrupt void cla1Isr3 ()
 {
+    //
+    // Acknowledge the end-of-task interrupt for task 3
+    //
     Interrupt_clearACKGroup(INTERRUPT_ACK_GROUP11);
 }
 

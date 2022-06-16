@@ -45,8 +45,8 @@ float g_SensBurst[11] = { 0.0f, 0.0f, 0.0f, 0.0f,
 //#pragma DATA_SECTION(g_Attitude, "Cla1ToCpuMsgRAM")
 float g_Attitude[3] = { 0.0f, 0.0f, 0.0f };
 
-#pragma DATA_SECTION(g_ActiveMode, "Cla1ToCpuMsgRAM")
-uint16_t g_ActiveMode;
+//#pragma DATA_SECTION(g_ActiveMode, "CpuToCla1MsgRAM")
+ADIS16364_IMU_OperationModes g_ActiveMode;
 
 #pragma DATA_SECTION(g_ActiveTaps, "CpuToCla1MsgRAM")
 uint16_t g_ActiveTaps = 0;
@@ -149,8 +149,19 @@ void InputPDO_ForwardPass()
            In data acquisition mode the system responds to a change of the Dynamic range of the FIR filter taps within one EtherCAT cycle.
 
 *////////////////////////////////////////////////////////////////////////////////////////
-void Application_Delay_Control(float delay, uint32_t CycleFreq, uint16_t Taps)
+//TODO fast find
+void Application_Delay_Control(float delay, uint32_t CycleFreq, uint16_t Mode, uint16_t Taps)
 {
+    if ((Taps!=g_ActiveTaps) || (Mode!= g_ActiveMode))
+    {
+        //
+        // If taps have changed zero out counter.
+        //
+        g_ActiveModeTimeCounter[0]=0;
+        g_ActiveTaps = Taps;
+        g_ActiveMode = (ADIS16364_IMU_OperationModes) Mode;
+    }
+
     //
     // Checking to perform SPI transaction only once.
     //
@@ -162,7 +173,6 @@ void Application_Delay_Control(float delay, uint32_t CycleFreq, uint16_t Taps)
         if (!g_ActiveModeTimeCounter[0])
         {
             Internal_Reset();
-            g_ActiveTaps = Taps;
             //
             // CLA Task 2 performs the FIR Taps change and if the mode is set
             // as IMU_BIAS_CALIBRATION_MODE then CLA Task 2 will also perform the
@@ -180,7 +190,7 @@ void Application_Delay_Control(float delay, uint32_t CycleFreq, uint16_t Taps)
     else
     {
         //
-        // After the first 30 seconds have passed CLA Task 1 carries the MCU-IMU SPI communication
+        // After 30 seconds have passed CLA Task 1 carries the MCU-IMU SPI communication
         // and attitude estimation internally.
         //
         CLA_forceTasks(CLA1_BASE,CLA_TASKFLAG_1);
@@ -473,40 +483,34 @@ void APPL_Application(void)
         // Extracting bits [2:0] from user command. These bits represent the FIR filter taps.
         //
         uint16_t Taps = (LAE_CONTROL0x7000.IMU_flags & 0x7);
-        if (Taps!=g_ActiveTaps)
-        {
-            //
-            // If taps have changed zero out counter.
-            //
-            g_ActiveModeTimeCounter[0]=0;
-        }
+
         //
         // Extracting bits [6:4] from user command. These bits represent the dynamic range.
         //
         g_ActiveDRng = (LAE_CONTROL0x7000.IMU_flags & 0x70)>>4;
 
         //
-        // Extracting high byte from user command.
+        // Extracting high byte from user command and casting it to ADIS16364_IMU_OperationModes type.
         //
-        g_ActiveMode = (LAE_CONTROL0x7000.IMU_flags & 0xFF00)>>8;
+        uint16_t Mode = (LAE_CONTROL0x7000.IMU_flags & 0xFF00)>>8;
         //
         // Case switch statement base on the user command
         //
-        switch (g_ActiveMode)
+        switch (Mode)
         {
             //
             // For the first 30 seconds (counter<=75000) ADIS 16364 performs
             // the internal null bias calibration of the gyroscopes.
             //
             case IMU_BIAS_CALIBRATION_MODE:
-                Application_Delay_Control(ADIS16364_BIAS_RESET_DELAY, CycleFreq, Taps);
+                Application_Delay_Control(ADIS16364_BIAS_RESET_DELAY, CycleFreq, Mode, Taps);
                 break;
 
             case IMU_ONLINE_MODE:
-                Application_Delay_Control(0.05, CycleFreq, Taps);
+                Application_Delay_Control(0.05, CycleFreq, Mode, Taps);
                 break;
 
-            case IMU_OFFLINE_MODE:
+            default:
                 //
                 // When offline do not perform any SPI transactions just send zeros and perform internal reset.
                 //
