@@ -39,8 +39,8 @@ EtherCAT_slave/coeappl.obj: C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IM
 EtherCAT_slave/coeappl.obj: C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/EtherCAT_slave/ecatcoe.h
 EtherCAT_slave/coeappl.obj: C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/EtherCAT_slave/mailbox.h
 EtherCAT_slave/coeappl.obj: C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/EtherCAT_slave/ecatappl.h
-EtherCAT_slave/coeappl.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/common/include/device.h
-EtherCAT_slave/coeappl.obj: C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/common/include/driverlib.h
+EtherCAT_slave/coeappl.obj: C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/device.h
+EtherCAT_slave/coeappl.obj: C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/driverlib.h
 EtherCAT_slave/coeappl.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_memmap.h
 EtherCAT_slave/coeappl.obj: C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/adc.h
 EtherCAT_slave/coeappl.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include/stdbool.h
@@ -207,9 +207,9 @@ C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/Eth
 
 C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/EtherCAT_slave/ecatappl.h:
 
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/common/include/device.h:
+C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/device.h:
 
-C:/ti/c2000/C2000Ware_4_00_00_00/device_support/f2838x/common/include/driverlib.h:
+C:/Users/Lupus/Desktop/NEW_ECAT/Pegasus/ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU/ethercat_f28388x_hal/driverlib.h:
 
 C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/inc/hw_memmap.h:
 

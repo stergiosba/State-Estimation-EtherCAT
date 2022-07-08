@@ -225,7 +225,7 @@ void Device_bootCM(uint32_t bootmode)
 // Note that to reduce power, unused peripherals should be disabled.
 //
 //*****************************************************************************
-/*
+
 void Device_enableAllPeripherals(void)
 {
 
@@ -353,7 +353,7 @@ void Device_enableAllPeripherals(void)
 
 #endif
 
-}*/
+}
 
 void Device_enablePeripherals()
 {
@@ -362,6 +362,7 @@ void Device_enablePeripherals()
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_TIMER0);
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_TIMER1);
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_TIMER2);
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_EPWM1);
 #ifdef CPU1
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_HRCAL);
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_ECAT);

@@ -474,10 +474,12 @@ USHORT: Should be adapted to the unsigned16 type of the microcontroller */
 
 /** 
 INT8: Should be adapted to the integer8 type of the microcontroller */
+/**
+ * Disabled for collision with CLA definitions.
 #ifndef INT8
 #define INT8                                      char
 #endif
-
+**/
 /** 
 INT16: Should be adapted to the integer16 type of the microcontroller  */
 #ifndef INT16

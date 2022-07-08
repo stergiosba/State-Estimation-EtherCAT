@@ -1,7 +1,7 @@
 ******************************************************************************
              TMS320C2000 Linker PC v21.6.0                     
 ******************************************************************************
->> Linked Wed Jun  1 18:22:31 2022
+>> Linked Fri Jul  8 18:02:25 2022
 
 OUTPUT FILE NAME:   <ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU.out>
 ENTRY POINT SYMBOL: "code_start"  address: 00080000
@@ -26,7 +26,7 @@ MEMORY CONFIGURATION
   DMA                   00001000   00000200  00000000  00000200  RWIX
   CLA1                  00001400   00000080  00000000  00000080  RWIX
   CLA1_MSGRAMLOW        00001480   00000080  0000001c  00000064  RWIX
-  CLA1_MSGRAMHIGH       00001500   00000080  00000000  00000080  RWIX
+  CLA1_MSGRAMHIGH       00001500   00000080  00000001  0000007f  RWIX
   CLB1LOGICCFG          00003000   00000052  00000000  00000052  RWIX
   CLB1LOGICCTRL         00003100   00000040  00000000  00000040  RWIX
   CLB1DATAEXCH          00003180   00000080  00000000  00000080  RWIX
@@ -51,7 +51,7 @@ MEMORY CONFIGURATION
   CLB8LOGICCFG          00003e00   00000052  00000000  00000052  RWIX
   CLB8LOGICCTRL         00003f00   00000040  00000000  00000040  RWIX
   CLB8DATAEXCH          00003f80   00000080  00000000  00000080  RWIX
-  EPWM1                 00004000   00000100  00000000  00000100  RWIX
+  EPWM1                 00004000   00000100  00000100  00000000  RWIX
   EPWM2                 00004100   00000100  00000000  00000100  RWIX
   EPWM3                 00004200   00000100  00000000  00000100  RWIX
   EPWM4                 00004300   00000100  00000000  00000100  RWIX
@@ -136,12 +136,12 @@ MEMORY CONFIGURATION
   GPIOCTRL              00007c00   00000200  00000000  00000200  RWIX
   GPIODATA              00007f00   00000040  00000000  00000040  RWIX
   GPIODATAREAD          00007f80   00000010  00000000  00000010  RWIX
-  RAMLS0                00008000   00000800  00000190  00000670  RWIX
-  RAMLS1                00008800   00000800  00000174  0000068c  RWIX
-  RAMLS2                00009000   00000800  00000288  00000578  RWIX
-  RAMLS3                00009800   00000800  00000000  00000800  RWIX
+  RAMLS0                00008000   00000800  0000018c  00000674  RWIX
+  RAMLS1                00008800   00000800  00000178  00000688  RWIX
+  RAMLS2                00009000   00000800  00000292  0000056e  RWIX
+  RAMLS3                00009800   00000800  000002e2  0000051e  RWIX
   RAMLS4                0000a000   00000800  00000000  00000800  RWIX
-  RAMLS5                0000a800   00000800  00000398  00000468  RWIX
+  RAMLS5                0000a800   00000800  000007c6  0000003a  RWIX
   RAMLS6                0000b000   00000800  00000000  00000800  RWIX
   RAMLS7                0000b800   00000800  00000000  00000800  RWIX
   RAMD0                 0000c000   00000800  00000000  00000800  RWIX
@@ -229,16 +229,16 @@ MEMORY CONFIGURATION
   BEGIN                 00080000   00000002  00000002  00000000  RWIX
   FLASH0                00080002   00001ffe  00000000  00001ffe  RWIX
   FLASH1                00082000   00002000  00002000  00000000  RWIX
-  FLASH2                00084000   00002000  00001c97  00000369  RWIX
+  FLASH2                00084000   00002000  00001f34  000000cc  RWIX
   FLASH3                00086000   00002000  0000012d  00001ed3  RWIX
-  FLASH4                00088000   00008000  00000398  00007c68  RWIX
+  FLASH4                00088000   00008000  000007c6  0000783a  RWIX
   FLASH5                00090000   00008000  00000aa0  00007560  RWIX
   FLASH6                00098000   00008000  00000000  00008000  RWIX
   FLASH7                000a0000   00008000  00000000  00008000  RWIX
   FLASH8                000a8000   00008000  00000000  00008000  RWIX
   FLASH9                000b0000   00008000  00000000  00008000  RWIX
   FLASH10               000b8000   00002000  00000000  00002000  RWIX
-  FLASH11               000ba000   00002000  00000000  00002000  RWIX
+  FLASH11               000ba000   00002000  000002e2  00001d1e  RWIX
   FLASH12               000bc000   00002000  00000000  00002000  RWIX
   FLASH13               000be000   00001ff0  00000000  00001ff0  RWIX
   RESET                 003fffc0   00000002  00000000  00000002  RWIX
@@ -253,13 +253,15 @@ codestart
 *          0    00080000    00000002     
                   00080000    00000002     f2838x_codestartbranch.obj (codestart)
 
-.cinit     0    00085b20    0000017c     
-                  00085b20    0000015a     (.cinit..data.load) [load image, compression = lzss]
-                  00085c7a    00000006     (__TI_handler_table)
-                  00085c80    00000004     (.cinit..bss.load) [load image, compression = zero_init]
-                  00085c84    00000004     (.cinit..scratchpad.load) [load image, compression = zero_init]
-                  00085c88    00000004     (.cinit.Cla1DataRam.load) [load image, compression = zero_init]
-                  00085c8c    00000010     (__TI_cinit_table)
+.cinit     0    00085db8    00000180     
+                  00085db8    0000015b     (.cinit..data.load) [load image, compression = lzss]
+                  00085f13    00000001     --HOLE-- [fill = 0]
+                  00085f14    00000006     (__TI_handler_table)
+                  00085f1a    00000004     (.cinit..bss.load) [load image, compression = zero_init]
+                  00085f1e    00000004     (.cinit..scratchpad.load) [load image, compression = zero_init]
+                  00085f22    00000004     (.cinit.Cla1DataRam.load) [load image, compression = zero_init]
+                  00085f26    00000002     --HOLE-- [fill = 0]
+                  00085f28    00000010     (__TI_cinit_table)
 
 .reset     0    003fffc0    00000000     DSECT
 
@@ -269,20 +271,19 @@ codestart
 .init_array 
 *          0    00082000    00000000     UNINITIALIZED
 
-.bss       0    00008000    00000170     UNINITIALIZED
+.bss       0    00008000    0000016c     UNINITIALIZED
                   00008000    00000062     objdef.obj (.bss)
                   00008062    0000001e     sdoserv.obj (.bss)
                   00008080    0000005a     mailbox.obj (.bss)
                   000080da    00000022     ecatappl.obj (.bss:aPdInputData)
-                  000080fc    00000004     ADIS16364_F28388D_IMU_SLAVE_CPU1.obj (.bss)
+                  000080fc    00000004     coeappl.obj (.bss)
                   00008100    0000002a     ecatslv.obj (.bss)
                   0000812a    00000022     ecatappl.obj (.bss:aPdOutputData)
                   0000814c    00000014     ecatappl.obj (.bss)
                   00008160    00000007     sdoserv.obj (.bss:aSdoInfoHeader)
-                  00008167    00000001     --HOLE--
-                  00008168    00000004     coeappl.obj (.bss)
-                  0000816c    00000002     ecatcoe.obj (.bss)
-                  0000816e    00000002     rts2800_fpu64_eabi.lib : memory.c.obj (.bss)
+                  00008167    00000001     ADIS16364_F28388D_IMU_SLAVE_CPU1.obj (.bss)
+                  00008168    00000002     ecatcoe.obj (.bss)
+                  0000816a    00000002     rts2800_fpu64_eabi.lib : memory.c.obj (.bss)
 
 .sysmem    0    0000c800    00000200     UNINITIALIZED
                   0000c800    00000004     rts2800_fpu64_eabi.lib : memory.c.obj (.sysmem)
@@ -336,9 +337,6 @@ codestart
                   00090a94    00000006     coeappl.obj (.const:asEntryDesc0x1C13)
                   00090a9a    00000006     coeappl.obj (.const:asEntryDesc0x7000)
 
-CLA1mathTables 
-*          0    0000a000    00000000     UNINITIALIZED
-
 MSGRAM_CM_TO_CPU 
 *          0    00038000    00000088     UNINITIALIZED
                   00038000    00000088     driverlib.lib : ipc.obj (MSGRAM_CM_TO_CPU)
@@ -355,35 +353,55 @@ MSGRAM_CPU2_TO_CPU1
 *          0    0003b000    00000088     UNINITIALIZED
                   0003b000    00000088     driverlib.lib : ipc.obj (MSGRAM_CPU2_TO_CPU1)
 
-Cla1Prog   0    00088000    00000398     RUN ADDR = 0000a800
-                  00088000    000002fa     spi.obj (Cla1Prog:Cla1Task1)
-                  000882fa    0000003c     spi.obj (Cla1Prog:Cla1Task2)
-                  00088336    00000032     rts2800_fpu64_eabi.lib : cla_memset.cla.obj (Cla1Prog:__claabi_memset)
-                  00088368    00000008     spi.obj (Cla1Prog:Cla1Task3)
-                  00088370    00000008     spi.obj (Cla1Prog:Cla1Task4)
-                  00088378    00000008     spi.obj (Cla1Prog:Cla1Task5)
-                  00088380    00000008     spi.obj (Cla1Prog:Cla1Task6)
-                  00088388    00000008     spi.obj (Cla1Prog:Cla1Task7)
-                  00088390    00000008     spi.obj (Cla1Prog:Cla1Task8)
+Cla1Prog   0    00088000    000007c6     RUN ADDR = 0000a800
+                  00088000    000004a2     CLA_application.obj (Cla1Prog:Cla1Task1)
+                  000884a2    000001c6     CLA_application.obj (Cla1Prog:Cla1Task2)
+                  00088668    00000052     cla2_math_library_datarom_fpu32_eabi.lib : CLAatan.obj (Cla1Prog:_CLAatan)
+                  000886ba    00000038                                              : CLAcos.obj (Cla1Prog:_CLAcos)
+                  000886f2    00000038                                              : CLAsin.obj (Cla1Prog:_CLAsin)
+                  0008872a    00000032     rts2800_fpu64_eabi.lib : cla_memset.cla.obj (Cla1Prog:__claabi_memset)
+                  0008875c    00000020     cla2_math_library_datarom_fpu32_eabi.lib : CLAsqrt.obj (Cla1Prog:_CLAsqrt)
+                  0008877c    0000001a                                              : CLAdiv.obj (Cla1Prog:_CLAdiv)
+                  00088796    00000008     CLA_application.obj (Cla1Prog:Cla1Task3)
+                  0008879e    00000008     CLA_application.obj (Cla1Prog:Cla1Task4)
+                  000887a6    00000008     CLA_application.obj (Cla1Prog:Cla1Task5)
+                  000887ae    00000008     CLA_application.obj (Cla1Prog:Cla1Task6)
+                  000887b6    00000008     CLA_application.obj (Cla1Prog:Cla1Task7)
+                  000887be    00000008     CLA_application.obj (Cla1Prog:Cla1Task8)
+
+CLA1mathTables 
+*          0    000ba000    000002e2     RUN ADDR = 00009800
+                  000ba000    0000018c     cla2_math_library_fpu32_eabi.lib : CLAatanTable.obj (CLA1mathTables)
+                  000ba18c    00000156                                      : CLAsincosTable.obj (CLA1mathTables)
 
 Cla1ToCpuMsgRAM 
 *          0    00001480    0000001c     
                   00001480    0000001c     ADIS16364_F28388D_IMU_SLAVE_CPU1.obj (Cla1ToCpuMsgRAM)
+
+CpuToCla1MsgRAM 
+*          0    00001500    00000001     
+                  00001500    00000001     ADIS16364_F28388D_IMU_SLAVE_CPU1.obj (CpuToCla1MsgRAM)
 
 CLAscratch 
 *          0    00008800    00000100     UNINITIALIZED
                   00008800    00000100     --HOLE--
 
 .scratchpad 
-*          0    00008900    00000048     UNINITIALIZED
-                  00008900    00000046     spi.obj (.scratchpad:Cla1Prog:Cla1Task1)
-                  00008946    00000002     rts2800_fpu64_eabi.lib : cla_memset.cla.obj (.scratchpad:Cla1Prog:__claabi_memset)
+*          0    00008900    0000004c     UNINITIALIZED
+                  00008900    00000048     CLA_application.obj (.scratchpad:Cla1Prog:Cla1Task1)
+                  00008900    00000006     CLA_application.obj (.scratchpad:Cla1Prog:Cla1Task2)
+                  00008948    00000002     rts2800_fpu64_eabi.lib : cla_memset.cla.obj (.scratchpad:Cla1Prog:__claabi_memset)
+                  00008948    00000002     cla2_math_library_datarom_fpu32_eabi.lib : CLAsin.obj (.scratchpad:Cla1Prog:_CLAsin)
+                  00008948    00000002                                              : CLAcos.obj (.scratchpad:Cla1Prog:_CLAcos)
+                  00008948    00000004                                              : CLAdiv.obj (.scratchpad:Cla1Prog:_CLAdiv)
+                  00008948    00000004                                              : CLAatan.obj (.scratchpad:Cla1Prog:_CLAatan)
+                  00008948    00000004                                              : CLAsqrt.obj (.scratchpad:Cla1Prog:_CLAsqrt)
 
 .const_cla 
-*          0    00084000    0000002c     RUN ADDR = 00008948
-                  00084000    00000016     spi.obj (.const_cla:$P$T2$3)
-                  00084016    0000000b     spi.obj (.const_cla:$P$T0$1)
-                  00084021    0000000b     spi.obj (.const_cla:$P$T1$2)
+*          0    00084000    0000002c     RUN ADDR = 0000894c
+                  00084000    00000016     CLA_application.obj (.const_cla:$P$T2$3)
+                  00084016    0000000b     CLA_application.obj (.const_cla:$P$T0$1)
+                  00084021    0000000b     CLA_application.obj (.const_cla:$P$T1$2)
 
 .TI.ramfunc 
 *          0    00086000    0000012d     RUN ADDR = 000001b8
@@ -398,11 +416,15 @@ CLAscratch
                   00086112    00000017                   : flash.obj (.TI.ramfunc:Flash_enableECC)
                   00086129    00000004                   : sysctl.obj (.TI.ramfunc)
 
+EPwm1RegsFile 
+*          0    00004000    00000100     UNINITIALIZED
+                  00004000    00000100     f2838x_globalvariabledefs.obj (EPwm1RegsFile)
+
 Cla1DataRam 
 *          0    00008180    00000020     UNINITIALIZED
                   00008180    00000020     ethercat_slave_cpu1_hal.obj (Cla1DataRam)
 
-.data      0    00009000    00000288     UNINITIALIZED
+.data      0    00009000    00000292     UNINITIALIZED
                   00009000    000000f0     coeappl.obj (.data:GenObjDic)
                   000090f0    000000b4     coeappl.obj (.data:ApplicationObjDic)
                   000091a4    00000018     coeappl.obj (.data)
@@ -413,125 +435,126 @@ Cla1DataRam
                   0000923b    00000014     coeappl.obj (.data:acHardwareversion)
                   0000924f    00000014     coeappl.obj (.data:acSoftwareversion)
                   00009263    0000000d     objdef.obj (.data:aSubindexDesc)
-                  00009270    00000006     ecatappl.obj (.data)
-                  00009276    00000006     objdef.obj (.data)
-                  0000927c    00000002     ecatslv.obj (.data)
-                  0000927e    00000002     ADIS16364_F28388D_IMU_SLAVE_CPU1.obj (.data:g_biascounter)
-                  00009280    00000006     rts2800_fpu64_eabi.lib : exit.c.obj (.data)
-                  00009286    00000001                            : memory.c.obj (.data)
-                  00009287    00000001     sdoserv.obj (.data)
+                  00009270    0000000a     CLA_init.obj (.data)
+                  0000927a    00000006     ecatappl.obj (.data)
+                  00009280    00000006     objdef.obj (.data)
+                  00009286    00000006     rts2800_fpu64_eabi.lib : exit.c.obj (.data)
+                  0000928c    00000002     ecatslv.obj (.data)
+                  0000928e    00000002     ADIS16364_F28388D_IMU_SLAVE_CPU1.obj (.data:g_ActiveModeTimeCounter)
+                  00009290    00000001     rts2800_fpu64_eabi.lib : memory.c.obj (.data)
+                  00009291    00000001     sdoserv.obj (.data)
 
 .text.1    0    00082000    00002000     
-                  00082000    0000089e     ecatslv.obj (.text)
-                  0008289e    0000076b     objdef.obj (.text)
-                  00083009    00000587     sdoserv.obj (.text)
-                  00083590    000003e9     ecatappl.obj (.text)
-                  00083979    000002be     mailbox.obj (.text)
-                  00083c37    00000298     rts2800_fpu64_eabi.lib : memory.c.obj (.text)
-                  00083ecf    00000117     driverlib.lib : sysctl.obj (.text:SysCtl_setAuxClock)
+                  00082000    000008ec     ecatslv.obj (.text)
+                  000828ec    0000076b     objdef.obj (.text)
+                  00083057    00000587     sdoserv.obj (.text)
+                  000835de    000003e9     ecatappl.obj (.text)
+                  000839c7    000002be     mailbox.obj (.text)
+                  00083c85    00000298     rts2800_fpu64_eabi.lib : memory.c.obj (.text)
+                  00083f1d    000000c9     driverlib.lib : dcc.obj (.text:DCC_verifyClockFrequency)
                   00083fe6    0000001a                   : dcc.obj (.text:DCC_isBaseValid)
 
-.text.2    0    00084030    00001aef     
-                  00084030    000001f6     ethercat_slave_cpu1_hal.obj (.text)
-                  00084226    000001e6     coeappl.obj (.text)
-                  0008440c    000001c9     ADIS16364_F28388D_IMU_SLAVE_CPU1.obj (.text)
-                  000845d5    000001a7     ethercat_gpio_setup.obj (.text)
-                  0008477c    0000016a     SPI_init.obj (.text)
-                  000848e6    00000138     driverlib.lib : sysctl.obj (.text:SysCtl_setClock)
-                  00084a1e    00000110                   : sysctl.obj (.text:SysCtl_isPLLValid)
-                  00084b2e    000000f1     CLA_init.obj (.text)
-                  00084c1f    000000ea     device.obj (.text)
-                  00084d09    000000c9     driverlib.lib : dcc.obj (.text:DCC_verifyClockFrequency)
-                  00084dd2    0000009c     ethercat_slave_cpu1_hal.obj (.text:retain)
-                  00084e6e    00000093     driverlib.lib : memcfg.obj (.text:MemCfg_getInitStatus)
-                  00084f01    00000088     rts2800_fpu64_eabi.lib : fs_div28.asm.obj (.text)
-                  00084f89    0000007e     driverlib.lib : memcfg.obj (.text:MemCfg_initSections)
-                  00085007    0000007e     CLA_init.obj (.text:retain)
-                  00085085    0000007a     driverlib.lib : dcc.obj (.text:DCC_setCounterSeeds)
-                  000850ff    0000007a                   : sysctl.obj (.text:DCC_setCounterSeeds)
-                  00085179    0000005c                   : spi.obj (.text:SPI_setConfig)
-                  000851d5    00000054                   : sysctl.obj (.text:SysCtl_selectOscSource)
-                  00085229    00000052                   : gpio.obj (.text:GPIO_setPadConfig)
-                  0008527b    00000047                   : sysctl.obj (.text:SysCtl_selectOscSourceAuxPLL)
-                  000852c2    00000043     ecatcoe.obj (.text)
-                  00085305    0000003d     driverlib.lib : interrupt.obj (.text:Interrupt_initModule)
-                  00085342    00000038                   : escss.obj (.text:ESCSS_configureSync0Connections)
-                  0008537a    00000038                   : escss.obj (.text:ESCSS_configureSync1Connections)
-                  000853b2    00000038                   : gpio.obj (.text:GPIO_setMasterCore)
-                  000853ea    00000038                   : gpio.obj (.text:GPIO_setQualificationMode)
-                  00085422    00000038                   : memcfg.obj (.text:MemCfg_setLSRAMMasterSel)
-                  0008545a    00000037                   : gpio.obj (.text:GPIO_setPinConfig)
-                  00085491    00000036                   : spi.obj (.text:SPI_clearInterruptStatus)
-                  000854c7    00000034                   : interrupt.obj (.text:Interrupt_enable)
-                  000854fb    00000031                   : gpio.obj (.text:GPIO_setDirectionMode)
-                  0008552c    00000031     rts2800_fpu64_eabi.lib : copy_decompress_lzss.c.obj (.text:decompress:lzss)
-                  0008555d    0000002f     driverlib.lib : spi.obj (.text:SPI_enableInterrupt)
-                  0008558c    0000002b     rts2800_fpu64_eabi.lib : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit)
-                  000855b7    0000002a     driverlib.lib : sysctl.obj (.text:SysCtl_pollX1Counter)
-                  000855e1    00000029     rts2800_fpu64_eabi.lib : exit.c.obj (.text)
-                  0008560a    00000026     f2838x_cpu1_system.obj (.text)
-                  00085630    00000025     driverlib.lib : dcc.obj (.text:DCC_enableSingleShotMode)
-                  00085655    00000025                   : sysctl.obj (.text:DCC_enableSingleShotMode)
-                  0008567a    00000025                   : sysctl.obj (.text:SysCtl_controlCMReset)
-                  0008569f    00000024                   : sysctl.obj (.text:SysCtl_selectXTAL)
-                  000856c3    00000022                   : escss.obj (.text:ESCSS_configureEEPROMSize)
-                  000856e5    00000022     rts2800_fpu64_eabi.lib : i_div28.asm.obj (.text)
-                  00085707    00000021     driverlib.lib : sysctl.obj (.text:SysCtl_controlCPU2Reset)
-                  00085728    0000001f                   : dcc.obj (.text:DCC_setCounter0ClkSource)
-                  00085747    0000001f                   : sysctl.obj (.text:DCC_setCounter0ClkSource)
-                  00085766    0000001f                   : dcc.obj (.text:DCC_setCounter1ClkSource)
-                  00085785    0000001f                   : sysctl.obj (.text:DCC_setCounter1ClkSource)
-                  000857a4    0000001f                   : spi.obj (.text:SPI_isBaseValid)
-                  000857c3    0000001e                   : interrupt.obj (.text:Interrupt_initVectorTable)
-                  000857e1    0000001e     rts2800_fpu64_eabi.lib : ll_cmp28.asm.obj (.text)
-                  000857ff    0000001d     driverlib.lib : dcc.obj (.text:DCC_getErrorStatus)
-                  0008581c    0000001d                   : dcc.obj (.text:DCC_getSingleShotStatus)
-                  00085839    0000001d     rts2800_fpu64_eabi.lib : memcpy.c.obj (.text)
-                  00085856    0000001b     driverlib.lib : escss.obj (.text:ESCSS_isConfigurationLockEnabled)
-                  00085871    0000001a                   : sysctl.obj (.text:DCC_isBaseValid)
-                  0008588b    0000001a                   : sysctl.obj (.text:SysCtl_selectXTALSingleEnded)
-                  000858a5    00000019     rts2800_fpu64_eabi.lib : boot28.asm.obj (.text)
-                  000858be    00000018                            : ll_aox28.asm.obj (.text)
-                  000858d6    00000017     driverlib.lib : dcc.obj (.text:DCC_disableDoneSignal)
-                  000858ed    00000017                   : sysctl.obj (.text:DCC_disableDoneSignal)
-                  00085904    00000017                   : dcc.obj (.text:DCC_enableDoneSignal)
-                  0008591b    00000017                   : sysctl.obj (.text:SysCtl_enablePeripheral)
-                  00085932    00000016                   : dcc.obj (.text:DCC_clearDoneFlag)
-                  00085948    00000016                   : sysctl.obj (.text:DCC_clearDoneFlag)
-                  0008595e    00000016                   : dcc.obj (.text:DCC_clearErrorFlag)
-                  00085974    00000016                   : sysctl.obj (.text:DCC_clearErrorFlag)
-                  0008598a    00000016                   : dcc.obj (.text:DCC_disableErrorSignal)
-                  000859a0    00000016                   : sysctl.obj (.text:DCC_disableErrorSignal)
-                  000859b6    00000014                   : dcc.obj (.text:DCC_disableModule)
-                  000859ca    00000014                   : sysctl.obj (.text:DCC_disableModule)
-                  000859de    00000014                   : dcc.obj (.text:DCC_enableErrorSignal)
-                  000859f2    00000014                   : dcc.obj (.text:DCC_enableModule)
-                  00085a06    00000014                   : sysctl.obj (.text:DCC_enableModule)
-                  00085a1a    00000013     rts2800_fpu64_eabi.lib : memcmp.c.obj (.text)
-                  00085a2d    00000010     driverlib.lib : escss.obj (.text:ESCSS_isBaseValid)
-                  00085a3d    00000010                   : escss.obj (.text:ESCSS_isConfigBaseValid)
-                  00085a4d    00000010                   : flash.obj (.text:Flash_isCtrlBaseValid)
-                  00085a5d    00000010                   : flash.obj (.text:Flash_isECCBaseValid)
-                  00085a6d    0000000e                   : gpio.obj (.text:GPIO_isPinValid)
-                  00085a7b    0000000e                   : interrupt.obj (.text:Interrupt_defaultHandler)
-                  00085a89    0000000d                   : interrupt.obj (.text:Interrupt_disableMaster)
-                  00085a96    0000000d                   : interrupt.obj (.text:Interrupt_enableMaster)
-                  00085aa3    0000000d     rts2800_fpu64_eabi.lib : copy_zero_init.c.obj (.text:decompress:ZI:__TI_zero_init_nomemset)
-                  00085ab0    0000000c     driverlib.lib : sysctl.obj (.text:SysCtl_setPLLSysClk)
-                  00085abc    0000000c     rts2800_fpu64_eabi.lib : args_main.c.obj (.text)
-                  00085ac8    0000000b     driverlib.lib : sysctl.obj (.text:SysCtl_isCMReset)
-                  00085ad3    0000000b                   : sysctl.obj (.text:SysCtl_isMCDClockFailureDetected)
-                  00085ade    0000000b     rts2800_fpu64_eabi.lib : u_div28.asm.obj (.text)
-                  00085ae9    00000009                            : _lock.c.obj (.text)
-                  00085af2    00000008                            : copy_decompress_none.c.obj (.text:decompress:none)
-                  00085afa    00000008     f2838x_codestartbranch.obj (.text)
-                  00085b02    00000008     rts2800_fpu64_eabi.lib : strlen.c.obj (.text)
-                  00085b0a    00000007     driverlib.lib : sysctl.obj (.text:SysCtl_resetMCD)
-                  00085b11    00000007     rts2800_fpu64_eabi.lib : memset.c.obj (.text)
-                  00085b18    00000002     driverlib.lib : interrupt.obj (.text:Interrupt_illegalOperationHandler)
-                  00085b1a    00000002                   : interrupt.obj (.text:Interrupt_nmiHandler)
-                  00085b1c    00000002     rts2800_fpu64_eabi.lib : pre_init.c.obj (.text)
-                  00085b1e    00000001                            : startup.c.obj (.text)
+.text.2    0    00084030    00001d88     
+                  00084030    00000295     device.obj (.text)
+                  000842c5    0000022c     ethercat_slave_cpu1_hal.obj (.text)
+                  000844f1    00000202     coeappl.obj (.text)
+                  000846f3    000001fd     ADIS16364_F28388D_IMU_SLAVE_CPU1.obj (.text)
+                  000848f0    000001a7     ethercat_gpio_setup.obj (.text)
+                  00084a97    0000016a     SPI_init.obj (.text)
+                  00084c01    00000138     driverlib.lib : sysctl.obj (.text:SysCtl_setClock)
+                  00084d39    00000117                   : sysctl.obj (.text:SysCtl_setAuxClock)
+                  00084e50    00000110                   : sysctl.obj (.text:SysCtl_isPLLValid)
+                  00084f60    00000109     CLA_init.obj (.text)
+                  00085069    0000009c     ethercat_slave_cpu1_hal.obj (.text:retain)
+                  00085105    00000093     driverlib.lib : memcfg.obj (.text:MemCfg_getInitStatus)
+                  00085198    00000088     rts2800_fpu64_eabi.lib : fs_div28.asm.obj (.text)
+                  00085220    00000080     CLA_init.obj (.text:retain)
+                  000852a0    0000007e     driverlib.lib : memcfg.obj (.text:MemCfg_initSections)
+                  0008531e    0000007a                   : dcc.obj (.text:DCC_setCounterSeeds)
+                  00085398    0000007a                   : sysctl.obj (.text:DCC_setCounterSeeds)
+                  00085412    0000005c                   : spi.obj (.text:SPI_setConfig)
+                  0008546e    00000054                   : sysctl.obj (.text:SysCtl_selectOscSource)
+                  000854c2    00000052                   : gpio.obj (.text:GPIO_setPadConfig)
+                  00085514    00000047                   : sysctl.obj (.text:SysCtl_selectOscSourceAuxPLL)
+                  0008555b    00000043     ecatcoe.obj (.text)
+                  0008559e    0000003d     driverlib.lib : interrupt.obj (.text:Interrupt_initModule)
+                  000855db    00000038                   : escss.obj (.text:ESCSS_configureSync0Connections)
+                  00085613    00000038                   : escss.obj (.text:ESCSS_configureSync1Connections)
+                  0008564b    00000038                   : gpio.obj (.text:GPIO_setMasterCore)
+                  00085683    00000038                   : gpio.obj (.text:GPIO_setQualificationMode)
+                  000856bb    00000038                   : memcfg.obj (.text:MemCfg_setLSRAMMasterSel)
+                  000856f3    00000037                   : gpio.obj (.text:GPIO_setPinConfig)
+                  0008572a    00000036                   : spi.obj (.text:SPI_clearInterruptStatus)
+                  00085760    00000034                   : interrupt.obj (.text:Interrupt_enable)
+                  00085794    00000031                   : gpio.obj (.text:GPIO_setDirectionMode)
+                  000857c5    00000031     rts2800_fpu64_eabi.lib : copy_decompress_lzss.c.obj (.text:decompress:lzss)
+                  000857f6    0000002f     driverlib.lib : spi.obj (.text:SPI_enableInterrupt)
+                  00085825    0000002b     rts2800_fpu64_eabi.lib : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit)
+                  00085850    0000002a     driverlib.lib : sysctl.obj (.text:SysCtl_pollX1Counter)
+                  0008587a    00000029     rts2800_fpu64_eabi.lib : exit.c.obj (.text)
+                  000858a3    00000026     f2838x_cpu1_system.obj (.text)
+                  000858c9    00000025     driverlib.lib : dcc.obj (.text:DCC_enableSingleShotMode)
+                  000858ee    00000025                   : sysctl.obj (.text:DCC_enableSingleShotMode)
+                  00085913    00000025                   : sysctl.obj (.text:SysCtl_controlCMReset)
+                  00085938    00000024                   : sysctl.obj (.text:SysCtl_selectXTAL)
+                  0008595c    00000022                   : escss.obj (.text:ESCSS_configureEEPROMSize)
+                  0008597e    00000022     rts2800_fpu64_eabi.lib : i_div28.asm.obj (.text)
+                  000859a0    00000021     driverlib.lib : sysctl.obj (.text:SysCtl_controlCPU2Reset)
+                  000859c1    0000001f                   : dcc.obj (.text:DCC_setCounter0ClkSource)
+                  000859e0    0000001f                   : sysctl.obj (.text:DCC_setCounter0ClkSource)
+                  000859ff    0000001f                   : dcc.obj (.text:DCC_setCounter1ClkSource)
+                  00085a1e    0000001f                   : sysctl.obj (.text:DCC_setCounter1ClkSource)
+                  00085a3d    0000001f                   : spi.obj (.text:SPI_isBaseValid)
+                  00085a5c    0000001e                   : interrupt.obj (.text:Interrupt_initVectorTable)
+                  00085a7a    0000001e     rts2800_fpu64_eabi.lib : ll_cmp28.asm.obj (.text)
+                  00085a98    0000001d     driverlib.lib : dcc.obj (.text:DCC_getErrorStatus)
+                  00085ab5    0000001d                   : dcc.obj (.text:DCC_getSingleShotStatus)
+                  00085ad2    0000001d     rts2800_fpu64_eabi.lib : memcpy.c.obj (.text)
+                  00085aef    0000001b     driverlib.lib : escss.obj (.text:ESCSS_isConfigurationLockEnabled)
+                  00085b0a    0000001a                   : sysctl.obj (.text:DCC_isBaseValid)
+                  00085b24    0000001a                   : sysctl.obj (.text:SysCtl_selectXTALSingleEnded)
+                  00085b3e    00000019     rts2800_fpu64_eabi.lib : boot28.asm.obj (.text)
+                  00085b57    00000018                            : ll_aox28.asm.obj (.text)
+                  00085b6f    00000017     driverlib.lib : dcc.obj (.text:DCC_disableDoneSignal)
+                  00085b86    00000017                   : sysctl.obj (.text:DCC_disableDoneSignal)
+                  00085b9d    00000017                   : dcc.obj (.text:DCC_enableDoneSignal)
+                  00085bb4    00000017                   : sysctl.obj (.text:SysCtl_enablePeripheral)
+                  00085bcb    00000016                   : dcc.obj (.text:DCC_clearDoneFlag)
+                  00085be1    00000016                   : sysctl.obj (.text:DCC_clearDoneFlag)
+                  00085bf7    00000016                   : dcc.obj (.text:DCC_clearErrorFlag)
+                  00085c0d    00000016                   : sysctl.obj (.text:DCC_clearErrorFlag)
+                  00085c23    00000016                   : dcc.obj (.text:DCC_disableErrorSignal)
+                  00085c39    00000016                   : sysctl.obj (.text:DCC_disableErrorSignal)
+                  00085c4f    00000014                   : dcc.obj (.text:DCC_disableModule)
+                  00085c63    00000014                   : sysctl.obj (.text:DCC_disableModule)
+                  00085c77    00000014                   : dcc.obj (.text:DCC_enableErrorSignal)
+                  00085c8b    00000014                   : dcc.obj (.text:DCC_enableModule)
+                  00085c9f    00000014                   : sysctl.obj (.text:DCC_enableModule)
+                  00085cb3    00000013     rts2800_fpu64_eabi.lib : memcmp.c.obj (.text)
+                  00085cc6    00000010     driverlib.lib : escss.obj (.text:ESCSS_isBaseValid)
+                  00085cd6    00000010                   : escss.obj (.text:ESCSS_isConfigBaseValid)
+                  00085ce6    00000010                   : flash.obj (.text:Flash_isCtrlBaseValid)
+                  00085cf6    00000010                   : flash.obj (.text:Flash_isECCBaseValid)
+                  00085d06    0000000e                   : gpio.obj (.text:GPIO_isPinValid)
+                  00085d14    0000000e                   : interrupt.obj (.text:Interrupt_defaultHandler)
+                  00085d22    0000000d                   : interrupt.obj (.text:Interrupt_disableMaster)
+                  00085d2f    0000000d                   : interrupt.obj (.text:Interrupt_enableMaster)
+                  00085d3c    0000000d     rts2800_fpu64_eabi.lib : copy_zero_init.c.obj (.text:decompress:ZI:__TI_zero_init_nomemset)
+                  00085d49    0000000c     driverlib.lib : sysctl.obj (.text:SysCtl_setPLLSysClk)
+                  00085d55    0000000c     rts2800_fpu64_eabi.lib : args_main.c.obj (.text)
+                  00085d61    0000000b     driverlib.lib : sysctl.obj (.text:SysCtl_isCMReset)
+                  00085d6c    0000000b                   : sysctl.obj (.text:SysCtl_isMCDClockFailureDetected)
+                  00085d77    0000000b     rts2800_fpu64_eabi.lib : u_div28.asm.obj (.text)
+                  00085d82    00000009                            : _lock.c.obj (.text)
+                  00085d8b    00000008                            : copy_decompress_none.c.obj (.text:decompress:none)
+                  00085d93    00000008     f2838x_codestartbranch.obj (.text)
+                  00085d9b    00000008     rts2800_fpu64_eabi.lib : strlen.c.obj (.text)
+                  00085da3    00000007     driverlib.lib : sysctl.obj (.text:SysCtl_resetMCD)
+                  00085daa    00000007     rts2800_fpu64_eabi.lib : memset.c.obj (.text)
+                  00085db1    00000002     driverlib.lib : interrupt.obj (.text:Interrupt_illegalOperationHandler)
+                  00085db3    00000002                   : interrupt.obj (.text:Interrupt_nmiHandler)
+                  00085db5    00000002     rts2800_fpu64_eabi.lib : pre_init.c.obj (.text)
+                  00085db7    00000001                            : startup.c.obj (.text)
 
 MODULE SUMMARY
 
@@ -543,23 +566,24 @@ MODULE SUMMARY
        Total:                                 10      0         0      
                                                                        
     .\CLA\
-       spi.obj                                1740    88        70     
-       CLA_init.obj                           367     0         0      
+       CLA_application.obj                    3376    88        78     
+       CLA_init.obj                           393     0         10     
+       f2838x_globalvariabledefs.obj          0       0         256    
     +--+--------------------------------------+-------+---------+---------+
-       Total:                                 2107    88        70     
+       Total:                                 3769    88        344    
                                                                        
     .\EtherCAT_slave\
-       coeappl.obj                            486     1525      521    
-       ecatslv.obj                            2206    0         44     
+       coeappl.obj                            514     1525      521    
+       ecatslv.obj                            2284    0         44     
        objdef.obj                             1899    16        117    
        sdoserv.obj                            1415    60        38     
        ecatappl.obj                           1001    0         94     
        mailbox.obj                            702     0         90     
-       ADIS16364_F28388D_IMU_SLAVE_CPU1.obj   457     0         124    
+       ADIS16364_F28388D_IMU_SLAVE_CPU1.obj   509     0         122    
        ecatcoe.obj                            67      0         2      
        f2838x_cpu1_system.obj                 38      0         0      
     +--+--------------------------------------+-------+---------+---------+
-       Total:                                 8271    1601      1030   
+       Total:                                 8429    1601      1028   
                                                                        
     .\SPI_ADIS16364_LIBRARY\
        SPI_init.obj                           362     0         0      
@@ -567,11 +591,11 @@ MODULE SUMMARY
        Total:                                 362     0         0      
                                                                        
     .\ethercat_f28388x_hal\
-       ethercat_slave_cpu1_hal.obj            658     0         32     
+       ethercat_slave_cpu1_hal.obj            712     0         32     
+       device.obj                             661     0         0      
        ethercat_gpio_setup.obj                423     0         0      
-       device.obj                             234     0         0      
     +--+--------------------------------------+-------+---------+---------+
-       Total:                                 1315    0         32     
+       Total:                                 1796    0         32     
                                                                        
     C:/ti/c2000/C2000Ware_4_00_00_00/driverlib/f2838x/driverlib/ccs/Debug/driverlib.lib
        sysctl.obj                             1640    151       0      
@@ -585,6 +609,21 @@ MODULE SUMMARY
        interrupt.obj                          187     0         0      
     +--+--------------------------------------+-------+---------+---------+
        Total:                                 4201    1115      544    
+                                                                       
+    C:/ti/c2000/C2000Ware_4_00_00_00/libraries/math/CLAmath/c28/lib/cla2_math_library_datarom_fpu32_eabi.lib
+       CLAatan.obj                            164     0         4      
+       CLAcos.obj                             112     0         2      
+       CLAsin.obj                             112     0         2      
+       CLAsqrt.obj                            64      0         4      
+       CLAdiv.obj                             52      0         4      
+    +--+--------------------------------------+-------+---------+---------+
+       Total:                                 504     0         16     
+                                                                       
+    C:/ti/c2000/C2000Ware_4_00_00_00/libraries/math/CLAmath/c28/lib/cla2_math_library_fpu32_eabi.lib
+       CLAatanTable.obj                       0       792       0      
+       CLAsincosTable.obj                     0       684       0      
+    +--+--------------------------------------+-------+---------+---------+
+       Total:                                 0       1476      0      
                                                                        
     C:\ti\ccs1100\ccs\tools\compiler\ti-cgt-c2000_21.6.0.LTS\lib\rts2800_fpu64_eabi.lib
        memory.c.obj                           664     0         3      
@@ -613,23 +652,23 @@ MODULE SUMMARY
                                                                        
        Heap:                                  0       0         512    
        Stack:                                 0       0         512    
-       Linker Generated:                      0       380       0      
+       Linker Generated:                      0       381       0      
     +--+--------------------------------------+-------+---------+---------+
-       Grand Total:                           17531   3184      2715   
+       Grand Total:                           20336   4661      3003   
 
 
 LINKER GENERATED COPY TABLES
 
-__TI_cinit_table @ 00085c8c records: 4, size/record: 4, table size: 16
-	.data: load addr=00085b20, load size=0000015a bytes, run addr=00009000, run size=00000288 bytes, compression=lzss
-	.bss: load addr=00085c80, load size=00000004 bytes, run addr=00008000, run size=00000170 bytes, compression=zero_init
-	.scratchpad: load addr=00085c84, load size=00000004 bytes, run addr=00008900, run size=00000048 bytes, compression=zero_init
-	Cla1DataRam: load addr=00085c88, load size=00000004 bytes, run addr=00008180, run size=00000020 bytes, compression=zero_init
+__TI_cinit_table @ 00085f28 records: 4, size/record: 4, table size: 16
+	.data: load addr=00085db8, load size=0000015b bytes, run addr=00009000, run size=00000292 bytes, compression=lzss
+	.bss: load addr=00085f1a, load size=00000004 bytes, run addr=00008000, run size=0000016c bytes, compression=zero_init
+	.scratchpad: load addr=00085f1e, load size=00000004 bytes, run addr=00008900, run size=0000004c bytes, compression=zero_init
+	Cla1DataRam: load addr=00085f22, load size=00000004 bytes, run addr=00008180, run size=00000020 bytes, compression=zero_init
 
 
 LINKER GENERATED HANDLER TABLE
 
-__TI_handler_table @ 00085c7a records: 3, size/record: 2, table size: 6
+__TI_handler_table @ 00085f14 records: 3, size/record: 2, table size: 6
 	index: 0, handler: __TI_zero_init
 	index: 1, handler: __TI_decompress_lzss
 	index: 2, handler: __TI_decompress_none
@@ -641,6 +680,10 @@ address     data page           name
 --------    ----------------    ----
 00001480      52 (00001480)     g_Attitude
 00001486      52 (00001480)     g_SensBurst
+
+00001500      54 (00001500)     g_ActiveTaps
+
+00004000     100 (00004000)     EPwm1Regs
 
 00008000     200 (00008000)     bSyncSetByUser
 00008001     200 (00008000)     sCycleDiag
@@ -689,8 +732,8 @@ address     data page           name
 
 000080c0     203 (000080c0)     sMbxReceiveQueue
 000080da     203 (000080c0)     aPdInputData
-000080fc     203 (000080c0)     CycleTime
-000080fe     203 (000080c0)     CycleFreq
+000080fc     203 (000080c0)     u32LastDc32Value
+000080fe     203 (000080c0)     u32CheckForDcOverrunCnt
 
 00008100     204 (00008100)     bEcatOutputUpdateRunning
 00008101     204 (00008100)     bEcatInputUpdateRunning
@@ -746,11 +789,16 @@ address     data page           name
 0000815c     205 (00008140)     u32SystemTimeReadFailure
 0000815e     205 (00008140)     u32MinCycleTimeValue
 00008160     205 (00008140)     aSdoInfoHeader
-00008168     205 (00008140)     u32LastDc32Value
-0000816a     205 (00008140)     u32CheckForDcOverrunCnt
-0000816c     205 (00008140)     pCoeSendStored
+00008167     205 (00008140)     g_ActiveMode
+00008168     205 (00008140)     pCoeSendStored
 
 00008180     206 (00008180)     SPI_config
+
+00008948     225 (00008940)     __claCLAatan_sp
+00008948     225 (00008940)     __claCLAcos_sp
+00008948     225 (00008940)     __claCLAdiv_sp
+00008948     225 (00008940)     __claCLAsin_sp
+00008948     225 (00008940)     __claCLAsqrt_sp
 
 00009000     240 (00009000)     GenObjDic
 
@@ -765,10 +813,11 @@ address     data page           name
 000091bc     246 (00009180)     _lock
 000091be     246 (00009180)     _unlock
 
-000091c0     247 (000091c0)     sRxPDOassign
-000091c2     247 (000091c0)     sTxPDOassign
-000091c4     247 (000091c0)     LAE_CONTROL0x7000
-000091c6     247 (000091c0)     ModularDeviceProfile0xF000
+000091c0     247 (000091c0)     g_ActiveDRng
+000091c1     247 (000091c0)     sRxPDOassign
+000091c3     247 (000091c0)     sTxPDOassign
+000091c5     247 (000091c0)     LAE_CONTROL0x7000
+000091c7     247 (000091c0)     ModularDeviceProfile0xF000
 000091ca     247 (000091c0)     LAE_CONTROLProcessDataMapping0x1600
 000091ce     247 (000091c0)     LAE_ESTIMATE0x6002
 000091d6     247 (000091c0)     LAE_SENSE0x6000
@@ -779,16 +828,48 @@ address     data page           name
 
 0000924f     249 (00009240)     acSoftwareversion
 00009263     249 (00009240)     aSubindexDesc
-00009270     249 (00009240)     bInitFinished
-00009276     249 (00009240)     sErrorSettings
-0000927c     249 (00009240)     SMActivate
-0000927d     249 (00009240)     EepromLoaded
-0000927e     249 (00009240)     g_biascounter
+00009270     249 (00009240)     p_s
+00009272     249 (00009240)     p_c
+00009274     249 (00009240)     t_c
+00009276     249 (00009240)     t_t
+00009278     249 (00009240)     s_t
+0000927a     249 (00009240)     bInitFinished
 
-00009280     24a (00009280)     __TI_enable_exit_profile_output
-00009282     24a (00009280)     __TI_cleanup_ptr
-00009284     24a (00009280)     __TI_dtors_ptr
-00009287     24a (00009280)     bSdoInWork
+00009280     24a (00009280)     sErrorSettings
+00009286     24a (00009280)     __TI_enable_exit_profile_output
+00009288     24a (00009280)     __TI_cleanup_ptr
+0000928a     24a (00009280)     __TI_dtors_ptr
+0000928c     24a (00009280)     SMActivate
+0000928d     24a (00009280)     EepromLoaded
+0000928e     24a (00009280)     g_ActiveModeTimeCounter
+00009291     24a (00009280)     bSdoInWork
+
+00009800     260 (00009800)     CLAatan2HalfPITable
+00009804     260 (00009800)     CLAINV2PI
+00009806     260 (00009800)     CLAatan2Table
+
+0000998c     266 (00009980)     CLAatan2TableEnd
+0000998c     266 (00009980)     CLAsinTable
+0000998c     266 (00009980)     CLAsincosTable
+0000998c     266 (00009980)     CLAsincosTable_Sin0
+
+000099cc     267 (000099c0)     CLAcosTable
+000099cc     267 (000099c0)     CLAsincosTable_Cos0
+
+00009a8c     26a (00009a80)     CLAsinTableEnd
+
+00009ace     26b (00009ac0)     CLAcosTableEnd
+00009ace     26b (00009ac0)     CLAsincosTable_TABLE_SIZE
+00009ad0     26b (00009ac0)     CLAsincosTable_TABLE_SIZEDivTwoPi
+00009ad2     26b (00009ac0)     CLAsincosTable_TwoPiDivTABLE_SIZE
+00009ad4     26b (00009ac0)     CLAsincosTable_TABLE_MASK
+00009ad6     26b (00009ac0)     CLAsincosTable_Coef0
+00009ad8     26b (00009ac0)     CLAsincosTable_Coef1
+00009ada     26b (00009ac0)     CLAsincosTable_Coef1_pos
+00009adc     26b (00009ac0)     CLAsincosTable_Coef2
+00009ade     26b (00009ac0)     CLAsincosTable_Coef3
+00009ae0     26b (00009ac0)     CLAsincosTable_Coef3_neg
+00009ae2     26b (00009ac0)     CLAsincosTableEnd
 
 0000c800     320 (0000c800)     _sys_memory
 
@@ -865,267 +946,301 @@ GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name
 
 page  address   name                                     
 ----  -------   ----                                     
-0     00082425  AL_ControlInd                            
-0     000826b5  AL_ControlRes                            
-0     000845d4  APPL_AckErrorInd                         
-0     00084573  APPL_Application                         
-0     000844fd  APPL_GenerateMapping                     
-0     000844a4  APPL_InputMapping                        
-0     0008449e  APPL_OutputMapping                       
-0     0008449c  APPL_StartInputHandler                   
-0     0008449a  APPL_StartMailboxHandler                 
-0     00084498  APPL_StartOutputHandler                  
-0     00084496  APPL_StopInputHandler                    
-0     00084494  APPL_StopMailboxHandler                  
-0     00084492  APPL_StopOutputHandler                   
-0     00084307  AddObjectsToObjDictionary                
+0     00082444  AL_ControlInd                            
+0     000826f4  AL_ControlRes                            
+0     000848ef  APPL_AckErrorInd                         
+0     000848b2  APPL_Application                         
+0     0008483c  APPL_GenerateMapping                     
+0     000847e3  APPL_InputMapping                        
+0     000847dd  APPL_OutputMapping                       
+0     000847db  APPL_StartInputHandler                   
+0     000847d9  APPL_StartMailboxHandler                 
+0     000847d7  APPL_StartOutputHandler                  
+0     000847d5  APPL_StopInputHandler                    
+0     000847d3  APPL_StopMailboxHandler                  
+0     000847d1  APPL_StopOutputHandler                   
+0     000845d2  AddObjectsToObjDictionary                
 0     000090f0  ApplicationObjDic                        
-0     00082421  BackToInitTransition                     
-0     000855e1  C$$EXIT                                  
-abs   00000000  CLA1mathTablesLoadSize                   
-0     0000a000  CLA1mathTablesLoadStart                  
-0     0000a000  CLA1mathTablesRunStart                   
+0     00084789  Application_Delay_Control                
+0     00082440  BackToInitTransition                     
+0     0008587a  C$$EXIT                                  
+abs   000002e2  CLA1mathTablesLoadSize                   
+0     000ba000  CLA1mathTablesLoadStart                  
+0     00009800  CLA1mathTablesRunStart                   
+0     00009804  CLAINV2PI                                
 abs   00000100  CLA_SCRATCHPAD_SIZE                      
-0     00084bab  CLA_configClaMemory                      
-0     00084b2e  CLA_initCpu1Cla1                         
-0     000842d0  COE_AddObjectToDic                       
-0     0008432c  COE_ClearObjDictionary                   
-0     000852e0  COE_ContinueInd                          
-0     00084408  COE_GetObjectDictionary                  
-0     000852d8  COE_Init                                 
-0     000843ae  COE_Main                                 
-0     0008431d  COE_ObjDictionaryInit                    
-0     0008433d  COE_ObjInit                              
-0     000842ac  COE_RemoveDicEntry                       
-0     000852c2  COE_ServiceInd                           
-0     00084226  COE_SyncTimeStamp                        
-0     0008428d  COE_UpdateSyncErrorStatus                
-0     00082879  CheckIfEcatError                         
-0     00082346  CheckSmSettings                          
-0     0008296b  CheckSyncTypeValue                       
+0     00084fdd  CLA_configClaMemory                      
+0     00084f60  CLA_initCpu1Cla1                         
+0     0000ae68  CLAatan                                  
+0     00009800  CLAatan2HalfPITable                      
+0     00009806  CLAatan2Table                            
+0     0000998c  CLAatan2TableEnd                         
+0     0000aeba  CLAcos                                   
+0     000099cc  CLAcosTable                              
+0     00009ace  CLAcosTableEnd                           
+0     0000af7c  CLAdiv                                   
+0     0000aef2  CLAsin                                   
+0     0000998c  CLAsinTable                              
+0     00009a8c  CLAsinTableEnd                           
+0     0000998c  CLAsincosTable                           
+0     00009ae2  CLAsincosTableEnd                        
+0     00009ad6  CLAsincosTable_Coef0                     
+0     00009ad8  CLAsincosTable_Coef1                     
+0     00009ada  CLAsincosTable_Coef1_pos                 
+0     00009adc  CLAsincosTable_Coef2                     
+0     00009ade  CLAsincosTable_Coef3                     
+0     00009ae0  CLAsincosTable_Coef3_neg                 
+0     000099cc  CLAsincosTable_Cos0                      
+0     0000998c  CLAsincosTable_Sin0                      
+0     00009ad4  CLAsincosTable_TABLE_MASK                
+0     00009ace  CLAsincosTable_TABLE_SIZE                
+0     00009ad0  CLAsincosTable_TABLE_SIZEDivTwoPi        
+0     00009ad2  CLAsincosTable_TwoPiDivTABLE_SIZE        
+0     0000af5c  CLAsqrt                                  
+0     0008459b  COE_AddObjectToDic                       
+0     000845f7  COE_ClearObjDictionary                   
+0     00085579  COE_ContinueInd                          
+0     000846ef  COE_GetObjectDictionary                  
+0     00085571  COE_Init                                 
+0     00084695  COE_Main                                 
+0     000845e8  COE_ObjDictionaryInit                    
+0     00084608  COE_ObjInit                              
+0     00084577  COE_RemoveDicEntry                       
+0     0008555b  COE_ServiceInd                           
+0     000844f1  COE_SyncTimeStamp                        
+0     00084558  COE_UpdateSyncErrorStatus                
+0     000828c7  CheckIfEcatError                         
+0     00082350  CheckSmSettings                          
+0     000829b9  CheckSyncTypeValue                       
 abs   0000002c  Cla1ConstLoadSize                        
 0     00084000  Cla1ConstLoadStart                       
-0     00008948  Cla1ConstRunStart                        
+0     0000894c  Cla1ConstRunStart                        
 0     0000a800  Cla1Task1                                
-0     0000aafa  Cla1Task2                                
-0     0000ab68  Cla1Task3                                
-0     0000ab70  Cla1Task4                                
-0     0000ab78  Cla1Task5                                
-0     0000ab80  Cla1Task6                                
-0     0000ab88  Cla1Task7                                
-0     0000ab90  Cla1Task8                                
-0     00088398  Cla1funcsLoadEnd                         
-abs   00000398  Cla1funcsLoadSize                        
+0     0000aca2  Cla1Task2                                
+0     0000af96  Cla1Task3                                
+0     0000af9e  Cla1Task4                                
+0     0000afa6  Cla1Task5                                
+0     0000afae  Cla1Task6                                
+0     0000afb6  Cla1Task7                                
+0     0000afbe  Cla1Task8                                
+0     000887c6  Cla1funcsLoadEnd                         
+abs   000007c6  Cla1funcsLoadSize                        
 0     00088000  Cla1funcsLoadStart                       
 0     0000a800  Cla1funcsRunStart                        
-0     000080fe  CycleFreq                                
-0     000080fc  CycleTime                                
-0     00084d09  DCC_verifyClockFrequency                 
-0     00082842  DC_CheckWatchdog                         
-0     00084cf4  Device_bootCM                            
-0     00084cdf  Device_bootCPU2                          
-0     00084c7e  Device_enablePeripherals                 
-0     00084c55  Device_enableUnbondedGPIOPullups         
-0     00084c42  Device_enableUnbondedGPIOPullupsFor176Pin
-0     00084ca0  Device_init                              
-0     00084c60  Device_initGPIO                          
-0     00084c22  Device_verifyXTAL                        
+0     00083f1d  DCC_verifyClockFrequency                 
+0     00082890  DC_CheckWatchdog                         
+0     000842b0  Device_bootCM                            
+0     0008429b  Device_bootCPU2                          
+0     00084134  Device_enableAllPeripherals              
+0     000840b4  Device_enablePeripherals                 
+0     0008407b  Device_enableUnbondedGPIOPullups         
+0     00084068  Device_enableUnbondedGPIOPullupsFor176Pin
+0     000840d6  Device_init                              
+0     00084096  Device_initGPIO                          
+0     0008404c  Device_verifyXTAL                        
 0     00082015  DisableSyncManChannel                    
-0     00083632  ECAT_Application                         
-0     00083896  ECAT_CheckTimer                          
-0     000827ff  ECAT_Init                                
-0     00082778  ECAT_Main                                
-0     0008379d  ECAT_SetLedIndication                    
-0     00082627  ECAT_StateChange                         
-0     000856c3  ESCSS_configureEEPROMSize                
-0     00085342  ESCSS_configureSync0Connections          
-0     0008537a  ESCSS_configureSync1Connections          
-0     00084e3a  ESC_applicationLayerHandler              
-0     00084e06  ESC_applicationSync0Handler              
-0     00084dd2  ESC_applicationSync1Handler              
-0     0008421a  ESC_clearTimer                           
-0     0008420e  ESC_clearTimer0                          
-0     0008420a  ESC_getTimer                             
-0     00084206  ESC_getTimer0                            
-0     000841ff  ESC_holdESCInReset                       
-0     000845d5  ESC_initGPIO                             
-0     0008411a  ESC_initHW                               
-0     00084106  ESC_loadedCheckEEPROM                    
-0     000840ff  ESC_readBlock                            
-0     000840e0  ESC_readBlockISR                         
-0     000840d9  ESC_readDWord                            
-0     000840d0  ESC_readDWordISR                         
-0     000840c9  ESC_readWord                             
-0     00084054  ESC_readWordISR                          
-0     000840c2  ESC_releaseESCReset                      
-0     000840c0  ESC_releaseHW                            
-0     000840b2  ESC_resetESC                             
-0     0008409b  ESC_setLed                               
-0     00084097  ESC_timerIncPerMilliSec                  
-0     00084090  ESC_writeBlock                           
-0     0008405d  ESC_writeBlockISR                        
-0     0008404d  ESC_writeDWord                           
-0     00084042  ESC_writeDWordISR                        
-0     0008403b  ESC_writeWord                            
-0     00084030  ESC_writeWordISR                         
+0     00083680  ECAT_Application                         
+0     000838e4  ECAT_CheckTimer                          
+0     00082840  ECAT_Init                                
+0     000827b9  ECAT_Main                                
+0     000837eb  ECAT_SetLedIndication                    
+0     00082663  ECAT_StateChange                         
+0     00004000  EPwm1Regs                                
+0     0008595c  ESCSS_configureEEPROMSize                
+0     000855db  ESCSS_configureSync0Connections          
+0     00085613  ESCSS_configureSync1Connections          
+0     000850d1  ESC_applicationLayerHandler              
+0     0008509d  ESC_applicationSync0Handler              
+0     00085069  ESC_applicationSync1Handler              
+0     000844e5  ESC_clearTimer                           
+0     000844d9  ESC_clearTimer0                          
+0     000844d5  ESC_getTimer                             
+0     000844d1  ESC_getTimer0                            
+0     000844ca  ESC_holdESCInReset                       
+0     000848f0  ESC_initGPIO                             
+0     000843e3  ESC_initHW                               
+0     000843cf  ESC_loadedCheckEEPROM                    
+0     000843c8  ESC_readBlock                            
+0     000843a9  ESC_readBlockISR                         
+0     0008439d  ESC_readDWord                            
+0     00084394  ESC_readDWordISR                         
+0     00084388  ESC_readWord                             
+0     0008430e  ESC_readWordISR                          
+0     00084381  ESC_releaseESCReset                      
+0     0008437f  ESC_releaseHW                            
+0     00084371  ESC_resetESC                             
+0     0008435a  ESC_setLed                               
+0     00084356  ESC_timerIncPerMilliSec                  
+0     0008434f  ESC_writeBlock                           
+0     00084317  ESC_writeBlockISR                        
+0     000842ff  ESC_writeDWord                           
+0     000842f4  ESC_writeDWordISR                        
+0     000842e6  ESC_writeWord                            
+0     000842db  ESC_writeWordISR                         
 0     00008121  EcatWdValue                              
-0     0000927d  EepromLoaded                             
+0     0000928d  EepromLoaded                             
 0     0008209b  EnableSyncManChannel                     
 0     00008105  EsmTimeoutCounter                        
-0     0008562b  F2838XCPU1_memcmp                        
-0     00085626  F2838XCPU1_memcpy                        
-0     00085621  F2838XCPU1_memset                        
-0     0008560a  F2838XCPU1_strcpy                        
+0     000858c4  F2838XCPU1_memcmp                        
+0     000858bf  F2838XCPU1_memcpy                        
+0     000858ba  F2838XCPU1_memset                        
+0     000858a3  F2838XCPU1_strcpy                        
 0     000001b8  Flash_initModule                         
-0     000854fb  GPIO_setDirectionMode                    
-0     000853b2  GPIO_setMasterCore                       
-0     00085229  GPIO_setPadConfig                        
-0     0008545a  GPIO_setPinConfig                        
-0     000853ea  GPIO_setQualificationMode                
+0     00085794  GPIO_setDirectionMode                    
+0     0008564b  GPIO_setMasterCore                       
+0     000854c2  GPIO_setPadConfig                        
+0     000856f3  GPIO_setPinConfig                        
+0     00085683  GPIO_setQualificationMode                
 0     00009000  GenObjDic                                
-0     0008399b  GetOutOfMbxQueue                         
+0     000839e9  GetOutOfMbxQueue                         
 0     0008208d  GetSyncMan                               
-0     00083590  GetSystemTimeDelay                       
-0     00083601  HandleCycleTimeMeasurement               
+0     000835de  GetSystemTimeDelay                       
+0     0008364f  HandleCycleTimeMeasurement               
 0     0003b000  IPC_CPU1_To_CPU2_GetBuffer               
 0     0003a000  IPC_CPU1_To_CPU2_PutBuffer               
 0     00038000  IPC_CPU_To_CM_GetBuffer                  
 0     00039000  IPC_CPU_To_CM_PutBuffer                  
 0     00090646  IPC_Instance                             
 0     00009200  InputMapping00x1A00                      
-0     0008445b  InputPDO_ForwardPass                     
-0     00084428  InputPDO_Reset                           
-0     000854c7  Interrupt_enable                         
-0     00085305  Interrupt_initModule                     
-0     000857c3  Interrupt_initVectorTable                
-0     000091c4  LAE_CONTROL0x7000                        
+0     00084752  InputPDO_ForwardPass                     
+0     0008471f  InputPDO_Zeros                           
+0     0008470f  Internal_Reset                           
+0     00085760  Interrupt_enable                         
+0     0008559e  Interrupt_initModule                     
+0     00085a5c  Interrupt_initVectorTable                
+0     000091c5  LAE_CONTROL0x7000                        
 0     000091ca  LAE_CONTROLProcessDataMapping0x1600      
 0     000091ce  LAE_ESTIMATE0x6002                       
 0     000091d6  LAE_SENSE0x6000                          
 0     00008111  LatchInputSync0Counter                   
 0     00008110  LatchInputSync0Value                     
-0     00083b27  MBX_CheckAndCopyMailbox                  
-0     00083a4e  MBX_CopyToSendMailbox                    
-0     00083c05  MBX_Init                                 
-0     00083bce  MBX_MailboxReadInd                       
-0     00083ba8  MBX_MailboxRepeatReq                     
-0     00083ac7  MBX_MailboxSendReq                       
-0     00083afd  MBX_MailboxWriteInd                      
-0     00083b87  MBX_Main                                 
-0     00083a0a  MBX_StartMailboxHandler                  
-0     000839af  MBX_StopMailboxHandler                   
-0     00083991  MailboxServiceInd                        
-0     0008393b  MainInit                                 
-0     000838d9  MainLoop                                 
-0     00084e6e  MemCfg_getInitStatus                     
-0     00084f89  MemCfg_initSections                      
-0     00085422  MemCfg_setLSRAMMasterSel                 
-0     000091c6  ModularDeviceProfile0xF000               
-0     00082f88  OBJ_CopyNumberToString                   
-0     00082fa0  OBJ_GetDesc                              
-0     0008289e  OBJ_GetEntryDesc                         
-0     000828be  OBJ_GetEntryOffset                       
-0     00082f56  OBJ_GetNoOfObjects                       
-0     00082f54  OBJ_GetObjDesc                           
-0     00082f44  OBJ_GetObjectHandle                      
-0     00082ecb  OBJ_GetObjectLength                      
-0     00082e72  OBJ_GetObjectList                        
-0     00082c58  OBJ_Read                                 
-0     000829d6  OBJ_Write                                
+0     00083b75  MBX_CheckAndCopyMailbox                  
+0     00083a9c  MBX_CopyToSendMailbox                    
+0     00083c53  MBX_Init                                 
+0     00083c1c  MBX_MailboxReadInd                       
+0     00083bf6  MBX_MailboxRepeatReq                     
+0     00083b15  MBX_MailboxSendReq                       
+0     00083b4b  MBX_MailboxWriteInd                      
+0     00083bd5  MBX_Main                                 
+0     00083a58  MBX_StartMailboxHandler                  
+0     000839fd  MBX_StopMailboxHandler                   
+0     000839df  MailboxServiceInd                        
+0     00083989  MainInit                                 
+0     00083927  MainLoop                                 
+0     00085105  MemCfg_getInitStatus                     
+0     000852a0  MemCfg_initSections                      
+0     000856bb  MemCfg_setLSRAMMasterSel                 
+0     000091c7  ModularDeviceProfile0xF000               
+0     00082fd6  OBJ_CopyNumberToString                   
+0     00082fee  OBJ_GetDesc                              
+0     000828ec  OBJ_GetEntryDesc                         
+0     0008290c  OBJ_GetEntryOffset                       
+0     00082fa4  OBJ_GetNoOfObjects                       
+0     00082fa2  OBJ_GetObjDesc                           
+0     00082f92  OBJ_GetObjectHandle                      
+0     00082f19  OBJ_GetObjectLength                      
+0     00082ec0  OBJ_GetObjectList                        
+0     00082ca6  OBJ_Read                                 
+0     00082a24  OBJ_Write                                
 0     000091a8  ObjDicList                               
-0     00083705  PDI_Isr                                  
-0     000835b0  PDO_InputMapping                         
-0     000836ca  PDO_OutputMapping                        
-0     00083979  PutInMbxQueue                            
+0     00083753  PDI_Isr                                  
+0     000835fe  PDO_InputMapping                         
+0     00083718  PDO_OutputMapping                        
+0     000839c7  PutInMbxQueue                            
 0     0008612d  RamfuncsLoadEnd                          
 abs   0000012d  RamfuncsLoadSize                         
 0     00086000  RamfuncsLoadStart                        
 0     000002e5  RamfuncsRunEnd                           
 abs   0000012d  RamfuncsRunSize                          
 0     000001b8  RamfuncsRunStart                         
-0     00084265  Read0x10F8                               
+0     00084530  Read0x10F8                               
 0     0008202b  ResetALEventMask                         
-0     00083558  SDOS_ClearPendingResponse                
-0     00083391  SDOS_SdoInd                              
-0     000830c3  SDOS_SdoInfoInd                          
-0     00083065  SDOS_SdoRes                              
-0     0000927c  SMActivate                               
-0     00084890  SPI_PinMuxOptions                        
-0     00085491  SPI_clearInterruptStatus                 
+0     000835a6  SDOS_ClearPendingResponse                
+0     000833df  SDOS_SdoInd                              
+0     00083111  SDOS_SdoInfoInd                          
+0     000830b3  SDOS_SdoRes                              
+0     0000928c  SMActivate                               
+0     00084bab  SPI_PinMuxOptions                        
+0     0008572a  SPI_clearInterruptStatus                 
 0     00008180  SPI_config                               
-0     000847ec  SPI_configure                            
-0     0008555d  SPI_enableInterrupt                      
-0     0008477c  SPI_init                                 
-0     00085179  SPI_setConfig                            
-0     00083009  SdoRes                                   
-0     00082335  SetALEventMask                           
-0     000822f8  SetALStatus                              
+0     00084b07  SPI_configure                            
+0     000857f6  SPI_enableInterrupt                      
+0     00084a97  SPI_init                                 
+0     00085412  SPI_setConfig                            
+0     00083057  SdoRes                                   
+0     0008233f  SetALEventMask                           
+0     00082302  SetALStatus                              
 0     000820b0  StartInputHandler                        
 0     00082070  StartOutputHandler                       
 0     0008203c  StopInputHandler                         
 0     00082010  StopOutputHandler                        
 0     0000810c  Sync0WdCounter                           
 0     0000810d  Sync0WdValue                             
-0     00083643  Sync0_Isr                                
+0     00083691  Sync0_Isr                                
 0     0000810e  Sync1WdCounter                           
 0     0000810f  Sync1WdValue                             
-0     000835e6  Sync1_Isr                                
+0     00083634  Sync1_Isr                                
 0     00008126  SyncManInfo                              
-0     0008567a  SysCtl_controlCMReset                    
-0     00085707  SysCtl_controlCPU2Reset                  
+0     00085913  SysCtl_controlCMReset                    
+0     000859a0  SysCtl_controlCPU2Reset                  
 0     000002e1  SysCtl_delay                             
-0     00084a1e  SysCtl_isPLLValid                        
-0     000851d5  SysCtl_selectOscSource                   
-0     0008527b  SysCtl_selectOscSourceAuxPLL             
-0     0008569f  SysCtl_selectXTAL                        
-0     0008588b  SysCtl_selectXTALSingleEnded             
-0     00083ecf  SysCtl_setAuxClock                       
-0     000848e6  SysCtl_setClock                          
+0     00084e50  SysCtl_isPLLValid                        
+0     0008546e  SysCtl_selectOscSource                   
+0     00085514  SysCtl_selectOscSourceAuxPLL             
+0     00085938  SysCtl_selectXTAL                        
+0     00085b24  SysCtl_selectXTALSingleEnded             
+0     00084d39  SysCtl_setAuxClock                       
+0     00084c01  SysCtl_setClock                          
 0     00082000  UpdateEEPROMLoadedState                  
-0     00085c8c  __TI_CINIT_Base                          
-0     00085c9c  __TI_CINIT_Limit                         
-0     00085c9c  __TI_CINIT_Warm                          
-0     00085c7a  __TI_Handler_Table_Base                  
-0     00085c80  __TI_Handler_Table_Limit                 
+0     00085f28  __TI_CINIT_Base                          
+0     00085f38  __TI_CINIT_Limit                         
+0     00085f38  __TI_CINIT_Warm                          
+0     00085f14  __TI_Handler_Table_Base                  
+0     00085f1a  __TI_Handler_Table_Limit                 
 0     0000d200  __TI_STACK_END                           
 abs   00000200  __TI_STACK_SIZE                          
 abs   00000200  __TI_SYSMEM_SIZE                         
-0     0008558c  __TI_auto_init_nobinit_nopinit           
-0     00009282  __TI_cleanup_ptr                         
-0     0008552c  __TI_decompress_lzss                     
-0     00085af2  __TI_decompress_none                     
-0     00009284  __TI_dtors_ptr                           
-0     00009280  __TI_enable_exit_profile_output          
-0     00083ecd  __TI_heap_check                          
-0     00083eae  __TI_heap_largest_available              
-0     00083e8f  __TI_heap_total_available                
+0     00085825  __TI_auto_init_nobinit_nopinit           
+0     00009288  __TI_cleanup_ptr                         
+0     000857c5  __TI_decompress_lzss                     
+0     00085d8b  __TI_decompress_none                     
+0     0000928a  __TI_dtors_ptr                           
+0     00009286  __TI_enable_exit_profile_output          
+0     00083f1b  __TI_heap_check                          
+0     00083efc  __TI_heap_largest_available              
+0     00083edd  __TI_heap_total_available                
 abs   ffffffff  __TI_pprof_out_hndl                      
 abs   ffffffff  __TI_prof_data_size                      
 abs   ffffffff  __TI_prof_data_start                     
-0     00085aa3  __TI_zero_init_nomemset                  
-0     000858be  __c28xabi_andll                          
-0     000857e1  __c28xabi_cmpll                          
-0     000857f3  __c28xabi_cmpull                         
-0     00084f01  __c28xabi_divf                           
-0     000856e5  __c28xabi_divi                           
-0     00085ade  __c28xabi_divu                           
-0     000856f6  __c28xabi_modi                           
-0     00085ae3  __c28xabi_modu                           
-0     000858c6  __c28xabi_orll                           
-0     000858ce  __c28xabi_xorll                          
+0     00085d3c  __TI_zero_init_nomemset                  
+0     00085b57  __c28xabi_andll                          
+0     00085a7a  __c28xabi_cmpll                          
+0     00085a8c  __c28xabi_cmpull                         
+0     00085198  __c28xabi_divf                           
+0     0008597e  __c28xabi_divi                           
+0     00085d77  __c28xabi_divu                           
+0     0008598f  __c28xabi_modi                           
+0     00085d7c  __c28xabi_modu                           
+0     00085b5f  __c28xabi_orll                           
+0     00085b67  __c28xabi_xorll                          
 n/a   UNDEFED   __c_args__                               
-0     0000ab36  __claabi_memset                          
-0     00084c1f  __error__                                
+0     00008948  __claCLAatan_sp                          
+0     00008948  __claCLAcos_sp                           
+0     00008948  __claCLAdiv_sp                           
+0     00008948  __claCLAsin_sp                           
+0     00008948  __claCLAsqrt_sp                          
+0     0000af2a  __claabi_memset                          
+0     00084030  __error__                                
 0     0000d000  __stack                                  
-0     00085abc  _args_main                               
-0     000858a5  _c_int00                                 
+0     00085d55  _args_main                               
+0     00085b3e  _c_int00                                 
 0     000091bc  _lock                                    
-0     00085af1  _nop                                     
-0     00085aed  _register_lock                           
-0     00085ae9  _register_unlock                         
+0     00085d8a  _nop                                     
+0     00085d86  _register_lock                           
+0     00085d82  _register_unlock                         
 0     0000c800  _sys_memory                              
-0     00085b1e  _system_post_cinit                       
-0     00085b1c  _system_pre_init                         
+0     00085db7  _system_post_cinit                       
+0     00085db5  _system_pre_init                         
 0     000091be  _unlock                                  
 0     00090a4c  aName0x1000                              
 0     00090a2e  aName0x1001                              
@@ -1150,11 +1265,11 @@ n/a   UNDEFED   __c_args__
 0     0000812a  aPdOutputData                            
 0     00008160  aSdoInfoHeader                           
 0     00009263  aSubindexDesc                            
-0     000855e1  abort                                    
+0     0008587a  abort                                    
 0     0000921a  acDevicename                             
 0     0000923b  acHardwareversion                        
 0     0000924f  acSoftwareversion                        
-0     00083de1  aligned_alloc                            
+0     00083e2f  aligned_alloc                            
 0     00090a3d  asEntryDesc0x1018                        
 0     00090a70  asEntryDesc0x10F1                        
 0     00090a82  asEntryDesc0x1600                        
@@ -1180,14 +1295,14 @@ n/a   UNDEFED   __c_args__
 0     00008113  bEscIntEnabled                           
 0     0000814e  bEtherCATErrorLed                        
 0     0000814d  bEtherCATRunLed                          
-0     00009270  bInitFinished                            
+0     0000927a  bInitFinished                            
 0     00008083  bMbxRepeatToggle                         
 0     00008082  bMbxRunning                              
 0     00008150  bMinCycleTimeMeasurementStarted          
 0     0000808b  bNoMbxMemoryAvailable                    
 0     00008080  bReceiveMbxIsLocked                      
 0     0000814f  bRunApplication                          
-0     00009287  bSdoInWork                               
+0     00009291  bSdoInWork                               
 0     0000806a  bSdoSegAccess                            
 0     00008069  bSdoSegFollows                           
 0     0000806d  bSdoSegLastToggle                        
@@ -1198,30 +1313,34 @@ n/a   UNDEFED   __c_args__
 0     00008103  bWdTrigger                               
 0     00090888  cAbortCode                               
 0     00090a1e  cBitMask                                 
-0     00083db4  calloc                                   
-0     00085074  cla1Isr1                                 
-0     00085063  cla1Isr2                                 
-0     00085054  cla1Isr3                                 
-0     00085045  cla1Isr4                                 
-0     00085036  cla1Isr5                                 
-0     00085027  cla1Isr6                                 
-0     00085018  cla1Isr7                                 
-0     00085007  cla1Isr8                                 
+0     00083e02  calloc                                   
+0     0008528f  cla1Isr1                                 
+0     0008527e  cla1Isr2                                 
+0     0008526d  cla1Isr3                                 
+0     0008525e  cla1Isr4                                 
+0     0008524f  cla1Isr5                                 
+0     00085240  cla1Isr6                                 
+0     00085231  cla1Isr7                                 
+0     00085220  cla1Isr8                                 
 0     00080000  code_start                               
-0     000855e3  exit                                     
-0     00083c62  free                                     
+0     0008587c  exit                                     
+0     00083cb0  free                                     
+0     000091c0  g_ActiveDRng                             
+0     00008167  g_ActiveMode                             
+0     0000928e  g_ActiveModeTimeCounter                  
+0     00001500  g_ActiveTaps                             
 0     00001480  g_Attitude                               
 0     00001486  g_SensBurst                              
-0     0000927e  g_biascounter                            
 0     0000810b  i16WaitForPllRunningCnt                  
 0     0000810a  i16WaitForPllRunningTimeout              
-0     0008440c  main                                     
-0     00083c37  malloc                                   
-0     00083de1  memalign                                 
-0     00085a1a  memcmp                                   
-0     00085839  memcpy                                   
-0     00085b11  memset                                   
-0     00083db0  minit                                    
+0     000842c5  initEPWM1                                
+0     000846f3  main                                     
+0     00083c85  malloc                                   
+0     00083e2f  memalign                                 
+0     00085cb3  memcmp                                   
+0     00085ad2  memcpy                                   
+0     00085daa  memset                                   
+0     00083dfe  minit                                    
 0     00008120  nAlStatus                                
 0     00008119  nEcatStateTrans                          
 0     00008123  nEscAddrInputData                        
@@ -1240,18 +1359,20 @@ n/a   UNDEFED   __c_args__
 0     00008152  pAPPL_CoeReadInd                         
 0     00008154  pAPPL_CoeWriteInd                        
 0     00008156  pAPPL_MainLoop                           
-0     0000816c  pCoeSendStored                           
+0     00008168  pCoeSendStored                           
 0     00008076  pSdoInfoObjEntry                         
 0     00008072  pSdoPendFunc                             
 0     00008078  pSdoResStored                            
 0     00008074  pSdoSegData                              
 0     0000807e  pSdoSegObjEntry                          
 0     00008070  pStoreData                               
+0     00009272  p_c                                      
+0     00009270  p_s                                      
 0     0000808e  psReadMbx                                
 0     00008090  psRepeatMbx                              
 0     00008092  psStoreMbx                               
 0     0000808c  psWriteMbx                               
-0     00083d2c  realloc                                  
+0     00083d7a  realloc                                  
 0     00008001  sCycleDiag                               
 0     00090a0c  sEntryDesc0x1000                         
 0     00090a0f  sEntryDesc0x1001                         
@@ -1259,16 +1380,19 @@ n/a   UNDEFED   __c_args__
 0     00090a15  sEntryDesc0x1009                         
 0     00090a18  sEntryDesc0x100A                         
 0     00090a1b  sEntryDesc0x10F8                         
-0     00009276  sErrorSettings                           
+0     00009280  sErrorSettings                           
 0     000091b2  sIdentity                                
 0     000080c0  sMbxReceiveQueue                         
 0     00008094  sMbxSendQueue                            
-0     000091c0  sRxPDOassign                             
+0     000091c1  sRxPDOassign                             
 0     00008040  sSyncManInPar                            
 0     00008002  sSyncManOutPar                           
 0     000091aa  sSyncmanagertype                         
-0     000091c2  sTxPDOassign                             
-0     00085b02  strlen                                   
+0     000091c3  sTxPDOassign                             
+0     00009278  s_t                                      
+0     00085d9b  strlen                                   
+0     00009274  t_c                                      
+0     00009276  t_t                                      
 0     00008124  u16ALEventMask                           
 0     000091a4  u16ErrorRegister                         
 0     00008086  u16EscAddrReceiveMbx                     
@@ -1280,10 +1404,10 @@ n/a   UNDEFED   __c_args__
 0     00008108  u16SmSync0Value                          
 0     00008065  u16StoreIndex                            
 0     00008125  u16dummy                                 
-0     0000816a  u32CheckForDcOverrunCnt                  
+0     000080fe  u32CheckForDcOverrunCnt                  
 0     00008158  u32CycleTimeStartValue                   
 0     000091a6  u32Devicetype                            
-0     00008168  u32LastDc32Value                         
+0     000080fc  u32LastDc32Value                         
 0     0000815a  u32MinCycleTimeStartValue                
 0     0000815e  u32MinCycleTimeValue                     
 0     0000806e  u32StoreDataSize                         
@@ -1309,6 +1433,8 @@ page  address   name
 0     000002e5  RamfuncsRunEnd                           
 0     00001480  g_Attitude                               
 0     00001486  g_SensBurst                              
+0     00001500  g_ActiveTaps                             
+0     00004000  EPwm1Regs                                
 0     00008000  bSyncSetByUser                           
 0     00008001  sCycleDiag                               
 0     00008002  sSyncManOutPar                           
@@ -1353,8 +1479,8 @@ page  address   name
 0     00008094  sMbxSendQueue                            
 0     000080c0  sMbxReceiveQueue                         
 0     000080da  aPdInputData                             
-0     000080fc  CycleTime                                
-0     000080fe  CycleFreq                                
+0     000080fc  u32LastDc32Value                         
+0     000080fe  u32CheckForDcOverrunCnt                  
 0     00008100  bEcatOutputUpdateRunning                 
 0     00008101  bEcatInputUpdateRunning                  
 0     00008102  bEcatFirstOutputsReceived                
@@ -1408,11 +1534,15 @@ page  address   name
 0     0000815c  u32SystemTimeReadFailure                 
 0     0000815e  u32MinCycleTimeValue                     
 0     00008160  aSdoInfoHeader                           
-0     00008168  u32LastDc32Value                         
-0     0000816a  u32CheckForDcOverrunCnt                  
-0     0000816c  pCoeSendStored                           
+0     00008167  g_ActiveMode                             
+0     00008168  pCoeSendStored                           
 0     00008180  SPI_config                               
-0     00008948  Cla1ConstRunStart                        
+0     00008948  __claCLAatan_sp                          
+0     00008948  __claCLAcos_sp                           
+0     00008948  __claCLAdiv_sp                           
+0     00008948  __claCLAsin_sp                           
+0     00008948  __claCLAsqrt_sp                          
+0     0000894c  Cla1ConstRunStart                        
 0     00009000  GenObjDic                                
 0     000090f0  ApplicationObjDic                        
 0     000091a4  u16ErrorRegister                         
@@ -1423,10 +1553,11 @@ page  address   name
 0     000091b2  sIdentity                                
 0     000091bc  _lock                                    
 0     000091be  _unlock                                  
-0     000091c0  sRxPDOassign                             
-0     000091c2  sTxPDOassign                             
-0     000091c4  LAE_CONTROL0x7000                        
-0     000091c6  ModularDeviceProfile0xF000               
+0     000091c0  g_ActiveDRng                             
+0     000091c1  sRxPDOassign                             
+0     000091c3  sTxPDOassign                             
+0     000091c5  LAE_CONTROL0x7000                        
+0     000091c7  ModularDeviceProfile0xF000               
 0     000091ca  LAE_CONTROLProcessDataMapping0x1600      
 0     000091ce  LAE_ESTIMATE0x6002                       
 0     000091d6  LAE_SENSE0x6000                          
@@ -1435,27 +1566,58 @@ page  address   name
 0     0000923b  acHardwareversion                        
 0     0000924f  acSoftwareversion                        
 0     00009263  aSubindexDesc                            
-0     00009270  bInitFinished                            
-0     00009276  sErrorSettings                           
-0     0000927c  SMActivate                               
-0     0000927d  EepromLoaded                             
-0     0000927e  g_biascounter                            
-0     00009280  __TI_enable_exit_profile_output          
-0     00009282  __TI_cleanup_ptr                         
-0     00009284  __TI_dtors_ptr                           
-0     00009287  bSdoInWork                               
-0     0000a000  CLA1mathTablesLoadStart                  
-0     0000a000  CLA1mathTablesRunStart                   
+0     00009270  p_s                                      
+0     00009272  p_c                                      
+0     00009274  t_c                                      
+0     00009276  t_t                                      
+0     00009278  s_t                                      
+0     0000927a  bInitFinished                            
+0     00009280  sErrorSettings                           
+0     00009286  __TI_enable_exit_profile_output          
+0     00009288  __TI_cleanup_ptr                         
+0     0000928a  __TI_dtors_ptr                           
+0     0000928c  SMActivate                               
+0     0000928d  EepromLoaded                             
+0     0000928e  g_ActiveModeTimeCounter                  
+0     00009291  bSdoInWork                               
+0     00009800  CLA1mathTablesRunStart                   
+0     00009800  CLAatan2HalfPITable                      
+0     00009804  CLAINV2PI                                
+0     00009806  CLAatan2Table                            
+0     0000998c  CLAatan2TableEnd                         
+0     0000998c  CLAsinTable                              
+0     0000998c  CLAsincosTable                           
+0     0000998c  CLAsincosTable_Sin0                      
+0     000099cc  CLAcosTable                              
+0     000099cc  CLAsincosTable_Cos0                      
+0     00009a8c  CLAsinTableEnd                           
+0     00009ace  CLAcosTableEnd                           
+0     00009ace  CLAsincosTable_TABLE_SIZE                
+0     00009ad0  CLAsincosTable_TABLE_SIZEDivTwoPi        
+0     00009ad2  CLAsincosTable_TwoPiDivTABLE_SIZE        
+0     00009ad4  CLAsincosTable_TABLE_MASK                
+0     00009ad6  CLAsincosTable_Coef0                     
+0     00009ad8  CLAsincosTable_Coef1                     
+0     00009ada  CLAsincosTable_Coef1_pos                 
+0     00009adc  CLAsincosTable_Coef2                     
+0     00009ade  CLAsincosTable_Coef3                     
+0     00009ae0  CLAsincosTable_Coef3_neg                 
+0     00009ae2  CLAsincosTableEnd                        
 0     0000a800  Cla1Task1                                
 0     0000a800  Cla1funcsRunStart                        
-0     0000aafa  Cla1Task2                                
-0     0000ab36  __claabi_memset                          
-0     0000ab68  Cla1Task3                                
-0     0000ab70  Cla1Task4                                
-0     0000ab78  Cla1Task5                                
-0     0000ab80  Cla1Task6                                
-0     0000ab88  Cla1Task7                                
-0     0000ab90  Cla1Task8                                
+0     0000aca2  Cla1Task2                                
+0     0000ae68  CLAatan                                  
+0     0000aeba  CLAcos                                   
+0     0000aef2  CLAsin                                   
+0     0000af2a  __claabi_memset                          
+0     0000af5c  CLAsqrt                                  
+0     0000af7c  CLAdiv                                   
+0     0000af96  Cla1Task3                                
+0     0000af9e  Cla1Task4                                
+0     0000afa6  Cla1Task5                                
+0     0000afae  Cla1Task6                                
+0     0000afb6  Cla1Task7                                
+0     0000afbe  Cla1Task8                                
 0     0000c800  _sys_memory                              
 0     0000d000  __stack                                  
 0     0000d200  __TI_STACK_END                           
@@ -1473,216 +1635,220 @@ page  address   name
 0     0008208d  GetSyncMan                               
 0     0008209b  EnableSyncManChannel                     
 0     000820b0  StartInputHandler                        
-0     000822f8  SetALStatus                              
-0     00082335  SetALEventMask                           
-0     00082346  CheckSmSettings                          
-0     00082421  BackToInitTransition                     
-0     00082425  AL_ControlInd                            
-0     00082627  ECAT_StateChange                         
-0     000826b5  AL_ControlRes                            
-0     00082778  ECAT_Main                                
-0     000827ff  ECAT_Init                                
-0     00082842  DC_CheckWatchdog                         
-0     00082879  CheckIfEcatError                         
-0     0008289e  OBJ_GetEntryDesc                         
-0     000828be  OBJ_GetEntryOffset                       
-0     0008296b  CheckSyncTypeValue                       
-0     000829d6  OBJ_Write                                
-0     00082c58  OBJ_Read                                 
-0     00082e72  OBJ_GetObjectList                        
-0     00082ecb  OBJ_GetObjectLength                      
-0     00082f44  OBJ_GetObjectHandle                      
-0     00082f54  OBJ_GetObjDesc                           
-0     00082f56  OBJ_GetNoOfObjects                       
-0     00082f88  OBJ_CopyNumberToString                   
-0     00082fa0  OBJ_GetDesc                              
-0     00083009  SdoRes                                   
-0     00083065  SDOS_SdoRes                              
-0     000830c3  SDOS_SdoInfoInd                          
-0     00083391  SDOS_SdoInd                              
-0     00083558  SDOS_ClearPendingResponse                
-0     00083590  GetSystemTimeDelay                       
-0     000835b0  PDO_InputMapping                         
-0     000835e6  Sync1_Isr                                
-0     00083601  HandleCycleTimeMeasurement               
-0     00083632  ECAT_Application                         
-0     00083643  Sync0_Isr                                
-0     000836ca  PDO_OutputMapping                        
-0     00083705  PDI_Isr                                  
-0     0008379d  ECAT_SetLedIndication                    
-0     00083896  ECAT_CheckTimer                          
-0     000838d9  MainLoop                                 
-0     0008393b  MainInit                                 
-0     00083979  PutInMbxQueue                            
-0     00083991  MailboxServiceInd                        
-0     0008399b  GetOutOfMbxQueue                         
-0     000839af  MBX_StopMailboxHandler                   
-0     00083a0a  MBX_StartMailboxHandler                  
-0     00083a4e  MBX_CopyToSendMailbox                    
-0     00083ac7  MBX_MailboxSendReq                       
-0     00083afd  MBX_MailboxWriteInd                      
-0     00083b27  MBX_CheckAndCopyMailbox                  
-0     00083b87  MBX_Main                                 
-0     00083ba8  MBX_MailboxRepeatReq                     
-0     00083bce  MBX_MailboxReadInd                       
-0     00083c05  MBX_Init                                 
-0     00083c37  malloc                                   
-0     00083c62  free                                     
-0     00083d2c  realloc                                  
-0     00083db0  minit                                    
-0     00083db4  calloc                                   
-0     00083de1  aligned_alloc                            
-0     00083de1  memalign                                 
-0     00083e8f  __TI_heap_total_available                
-0     00083eae  __TI_heap_largest_available              
-0     00083ecd  __TI_heap_check                          
-0     00083ecf  SysCtl_setAuxClock                       
+0     00082302  SetALStatus                              
+0     0008233f  SetALEventMask                           
+0     00082350  CheckSmSettings                          
+0     00082440  BackToInitTransition                     
+0     00082444  AL_ControlInd                            
+0     00082663  ECAT_StateChange                         
+0     000826f4  AL_ControlRes                            
+0     000827b9  ECAT_Main                                
+0     00082840  ECAT_Init                                
+0     00082890  DC_CheckWatchdog                         
+0     000828c7  CheckIfEcatError                         
+0     000828ec  OBJ_GetEntryDesc                         
+0     0008290c  OBJ_GetEntryOffset                       
+0     000829b9  CheckSyncTypeValue                       
+0     00082a24  OBJ_Write                                
+0     00082ca6  OBJ_Read                                 
+0     00082ec0  OBJ_GetObjectList                        
+0     00082f19  OBJ_GetObjectLength                      
+0     00082f92  OBJ_GetObjectHandle                      
+0     00082fa2  OBJ_GetObjDesc                           
+0     00082fa4  OBJ_GetNoOfObjects                       
+0     00082fd6  OBJ_CopyNumberToString                   
+0     00082fee  OBJ_GetDesc                              
+0     00083057  SdoRes                                   
+0     000830b3  SDOS_SdoRes                              
+0     00083111  SDOS_SdoInfoInd                          
+0     000833df  SDOS_SdoInd                              
+0     000835a6  SDOS_ClearPendingResponse                
+0     000835de  GetSystemTimeDelay                       
+0     000835fe  PDO_InputMapping                         
+0     00083634  Sync1_Isr                                
+0     0008364f  HandleCycleTimeMeasurement               
+0     00083680  ECAT_Application                         
+0     00083691  Sync0_Isr                                
+0     00083718  PDO_OutputMapping                        
+0     00083753  PDI_Isr                                  
+0     000837eb  ECAT_SetLedIndication                    
+0     000838e4  ECAT_CheckTimer                          
+0     00083927  MainLoop                                 
+0     00083989  MainInit                                 
+0     000839c7  PutInMbxQueue                            
+0     000839df  MailboxServiceInd                        
+0     000839e9  GetOutOfMbxQueue                         
+0     000839fd  MBX_StopMailboxHandler                   
+0     00083a58  MBX_StartMailboxHandler                  
+0     00083a9c  MBX_CopyToSendMailbox                    
+0     00083b15  MBX_MailboxSendReq                       
+0     00083b4b  MBX_MailboxWriteInd                      
+0     00083b75  MBX_CheckAndCopyMailbox                  
+0     00083bd5  MBX_Main                                 
+0     00083bf6  MBX_MailboxRepeatReq                     
+0     00083c1c  MBX_MailboxReadInd                       
+0     00083c53  MBX_Init                                 
+0     00083c85  malloc                                   
+0     00083cb0  free                                     
+0     00083d7a  realloc                                  
+0     00083dfe  minit                                    
+0     00083e02  calloc                                   
+0     00083e2f  aligned_alloc                            
+0     00083e2f  memalign                                 
+0     00083edd  __TI_heap_total_available                
+0     00083efc  __TI_heap_largest_available              
+0     00083f1b  __TI_heap_check                          
+0     00083f1d  DCC_verifyClockFrequency                 
 0     00084000  Cla1ConstLoadStart                       
-0     00084030  ESC_writeWordISR                         
-0     0008403b  ESC_writeWord                            
-0     00084042  ESC_writeDWordISR                        
-0     0008404d  ESC_writeDWord                           
-0     00084054  ESC_readWordISR                          
-0     0008405d  ESC_writeBlockISR                        
-0     00084090  ESC_writeBlock                           
-0     00084097  ESC_timerIncPerMilliSec                  
-0     0008409b  ESC_setLed                               
-0     000840b2  ESC_resetESC                             
-0     000840c0  ESC_releaseHW                            
-0     000840c2  ESC_releaseESCReset                      
-0     000840c9  ESC_readWord                             
-0     000840d0  ESC_readDWordISR                         
-0     000840d9  ESC_readDWord                            
-0     000840e0  ESC_readBlockISR                         
-0     000840ff  ESC_readBlock                            
-0     00084106  ESC_loadedCheckEEPROM                    
-0     0008411a  ESC_initHW                               
-0     000841ff  ESC_holdESCInReset                       
-0     00084206  ESC_getTimer0                            
-0     0008420a  ESC_getTimer                             
-0     0008420e  ESC_clearTimer0                          
-0     0008421a  ESC_clearTimer                           
-0     00084226  COE_SyncTimeStamp                        
-0     00084265  Read0x10F8                               
-0     0008428d  COE_UpdateSyncErrorStatus                
-0     000842ac  COE_RemoveDicEntry                       
-0     000842d0  COE_AddObjectToDic                       
-0     00084307  AddObjectsToObjDictionary                
-0     0008431d  COE_ObjDictionaryInit                    
-0     0008432c  COE_ClearObjDictionary                   
-0     0008433d  COE_ObjInit                              
-0     000843ae  COE_Main                                 
-0     00084408  COE_GetObjectDictionary                  
-0     0008440c  main                                     
-0     00084428  InputPDO_Reset                           
-0     0008445b  InputPDO_ForwardPass                     
-0     00084492  APPL_StopOutputHandler                   
-0     00084494  APPL_StopMailboxHandler                  
-0     00084496  APPL_StopInputHandler                    
-0     00084498  APPL_StartOutputHandler                  
-0     0008449a  APPL_StartMailboxHandler                 
-0     0008449c  APPL_StartInputHandler                   
-0     0008449e  APPL_OutputMapping                       
-0     000844a4  APPL_InputMapping                        
-0     000844fd  APPL_GenerateMapping                     
-0     00084573  APPL_Application                         
-0     000845d4  APPL_AckErrorInd                         
-0     000845d5  ESC_initGPIO                             
-0     0008477c  SPI_init                                 
-0     000847ec  SPI_configure                            
-0     00084890  SPI_PinMuxOptions                        
-0     000848e6  SysCtl_setClock                          
-0     00084a1e  SysCtl_isPLLValid                        
-0     00084b2e  CLA_initCpu1Cla1                         
-0     00084bab  CLA_configClaMemory                      
-0     00084c1f  __error__                                
-0     00084c22  Device_verifyXTAL                        
-0     00084c42  Device_enableUnbondedGPIOPullupsFor176Pin
-0     00084c55  Device_enableUnbondedGPIOPullups         
-0     00084c60  Device_initGPIO                          
-0     00084c7e  Device_enablePeripherals                 
-0     00084ca0  Device_init                              
-0     00084cdf  Device_bootCPU2                          
-0     00084cf4  Device_bootCM                            
-0     00084d09  DCC_verifyClockFrequency                 
-0     00084dd2  ESC_applicationSync1Handler              
-0     00084e06  ESC_applicationSync0Handler              
-0     00084e3a  ESC_applicationLayerHandler              
-0     00084e6e  MemCfg_getInitStatus                     
-0     00084f01  __c28xabi_divf                           
-0     00084f89  MemCfg_initSections                      
-0     00085007  cla1Isr8                                 
-0     00085018  cla1Isr7                                 
-0     00085027  cla1Isr6                                 
-0     00085036  cla1Isr5                                 
-0     00085045  cla1Isr4                                 
-0     00085054  cla1Isr3                                 
-0     00085063  cla1Isr2                                 
-0     00085074  cla1Isr1                                 
-0     00085179  SPI_setConfig                            
-0     000851d5  SysCtl_selectOscSource                   
-0     00085229  GPIO_setPadConfig                        
-0     0008527b  SysCtl_selectOscSourceAuxPLL             
-0     000852c2  COE_ServiceInd                           
-0     000852d8  COE_Init                                 
-0     000852e0  COE_ContinueInd                          
-0     00085305  Interrupt_initModule                     
-0     00085342  ESCSS_configureSync0Connections          
-0     0008537a  ESCSS_configureSync1Connections          
-0     000853b2  GPIO_setMasterCore                       
-0     000853ea  GPIO_setQualificationMode                
-0     00085422  MemCfg_setLSRAMMasterSel                 
-0     0008545a  GPIO_setPinConfig                        
-0     00085491  SPI_clearInterruptStatus                 
-0     000854c7  Interrupt_enable                         
-0     000854fb  GPIO_setDirectionMode                    
-0     0008552c  __TI_decompress_lzss                     
-0     0008555d  SPI_enableInterrupt                      
-0     0008558c  __TI_auto_init_nobinit_nopinit           
-0     000855e1  C$$EXIT                                  
-0     000855e1  abort                                    
-0     000855e3  exit                                     
-0     0008560a  F2838XCPU1_strcpy                        
-0     00085621  F2838XCPU1_memset                        
-0     00085626  F2838XCPU1_memcpy                        
-0     0008562b  F2838XCPU1_memcmp                        
-0     0008567a  SysCtl_controlCMReset                    
-0     0008569f  SysCtl_selectXTAL                        
-0     000856c3  ESCSS_configureEEPROMSize                
-0     000856e5  __c28xabi_divi                           
-0     000856f6  __c28xabi_modi                           
-0     00085707  SysCtl_controlCPU2Reset                  
-0     000857c3  Interrupt_initVectorTable                
-0     000857e1  __c28xabi_cmpll                          
-0     000857f3  __c28xabi_cmpull                         
-0     00085839  memcpy                                   
-0     0008588b  SysCtl_selectXTALSingleEnded             
-0     000858a5  _c_int00                                 
-0     000858be  __c28xabi_andll                          
-0     000858c6  __c28xabi_orll                           
-0     000858ce  __c28xabi_xorll                          
-0     00085a1a  memcmp                                   
-0     00085aa3  __TI_zero_init_nomemset                  
-0     00085abc  _args_main                               
-0     00085ade  __c28xabi_divu                           
-0     00085ae3  __c28xabi_modu                           
-0     00085ae9  _register_unlock                         
-0     00085aed  _register_lock                           
-0     00085af1  _nop                                     
-0     00085af2  __TI_decompress_none                     
-0     00085b02  strlen                                   
-0     00085b11  memset                                   
-0     00085b1c  _system_pre_init                         
-0     00085b1e  _system_post_cinit                       
-0     00085c7a  __TI_Handler_Table_Base                  
-0     00085c80  __TI_Handler_Table_Limit                 
-0     00085c8c  __TI_CINIT_Base                          
-0     00085c9c  __TI_CINIT_Limit                         
-0     00085c9c  __TI_CINIT_Warm                          
+0     00084030  __error__                                
+0     0008404c  Device_verifyXTAL                        
+0     00084068  Device_enableUnbondedGPIOPullupsFor176Pin
+0     0008407b  Device_enableUnbondedGPIOPullups         
+0     00084096  Device_initGPIO                          
+0     000840b4  Device_enablePeripherals                 
+0     000840d6  Device_init                              
+0     00084134  Device_enableAllPeripherals              
+0     0008429b  Device_bootCPU2                          
+0     000842b0  Device_bootCM                            
+0     000842c5  initEPWM1                                
+0     000842db  ESC_writeWordISR                         
+0     000842e6  ESC_writeWord                            
+0     000842f4  ESC_writeDWordISR                        
+0     000842ff  ESC_writeDWord                           
+0     0008430e  ESC_readWordISR                          
+0     00084317  ESC_writeBlockISR                        
+0     0008434f  ESC_writeBlock                           
+0     00084356  ESC_timerIncPerMilliSec                  
+0     0008435a  ESC_setLed                               
+0     00084371  ESC_resetESC                             
+0     0008437f  ESC_releaseHW                            
+0     00084381  ESC_releaseESCReset                      
+0     00084388  ESC_readWord                             
+0     00084394  ESC_readDWordISR                         
+0     0008439d  ESC_readDWord                            
+0     000843a9  ESC_readBlockISR                         
+0     000843c8  ESC_readBlock                            
+0     000843cf  ESC_loadedCheckEEPROM                    
+0     000843e3  ESC_initHW                               
+0     000844ca  ESC_holdESCInReset                       
+0     000844d1  ESC_getTimer0                            
+0     000844d5  ESC_getTimer                             
+0     000844d9  ESC_clearTimer0                          
+0     000844e5  ESC_clearTimer                           
+0     000844f1  COE_SyncTimeStamp                        
+0     00084530  Read0x10F8                               
+0     00084558  COE_UpdateSyncErrorStatus                
+0     00084577  COE_RemoveDicEntry                       
+0     0008459b  COE_AddObjectToDic                       
+0     000845d2  AddObjectsToObjDictionary                
+0     000845e8  COE_ObjDictionaryInit                    
+0     000845f7  COE_ClearObjDictionary                   
+0     00084608  COE_ObjInit                              
+0     00084695  COE_Main                                 
+0     000846ef  COE_GetObjectDictionary                  
+0     000846f3  main                                     
+0     0008470f  Internal_Reset                           
+0     0008471f  InputPDO_Zeros                           
+0     00084752  InputPDO_ForwardPass                     
+0     00084789  Application_Delay_Control                
+0     000847d1  APPL_StopOutputHandler                   
+0     000847d3  APPL_StopMailboxHandler                  
+0     000847d5  APPL_StopInputHandler                    
+0     000847d7  APPL_StartOutputHandler                  
+0     000847d9  APPL_StartMailboxHandler                 
+0     000847db  APPL_StartInputHandler                   
+0     000847dd  APPL_OutputMapping                       
+0     000847e3  APPL_InputMapping                        
+0     0008483c  APPL_GenerateMapping                     
+0     000848b2  APPL_Application                         
+0     000848ef  APPL_AckErrorInd                         
+0     000848f0  ESC_initGPIO                             
+0     00084a97  SPI_init                                 
+0     00084b07  SPI_configure                            
+0     00084bab  SPI_PinMuxOptions                        
+0     00084c01  SysCtl_setClock                          
+0     00084d39  SysCtl_setAuxClock                       
+0     00084e50  SysCtl_isPLLValid                        
+0     00084f60  CLA_initCpu1Cla1                         
+0     00084fdd  CLA_configClaMemory                      
+0     00085069  ESC_applicationSync1Handler              
+0     0008509d  ESC_applicationSync0Handler              
+0     000850d1  ESC_applicationLayerHandler              
+0     00085105  MemCfg_getInitStatus                     
+0     00085198  __c28xabi_divf                           
+0     00085220  cla1Isr8                                 
+0     00085231  cla1Isr7                                 
+0     00085240  cla1Isr6                                 
+0     0008524f  cla1Isr5                                 
+0     0008525e  cla1Isr4                                 
+0     0008526d  cla1Isr3                                 
+0     0008527e  cla1Isr2                                 
+0     0008528f  cla1Isr1                                 
+0     000852a0  MemCfg_initSections                      
+0     00085412  SPI_setConfig                            
+0     0008546e  SysCtl_selectOscSource                   
+0     000854c2  GPIO_setPadConfig                        
+0     00085514  SysCtl_selectOscSourceAuxPLL             
+0     0008555b  COE_ServiceInd                           
+0     00085571  COE_Init                                 
+0     00085579  COE_ContinueInd                          
+0     0008559e  Interrupt_initModule                     
+0     000855db  ESCSS_configureSync0Connections          
+0     00085613  ESCSS_configureSync1Connections          
+0     0008564b  GPIO_setMasterCore                       
+0     00085683  GPIO_setQualificationMode                
+0     000856bb  MemCfg_setLSRAMMasterSel                 
+0     000856f3  GPIO_setPinConfig                        
+0     0008572a  SPI_clearInterruptStatus                 
+0     00085760  Interrupt_enable                         
+0     00085794  GPIO_setDirectionMode                    
+0     000857c5  __TI_decompress_lzss                     
+0     000857f6  SPI_enableInterrupt                      
+0     00085825  __TI_auto_init_nobinit_nopinit           
+0     0008587a  C$$EXIT                                  
+0     0008587a  abort                                    
+0     0008587c  exit                                     
+0     000858a3  F2838XCPU1_strcpy                        
+0     000858ba  F2838XCPU1_memset                        
+0     000858bf  F2838XCPU1_memcpy                        
+0     000858c4  F2838XCPU1_memcmp                        
+0     00085913  SysCtl_controlCMReset                    
+0     00085938  SysCtl_selectXTAL                        
+0     0008595c  ESCSS_configureEEPROMSize                
+0     0008597e  __c28xabi_divi                           
+0     0008598f  __c28xabi_modi                           
+0     000859a0  SysCtl_controlCPU2Reset                  
+0     00085a5c  Interrupt_initVectorTable                
+0     00085a7a  __c28xabi_cmpll                          
+0     00085a8c  __c28xabi_cmpull                         
+0     00085ad2  memcpy                                   
+0     00085b24  SysCtl_selectXTALSingleEnded             
+0     00085b3e  _c_int00                                 
+0     00085b57  __c28xabi_andll                          
+0     00085b5f  __c28xabi_orll                           
+0     00085b67  __c28xabi_xorll                          
+0     00085cb3  memcmp                                   
+0     00085d3c  __TI_zero_init_nomemset                  
+0     00085d55  _args_main                               
+0     00085d77  __c28xabi_divu                           
+0     00085d7c  __c28xabi_modu                           
+0     00085d82  _register_unlock                         
+0     00085d86  _register_lock                           
+0     00085d8a  _nop                                     
+0     00085d8b  __TI_decompress_none                     
+0     00085d9b  strlen                                   
+0     00085daa  memset                                   
+0     00085db5  _system_pre_init                         
+0     00085db7  _system_post_cinit                       
+0     00085f14  __TI_Handler_Table_Base                  
+0     00085f1a  __TI_Handler_Table_Limit                 
+0     00085f28  __TI_CINIT_Base                          
+0     00085f38  __TI_CINIT_Limit                         
+0     00085f38  __TI_CINIT_Warm                          
 0     00086000  RamfuncsLoadStart                        
 0     0008612d  RamfuncsLoadEnd                          
 0     00088000  Cla1funcsLoadStart                       
-0     00088398  Cla1funcsLoadEnd                         
+0     000887c6  Cla1funcsLoadEnd                         
 0     00090000  aName0x1C32                              
 0     00090108  aName0x1C33                              
 0     0009020f  aName0x1A00                              
@@ -1723,17 +1889,18 @@ page  address   name
 0     00090a8e  asEntryDesc0x1C12                        
 0     00090a94  asEntryDesc0x1C13                        
 0     00090a9a  asEntryDesc0x7000                        
-abs   00000000  CLA1mathTablesLoadSize                   
+0     000ba000  CLA1mathTablesLoadStart                  
 abs   0000002c  Cla1ConstLoadSize                        
 abs   00000100  CLA_SCRATCHPAD_SIZE                      
 abs   0000012d  RamfuncsLoadSize                         
 abs   0000012d  RamfuncsRunSize                          
 abs   00000200  __TI_STACK_SIZE                          
 abs   00000200  __TI_SYSMEM_SIZE                         
-abs   00000398  Cla1funcsLoadSize                        
+abs   000002e2  CLA1mathTablesLoadSize                   
+abs   000007c6  Cla1funcsLoadSize                        
 abs   ffffffff  __TI_pprof_out_hndl                      
 abs   ffffffff  __TI_prof_data_size                      
 abs   ffffffff  __TI_prof_data_start                     
 n/a   UNDEFED   __c_args__                               
 
-[432 symbols]
+[475 symbols]

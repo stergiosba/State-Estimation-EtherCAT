@@ -156,6 +156,9 @@ extern void Sync1_Isr(void);
 //
 // HAL function prototypes
 //
+extern uint32_t ESC_getTimer0(void);
+extern void ESC_clearTimer0(void);
+extern void initEPWM1(void);
 
 //*****************************************************************************
 //

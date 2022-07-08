@@ -37,13 +37,13 @@
 -----------------------------------------------------------------------------------------*/
 
 //#pragma DATA_SECTION(g_SensBurst, "Cla1ToCpuMsgRAM")
-
 float g_SensBurst[11] = { 0.0f, 0.0f, 0.0f, 0.0f,
                           0.0f, 0.0f, 0.0f, 0.0f,
                           0.0f, 0.0f, 0.0f };
 
 //#pragma DATA_SECTION(g_Attitude, "Cla1ToCpuMsgRAM")
 float g_Attitude[3] = { 0.0f, 0.0f, 0.0f };
+float QGL[4] = { 1.0f, 0.0f, 0.0f, 0.0f };
 
 //#pragma DATA_SECTION(g_ActiveMode, "CpuToCla1MsgRAM")
 ADIS16364_IMU_OperationModes g_ActiveMode;
@@ -77,21 +77,10 @@ uint32_t g_ActiveModeTimeCounter[1] = {0};
 //
 void Internal_Reset()
 {
-    uint16_t i;
-    for (i = 0; i <= 10; i++)
-    {
-        //
-        // Internal Reset of IMU measurements
-        //
-        g_SensBurst[i] = 0;
-    }
-    for (i = 0; i <= 2; i++)
-    {
-        //
-        // Internal Reset of attitude estimates
-        //
-        g_Attitude[i] = 0;
-    }
+    memset(g_SensBurst, 0, 11 * sizeof(float));
+    memset(g_Attitude, 0, 3 * sizeof(float));
+    memset(QGL, 0, 4 * sizeof(float));
+    QGL[0] = 1;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////

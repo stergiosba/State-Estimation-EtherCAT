@@ -441,7 +441,7 @@ extern bool Device_verifyXTAL(float freq);
 //! @return None
 //
 //*****************************************************************************
-//extern void Device_enableAllPeripherals(void);
+extern void Device_enableAllPeripherals(void);
 extern void Device_enablePeripherals(void);
 //*****************************************************************************
 //!

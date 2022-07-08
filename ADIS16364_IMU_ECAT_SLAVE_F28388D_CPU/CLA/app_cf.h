@@ -42,8 +42,26 @@ static inline void Complementary_Filter(float cfk, float dt)
     // R_BI: Rotation matrix from Body frame (B) to Inertial frame (I)
     // G = R_BI*g
     //
-    float rollAcc = CLAatan(CLAdiv(g_SensBurst[5], g_SensBurst[6])) * 180 / pi;
-    float pitchAcc = CLAatan(CLAdiv(-g_SensBurst[4],sin_phi*g_SensBurst[5]+cos_phi*g_SensBurst[6]))* 180 / pi;
+    float ax = g_SensBurst[4];
+    float ay = g_SensBurst[5];
+
+    float az;
+    if (!g_SensBurst[6])
+    {
+        az = 0.0001f;
+    }
+    else
+    {
+        az = g_SensBurst[6];
+    }
+    int sz = (az >= 0) - (az < 0);
+    float ay2 = ay*ay;
+    float az2 = az*az;
+
+
+    float rollAcc = CLAatan(CLAdiv(ay, az)) * 180 / pi;
+    //float pitchAcc = CLAatan(CLAdiv(-ax,sin_phi*ay+cos_phi*az))* 180 / pi;
+    float pitchAcc = -CLAatan(CLAdiv(ax,sz*CLAsqrt(ay2+az2)))* 180 / pi;
 
     //
     // Simple Euler integration with Complementary filter sensor fusion.

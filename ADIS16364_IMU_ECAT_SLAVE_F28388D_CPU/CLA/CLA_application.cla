@@ -2,8 +2,13 @@
 // Included Files
 //
 #include "CLA_shared.h"
-#include "application.h"
+#define APP 1
 
+#if APP == 1
+    #include <app_cf.h>
+#elif APP == 2
+    #include <app_kf.h>
+#endif
 
 extern void cla_test_func(void);
 
@@ -231,7 +236,9 @@ __interrupt void Cla1Task1 ( void )
     //
     // Perform a burst read
     //
+    //RESTART_CLOCK;
     BurstRead_cla();
+    //READ_CLOCK(ulCycleCount1);
 
     //
     // Data comes in with every EtherCAT cycle therefore dt=ecat_cycle=1/ecat_frequency (2.5 kHz), needed for integration
@@ -239,14 +246,20 @@ __interrupt void Cla1Task1 ( void )
     float dt = (float) 1/2500;
 
     //
-    // Complimentary filter weight
+    // Complementary filter weight
     //
     float cfk = 0.98;
 
     //
     // Perform a complementary filter sensor fusion, found inside application.h file.
     //
-    Complementary_Filter(cfk, dt);
+    //RESTART_CLOCK;
+    #if APP == 1
+        Complementary_Filter(cfk, dt);
+    #elif APP == 2
+        Q_Complementary_Filter(cfk, dt);
+    #endif
+    //READ_CLOCK(ulCycleCount2);
 }
 
 __interrupt void Cla1Task2 ( void )

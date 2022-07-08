@@ -117,42 +117,35 @@ SECTIONS
    	/* CLA specific sections */
    	#if defined(__TI_EABI__)
 		Cla1Prog        :   LOAD = FLASH4,
-		                    RUN = RAMLS5,
+		                    RUN = RAMLS5 | RAMLS6,
 		                    LOAD_START(Cla1funcsLoadStart),
 		                    LOAD_END(Cla1funcsLoadEnd),
 		                    RUN_START(Cla1funcsRunStart),
 		                    LOAD_SIZE(Cla1funcsLoadSize),
 		                    ALIGN(8)
 
-		#if  !(CLA_MATH_TABLES_IN_ROM)
-			//
-   			//Load tables to Flash and copy over to RAM
-   			//
-		    CLA1mathTables    :  LOAD = FLASH11,
-		                         RUN = RAMLS3,
-		                         RUN_START(CLA1mathTablesRunStart),
-		                         LOAD_START(CLA1mathTablesLoadStart),
-		                         LOAD_SIZE(CLA1mathTablesLoadSize)
-		#endif
+		//
+		//Load tables to Flash and copy over to RAM
+		//
+	    CLA1mathTables    :  LOAD = FLASH11,
+	                         RUN = RAMLS3,
+	                         RUN_START(CLA1mathTablesRunStart),
+	                         LOAD_START(CLA1mathTablesLoadStart),
+	                         LOAD_SIZE(CLA1mathTablesLoadSize)
 	#else
 	   Cla1Prog         :   LOAD = FLASH4,
-	                        RUN = RAMLS5,
+	                        RUN = RAMLS56,
 	                        LOAD_START(_Cla1funcsLoadStart),
 	                        LOAD_END(_Cla1funcsLoadEnd),
 	                        RUN_START(_Cla1funcsRunStart),
 	                        LOAD_SIZE(_Cla1funcsLoadSize),
 	                        ALIGN(8)
 
-	    #if  !(CLA_MATH_TABLES_IN_ROM)
-	    	//
-   			//Load tables to Flash and copy over to RAM
-   			//
-		    CLA1mathTables    :  LOAD = FLASH11,
-		                         RUN = RAMLS3,
-		                         RUN_START(_CLA1mathTablesRunStart),
-		                         LOAD_START(_CLA1mathTablesLoadStart),
-		                         LOAD_SIZE(_CLA1mathTablesLoadSize)
-		#endif
+	    CLA1mathTables    :  LOAD = FLASH11,
+	                         RUN = RAMLS3,
+	                         RUN_START(_CLA1mathTablesRunStart),
+	                         LOAD_START(_CLA1mathTablesLoadStart),
+	                         LOAD_SIZE(_CLA1mathTablesLoadSize)
 	#endif
 
    	CLADataLS0		: > RAMLS0

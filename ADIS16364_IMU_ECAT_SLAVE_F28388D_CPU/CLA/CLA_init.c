@@ -1,6 +1,9 @@
 #include "CLA_init.h"
 
-//#pragma DATA_SECTION(ff, "Cla1ToCpuMsgRAM")
+#pragma DATA_SECTION(ulCycleCount1, "CLADataLS0")
+uint16_t ulCycleCount1;
+#pragma DATA_SECTION(ulCycleCount2, "CLADataLS0")
+uint16_t ulCycleCount2;
 float p_s = 0;
 float p_c = 0;
 float t_c = 0;
@@ -14,6 +17,7 @@ void CLA_configClaMemory(void)
 {
     extern uint32_t Cla1funcsRunStart, Cla1funcsLoadStart, Cla1funcsLoadSize;
     extern uint32_t Cla1ConstRunStart, Cla1ConstLoadStart, Cla1ConstLoadSize;
+    extern uint32_t CLA1mathTablesRunStart, CLA1mathTablesLoadStart, CLA1mathTablesLoadSize;
     EALLOW;
 
 #ifdef _FLASH
@@ -28,6 +32,13 @@ void CLA_configClaMemory(void)
     //
     memcpy((uint32_t *)&Cla1ConstRunStart, (uint32_t *)&Cla1ConstLoadStart,
            (uint32_t)&Cla1ConstLoadSize);
+
+    //
+    // Copy over CLA math tables from FLASH to RAM
+    //
+    memcpy((uint32_t *)&CLA1mathTablesRunStart, (uint32_t *)&CLA1mathTablesLoadStart,
+           (uint32_t)&CLA1mathTablesLoadSize);
+
 
 #endif //_FLASH
 

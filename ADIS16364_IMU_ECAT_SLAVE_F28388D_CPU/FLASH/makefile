@@ -11,8 +11,9 @@ GEN_CMDS__FLAG :=
 
 ORDERED_OBJS += \
 "./f2838x_codestartbranch.obj" \
+"./CLA/CLA_application.obj" \
 "./CLA/CLA_init.obj" \
-"./CLA/spi.obj" \
+"./CLA/f2838x_globalvariabledefs.obj" \
 "./EtherCAT_slave/ADIS16364_F28388D_IMU_SLAVE_CPU1.obj" \
 "./EtherCAT_slave/coeappl.obj" \
 "./EtherCAT_slave/ecatappl.obj" \
@@ -169,7 +170,7 @@ all: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: C2000 Linker'
-	"C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/bin/cl2000" -v28 -ml -mt --cla_support=cla1 --float_support=fpu32 -O2 --advice:performance=all --define=__TI_EABI__ --define=ETHERCAT_STACK --define=_FLASH --define=CPU1 --diag_suppress=10063 --diag_suppress=770 --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU.map" --heap_size=0x200 --stack_size=0x200 --warn_sections -i"C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/lib" -i"C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include" --reread_libs --define=_FLASH --define=__TI_EABI__ --diag_wrap=off --display_error_number --xml_link_info="ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU_linkInfo.xml" --entry_point=code_start --rom_model -o "ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU.out" $(ORDERED_OBJS)
+	"C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/bin/cl2000" -v28 -ml -mt --cla_support=cla1 --float_support=fpu32 -O3 --advice:performance=all --define=CLA_MATH_TABLES_IN_ROM=1 --define=__TI_EABI__ --define=ETHERCAT_STACK --define=_FLASH --define=CPU1 --diag_suppress=10063 --diag_suppress=770 --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU.map" --heap_size=0x200 --stack_size=0x200 --warn_sections -i"C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/lib" -i"C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-c2000_21.6.0.LTS/include" --reread_libs --define=_FLASH --define=__TI_EABI__ --diag_wrap=off --display_error_number --xml_link_info="ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU_linkInfo.xml" --entry_point=code_start --rom_model -o "ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 
@@ -183,9 +184,9 @@ ADIS16364_IMU_ECAT_SLAVE_F28388D_CPU.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "f2838x_codestartbranch.obj" "CLA\CLA_init.obj" "CLA\spi.obj" "EtherCAT_slave\ADIS16364_F28388D_IMU_SLAVE_CPU1.obj" "EtherCAT_slave\coeappl.obj" "EtherCAT_slave\ecatappl.obj" "EtherCAT_slave\ecatcoe.obj" "EtherCAT_slave\ecatslv.obj" "EtherCAT_slave\f2838x_cpu1_hw.obj" "EtherCAT_slave\f2838x_cpu1_system.obj" "EtherCAT_slave\mailbox.obj" "EtherCAT_slave\objdef.obj" "EtherCAT_slave\sdoserv.obj" "SPI_ADIS16364_LIBRARY\SPI_init.obj" "ethercat_f28388x_hal\device.obj" "ethercat_f28388x_hal\ethercat_gpio_setup.obj" "ethercat_f28388x_hal\ethercat_slave_cpu1_hal.obj" 
-	-$(RM) "CLA\CLA_init.d" "EtherCAT_slave\ADIS16364_F28388D_IMU_SLAVE_CPU1.d" "EtherCAT_slave\coeappl.d" "EtherCAT_slave\ecatappl.d" "EtherCAT_slave\ecatcoe.d" "EtherCAT_slave\ecatslv.d" "EtherCAT_slave\f2838x_cpu1_hw.d" "EtherCAT_slave\f2838x_cpu1_system.d" "EtherCAT_slave\mailbox.d" "EtherCAT_slave\objdef.d" "EtherCAT_slave\sdoserv.d" "SPI_ADIS16364_LIBRARY\SPI_init.d" "ethercat_f28388x_hal\device.d" "ethercat_f28388x_hal\ethercat_gpio_setup.d" "ethercat_f28388x_hal\ethercat_slave_cpu1_hal.d" 
-	-$(RM) "CLA\spi.d" 
+	-$(RM) "f2838x_codestartbranch.obj" "CLA\CLA_application.obj" "CLA\CLA_init.obj" "CLA\f2838x_globalvariabledefs.obj" "EtherCAT_slave\ADIS16364_F28388D_IMU_SLAVE_CPU1.obj" "EtherCAT_slave\coeappl.obj" "EtherCAT_slave\ecatappl.obj" "EtherCAT_slave\ecatcoe.obj" "EtherCAT_slave\ecatslv.obj" "EtherCAT_slave\f2838x_cpu1_hw.obj" "EtherCAT_slave\f2838x_cpu1_system.obj" "EtherCAT_slave\mailbox.obj" "EtherCAT_slave\objdef.obj" "EtherCAT_slave\sdoserv.obj" "SPI_ADIS16364_LIBRARY\SPI_init.obj" "ethercat_f28388x_hal\device.obj" "ethercat_f28388x_hal\ethercat_gpio_setup.obj" "ethercat_f28388x_hal\ethercat_slave_cpu1_hal.obj" 
+	-$(RM) "CLA\CLA_init.d" "CLA\f2838x_globalvariabledefs.d" "EtherCAT_slave\ADIS16364_F28388D_IMU_SLAVE_CPU1.d" "EtherCAT_slave\coeappl.d" "EtherCAT_slave\ecatappl.d" "EtherCAT_slave\ecatcoe.d" "EtherCAT_slave\ecatslv.d" "EtherCAT_slave\f2838x_cpu1_hw.d" "EtherCAT_slave\f2838x_cpu1_system.d" "EtherCAT_slave\mailbox.d" "EtherCAT_slave\objdef.d" "EtherCAT_slave\sdoserv.d" "SPI_ADIS16364_LIBRARY\SPI_init.d" "ethercat_f28388x_hal\device.d" "ethercat_f28388x_hal\ethercat_gpio_setup.d" "ethercat_f28388x_hal\ethercat_slave_cpu1_hal.d" 
+	-$(RM) "CLA\CLA_application.d" 
 	-$(RM) "f2838x_codestartbranch.d" 
 	-@echo 'Finished clean'
 	-@echo ' '

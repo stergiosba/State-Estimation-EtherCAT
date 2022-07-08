@@ -5,12 +5,11 @@
 // Included Files
 //
 #include <stdint.h>
-//#include "f2838x_device.h"
 #include "SPI_init.h"
 #include "CLAmath.h"
 #include "ADIS16364.h"
-//#include "f28x_project.h" //MAYBE NOT NEEDED
-/*
+#include "f28x_project.h" //MAYBE NOT NEEDED
+
 #define READ_CLOCK(X) __meallow();\
 EPwm1Regs.TBCTL.bit.CTRMODE = TB_FREEZE;\
 X = EPwm1Regs.TBCTR;\
@@ -20,15 +19,17 @@ __medis();
 EPwm1Regs.TBCTL.bit.CTRMODE = TB_FREEZE;\
 EPwm1Regs.TBCTR = 0;\
 EPwm1Regs.TBCTL.bit.CTRMODE = TB_COUNT_UP;\
-__medis();*/
+__medis();
 
 extern float g_SensBurst[11];
 extern float g_Attitude[3];
+extern float QGL[4];
 
 extern uint16_t g_ActiveMode;
 extern uint16_t g_ActiveDRng; //!< Active Dynamic Range Option
 extern uint16_t g_ActiveTaps; //!< Active Filtering Taps Option
-extern uint32_t ulCycleCount1;
+extern uint16_t ulCycleCount1;
+extern uint16_t ulCycleCount2;
 extern float p_s;
 extern float p_c;
 extern float t_c;

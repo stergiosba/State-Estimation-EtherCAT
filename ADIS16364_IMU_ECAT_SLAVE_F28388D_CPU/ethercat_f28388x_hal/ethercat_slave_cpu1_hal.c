@@ -79,8 +79,17 @@ ISR_Profiler Profiler = {.Sync0_counter=0, .Sync1_counter=0, .PDI_counter=0};
 #pragma DATA_SECTION(SPI_config,"Cla1DataRam")
 SPI_Config SPI_config;
 
-uint32_t ESC_getTimer0(void);
-void ESC_clearTimer0(void);
+void initEPWM1(void)
+{
+    EPwm1Regs.TBCTL.bit.CTRMODE = TB_COUNT_UP;
+    EPwm1Regs.TBPRD = 0xFFFF;
+    EPwm1Regs.TBCTL.bit.PHSEN = TB_DISABLE;
+    EPwm1Regs.TBPHS.bit.TBPHS = 0x0000;
+    EPwm1Regs.TBCTR = 0;
+    EPwm1Regs.TBCTL.bit.HSPCLKDIV = TB_DIV1;
+    EPwm1Regs.TBCTL.bit.CLKDIV = TB_DIV1;
+}
+
 
 //*****************************************************************************
 //
@@ -97,7 +106,7 @@ ESC_getTimer(void)
 }
 
 //*****************************************************************************
-//
+//`
 // ESC_getTimer0
 //
 //*****************************************************************************
@@ -629,7 +638,8 @@ ESC_initHW(void)
     //
     // Turn on all needed peripherals and initialize GPIOs (Done for reduced current consumption)
     //
-    Device_enablePeripherals();
+    //Device_enablePeripherals();
+    Device_enableAllPeripherals();
     Device_initGPIO();
 
     //
@@ -657,6 +667,7 @@ ESC_initHW(void)
     //
     CLA_configClaMemory();
     CLA_initCpu1Cla1();
+    initEPWM1();
 
     //
     // Initialize PIE and clear PIE registers. Disables CPU interrupts.
