@@ -10,6 +10,7 @@
 #include "ADIS16364.h"
 #include "f28x_project.h" //MAYBE NOT NEEDED
 
+
 #define READ_CLOCK(X) __meallow();\
 EPwm1Regs.TBCTL.bit.CTRMODE = TB_FREEZE;\
 X = EPwm1Regs.TBCTR;\
@@ -27,14 +28,14 @@ extern float QGL[4];
 
 extern uint16_t g_ActiveMode;
 extern uint16_t g_ActiveDRng; //!< Active Dynamic Range Option
-extern uint16_t g_ActiveTaps; //!< Active Filtering Taps Option
+volatile extern uint16_t g_ActiveTaps; //!< Active Filtering Taps Option
 extern uint16_t ulCycleCount1;
 extern uint16_t ulCycleCount2;
-extern float p_s;
+extern uint32_t p_s;
 extern float p_c;
 extern float t_c;
 extern float t_t;
-extern float s_t;
+extern uint16_t s_t;
 
 
 //void Complimentary_Filter();

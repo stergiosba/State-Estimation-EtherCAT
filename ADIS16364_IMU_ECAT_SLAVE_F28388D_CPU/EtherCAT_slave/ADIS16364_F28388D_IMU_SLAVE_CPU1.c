@@ -48,8 +48,8 @@ float QGL[4] = { 1.0f, 0.0f, 0.0f, 0.0f };
 //#pragma DATA_SECTION(g_ActiveMode, "CpuToCla1MsgRAM")
 ADIS16364_IMU_OperationModes g_ActiveMode;
 
-#pragma DATA_SECTION(g_ActiveTaps, "CpuToCla1MsgRAM")
-uint16_t g_ActiveTaps = 0;
+//#pragma DATA_SECTION(g_ActiveTaps, "CpuToCla1MsgRAM")
+volatile uint16_t g_ActiveTaps = 0;
 
 uint16_t g_ActiveDRng = 4;
 uint32_t g_ActiveModeTimeCounter[1] = {0};
@@ -139,18 +139,8 @@ void InputPDO_ForwardPass()
 
 *////////////////////////////////////////////////////////////////////////////////////////
 //TODO fast find
-void Application_Delay_Control(float delay, uint32_t CycleFreq, uint16_t Mode, uint16_t Taps)
+void Application_Delay_Control(float delay, uint32_t CycleFreq)
 {
-    if ((Taps!=g_ActiveTaps) || (Mode!= g_ActiveMode))
-    {
-        //
-        // If taps have changed zero out counter.
-        //
-        g_ActiveModeTimeCounter[0]=0;
-        g_ActiveTaps = Taps;
-        g_ActiveMode = (ADIS16364_IMU_OperationModes) Mode;
-    }
-
     //
     // Checking to perform SPI transaction only once.
     //
@@ -464,6 +454,7 @@ void APPL_Application(void)
     // Calculating current EtherCAT cycle time and frequency
     uint32_t CycleTime = sSyncManOutPar.u32Sync0CycleTime;
     uint32_t CycleFreq = 1000000000.0f / CycleTime;
+    volatile uint16_t Taps;
 
     // Only working synchronously.
     if (bDcSyncActive)
@@ -471,7 +462,7 @@ void APPL_Application(void)
         //
         // Extracting bits [2:0] from user command. These bits represent the FIR filter taps.
         //
-        uint16_t Taps = (LAE_CONTROL0x7000.IMU_flags & 0x7);
+        Taps = (LAE_CONTROL0x7000.IMU_flags & 0x7);
 
         //
         // Extracting bits [6:4] from user command. These bits represent the dynamic range.
@@ -482,21 +473,34 @@ void APPL_Application(void)
         // Extracting high byte from user command and casting it to ADIS16364_IMU_OperationModes type.
         //
         uint16_t Mode = (LAE_CONTROL0x7000.IMU_flags & 0xFF00)>>8;
+
+
+        if ((Taps!=g_ActiveTaps) || (Mode!= g_ActiveMode))
+        {
+            //
+            // If taps have changed zero out counter.
+            //
+            g_ActiveModeTimeCounter[0]=0;
+            g_ActiveTaps = Taps;
+            g_ActiveMode = (ADIS16364_IMU_OperationModes) Mode;
+        }
+
+
         //
         // Case switch statement base on the user command
         //
-        switch (Mode)
+        switch (g_ActiveMode)
         {
             //
             // For the first 30 seconds (counter<=75000) ADIS 16364 performs
             // the internal null bias calibration of the gyroscopes.
             //
             case IMU_BIAS_CALIBRATION_MODE:
-                Application_Delay_Control(ADIS16364_BIAS_RESET_DELAY, CycleFreq, Mode, Taps);
+                Application_Delay_Control(ADIS16364_BIAS_RESET_DELAY, CycleFreq);
                 break;
 
             case IMU_ONLINE_MODE:
-                Application_Delay_Control(0.05, CycleFreq, Mode, Taps);
+                Application_Delay_Control(0.005, CycleFreq);
                 break;
 
             default:
@@ -545,7 +549,7 @@ void main(void)
 
 {
     /* initialize the Hardware and the EtherCAT Slave Controller */
-    uint16_t HW_Check = HW_Init();
+   uint16_t HW_Check = HW_Init();
     //
     // If Hardware Initialization was successful, reset LED1/LED2 to use them later.
     //

@@ -4,11 +4,11 @@
 uint16_t ulCycleCount1;
 #pragma DATA_SECTION(ulCycleCount2, "CLADataLS0")
 uint16_t ulCycleCount2;
-float p_s = 0;
+uint32_t p_s = 0;
 float p_c = 0;
 float t_c = 0;
 float t_t = 0;
-float s_t = 0;
+uint16_t s_t = 0;
 
 //
 // CLA_configClaMemory - Configure CLA memory sections
